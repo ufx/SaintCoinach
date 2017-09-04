@@ -3063,7 +3063,7 @@
       "defaultColumn": "PlaceName",
       "definitions": [
         {
-          "name": "NodeLevel"
+          "name": "GatheringLevel"
         },
         {
           "index": 1,
@@ -3136,7 +3136,7 @@
         },
         {
           "index": 2,
-          "name": "DifficultyLevel"
+          "name": "GatheringItemLevel"
         },
         {
           "index": 4,
@@ -3229,7 +3229,7 @@
       "sheet": "GatheringItemLevelConvertTable",
       "definitions": [
         {
-          "name": "ItemLevel"
+          "name": "GatheringItemLevel"
         },
         {
           "index": 1,
@@ -3328,7 +3328,7 @@
         },
         {
           "index": 1,
-          "name": "NodeLevel"
+          "name": "GatheringLevel"
         },
         {
           "index": 2,
@@ -7278,7 +7278,7 @@
       "defaultColumn": "PlaceName",
       "definitions": [
         {
-          "name": "NodeLevel"
+          "name": "GatheringLevel"
         },
         {
           "index": 2,
