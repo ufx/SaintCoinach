@@ -3229,7 +3229,7 @@
       "sheet": "GatheringItemLevelConvertTable",
       "definitions": [
         {
-          "name": "Level"
+          "name": "ItemLevel"
         },
         {
           "index": 1,
