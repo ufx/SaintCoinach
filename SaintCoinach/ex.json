@@ -3063,7 +3063,7 @@
       "defaultColumn": "PlaceName",
       "definitions": [
         {
-          "name": "Level"
+          "name": "NodeLevel"
         },
         {
           "index": 1,
@@ -3328,7 +3328,7 @@
         },
         {
           "index": 1,
-          "name": "Level"
+          "name": "NodeLevel"
         },
         {
           "index": 2,
