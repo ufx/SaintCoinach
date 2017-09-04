@@ -5254,7 +5254,7 @@
         },
         {
           "index": 1,
-          "name": "MinLevel"
+          "name": "ClassJobLevel"
         },
         {
           "index": 2,
@@ -5307,7 +5307,7 @@
                 }
               },
               {
-                "name": "MaxLevel"
+                "name": "ClassJobLevel{Max}"
               },
               {
                 "name": "Stars"
