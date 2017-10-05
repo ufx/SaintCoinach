@@ -21,7 +21,7 @@ namespace SaintCoinach.Ex {
             }, {
                 4, Language.French
             }, {
-                5, Language.Unsupported /*"chs"*/
+                5, Language.ChineseSimplified /*"chs"*/
             }, {
                 6, Language.Unsupported /*"cht"*/
             }, {

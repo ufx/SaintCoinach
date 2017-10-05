@@ -327,6 +327,10 @@ namespace SaintCoinach.Xiv {
 
             var allTypes = Assembly.GetExecutingAssembly().GetTypes();
 
+            //hack for chinese version
+            if (sheetName.EndsWith("_chs")) {
+                sheetName = sheetName.Substring(0, sheetName.Length - 4);
+            }
             var search = "Xiv." + sheetName.Replace('/', '.');
             var targetType = typeof(IXivRow);
             match = allTypes.FirstOrDefault(_ => _.FullName.EndsWith(search) && targetType.IsAssignableFrom(_));
