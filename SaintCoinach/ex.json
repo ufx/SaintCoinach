@@ -7498,7 +7498,7 @@
         },          
           {
           "index": 3,
-          "name": "Text{Output}",
+          "name": "QuickChatTransient",
           "converter": {
             "type": "link",
             "target": "QuickChatTransient"
@@ -7508,11 +7508,11 @@
     },
      {
       "sheet": "QuickChatTransient",
-      "defaultColumn": "Text{Output",
+      "defaultColumn": "Text{Output}",
       "definitions": [
         {
           "index": 0,
-          "name": "Text{Output"
+          "name": "Text{Output}"
         }
       ]
     },
