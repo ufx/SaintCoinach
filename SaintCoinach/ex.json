@@ -7931,6 +7931,10 @@
           "name": "CanHq"
         },
         {
+          "index": 39,
+          "name": "ExpRewarded"
+        },
+        {
           "index": 40,
           "name": "Status{Required}",
           "converter": {
