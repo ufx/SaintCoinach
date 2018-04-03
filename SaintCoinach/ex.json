@@ -2761,6 +2761,23 @@
       ]
     },
     {
+      "sheet": "ContentNpcTalk",
+      "definitions": [
+        {
+          "index": 1,
+          "type": "repeat",
+          "count": 8,
+          "definition": {
+            "name": "ContentTalk",
+            "converter": {
+              "type": "link",
+              "target": "ContentTalk"
+            }
+          }
+        }
+      ]
+    },
+    {
       "sheet": "ContentRoulette",
       "defaultColumn": "Name",
       "definitions": [
@@ -2836,6 +2853,23 @@
         }
       ]
     },
+    { 
+      "sheet": "ContentTalk",
+      "defaultColumn": "Text",
+      "definitions": [
+        {
+          "name": "ContentTalkParam",
+          "converter": {
+            "type": "link",
+            "target": "ContentTalkParam"
+          }
+        },
+        {
+          "index": 1,
+          "name": "Text"
+        }
+      ]
+    },
     {
       "sheet": "ContentsNoteCategory",
       "defaultColumn": "Type",      
@@ -2849,7 +2883,23 @@
           }
         }        
       ]
-    },          
+    },
+    {
+      "sheet": "ContentTalkParam",
+      "definitions": [
+        {
+          "name": "Param",
+        },
+        {
+          "index": 2,
+          "name": "TestAction",
+          "converter": {
+            "type": "link",
+            "target": "ActionTimeline"
+          }
+        }
+      ]
+    },
     {
       "sheet": "ContentType",
       "defaultColumn": "Name",
@@ -6498,7 +6548,7 @@
         },
         {
           "index": 6,
-          "name": "ObjectKey"
+          "name": "ObjectKey",
         },
         {
           "index": 7,
