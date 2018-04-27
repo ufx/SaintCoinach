@@ -7389,7 +7389,7 @@
       "defaultColumn": "0",
       "definitions": [
         {
-          "name": "0",
+          "name": "Primary",
           "converter": {
             "type": "link",
             "target": "VFX"
@@ -7397,7 +7397,7 @@
         },
         {
           "index": 1,
-          "name": "1",
+          "name": "Secondary",
           "converter": {
             "type": "link",
             "target": "VFX"
