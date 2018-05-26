@@ -2760,10 +2760,8 @@
           "index": 34,
           "name": "Transient",
           "converter": {
-            "type": "multiref",
-            "targets": [
-              "ContentFinderConditionTransient"
-            ]
+            "type": "link",
+            "target": "ContentFinderConditionTransient"
           }
         },
         {
