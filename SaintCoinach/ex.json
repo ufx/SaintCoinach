@@ -4510,6 +4510,10 @@
           "name": "Plural"
         },
         {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
           "index": 5,
           "name": "Rarity"
         },
@@ -4522,6 +4526,14 @@
           "name": "Icon",
           "converter": {
             "type": "icon"
+          }
+        },
+        {
+          "index": 11,
+          "name": "Action",
+          "converter": {
+            "type": "link",
+            "target": "Action"
           }
         },
         {
