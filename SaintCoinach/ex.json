@@ -545,6 +545,7 @@
     },
     {
       "sheet": "AetherCurrent",
+      "defaultColumn": "Quest",
       "definitions": [
         {
           "name": "Quest",
@@ -656,6 +657,14 @@
           "name": "AethernetGroup"
         },
         {
+          "index": 18,
+          "name": "RequiredQuest",
+          "converter": {
+            "type": "link",
+            "target": "Quest"
+          }
+        },
+        {
           "index": 19,
           "name": "Map",
           "converter": {
@@ -670,6 +679,23 @@
         {
           "index": 21,
           "name": "Aetherstream{Y}"
+        },
+        {
+          "index": 22,
+          "name": "Aetherstream{Z}"
+        }
+      ]
+    },
+    {
+      "sheet": "AetheryteSystemDefine",
+      "defaultColumn": "name",
+      "definitions": [
+        {
+          "name": "Text"
+        },
+        {
+          "index": 1,
+          "name": "MULTIREF"
         }
       ]
     },
