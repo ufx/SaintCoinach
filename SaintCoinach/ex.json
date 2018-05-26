@@ -1024,6 +1024,18 @@
       ]
     },
     {
+      "sheet": "BacklightColor",
+      "defaultColumn": "Color",
+      "definitions": [
+        {
+          "name": "Color",
+          "converter": {
+            "type": "color"
+          }
+        }
+      ]
+    },
+    {
       "sheet": "Balloon",
       "defaultColumn": "Dialogue",
       "definitions": [
