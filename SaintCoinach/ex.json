@@ -6020,6 +6020,14 @@
       "isGenericReferenceTarget": true,
       "definitions": [
         {
+          "index": 1,
+          "name": "AssignmentTalk",
+          "converter": {
+            "type": "link",
+            "target": "GuildleveAssignmentTalk"
+          }
+        },
+        {
           "index": 2,
           "type": "repeat",
           "count": 2,
@@ -6030,6 +6038,32 @@
               "target": "Quest"
             }
           }
+        }
+      ]
+    },
+    {
+      "sheet": "GuildleveAssignmentCategory",
+      "defaultColumn": "",
+      "definitions": [
+        {
+          "type": "repeat",
+          "count": 8,
+          "definition": {
+            "name": "Category",
+            "converter": {
+              "type": "link",
+              "target": "LeveAssignmentType"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "GuildleveAssignmentTalk",
+      "defaultColumn": "name",
+      "definitions": [
+        {
+          "name": "name"
         }
       ]
     },
