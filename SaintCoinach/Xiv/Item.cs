@@ -201,6 +201,15 @@ namespace SaintCoinach.Xiv {
         public bool IsConvertable {
             get { return As<byte>("MaterializeType") > 0; }
         }
+
+        public bool IsGlamourous => AsBoolean("IsGlamourous");
+
+
+        /// <summary>
+        ///     Gets the <see cref="ClassJob" /> required to repair or desynth the current item.
+        /// </summary>
+        /// <value>The <see cref="ClassJob" /> required to repair or desynth the current item.</value>
+        public ClassJob RepairClassJob => As<ClassJob>("ClassJob{Repair}");
         #endregion
 
         #region Constructors

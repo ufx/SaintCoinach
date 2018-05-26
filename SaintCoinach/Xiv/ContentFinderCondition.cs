@@ -13,7 +13,12 @@ namespace SaintCoinach.Xiv {
 
         public ContentMemberType ContentMemberType { get { return As<ContentMemberType>(); } }
 
-        public int ContentIndicator { get { return AsInt32("ContentIndicator"); } }
+        public ContentType ContentType { get { return As<ContentType>(); } }
+
+        public Text.XivString Name => AsString("Name");
+
+        // 1 = InstanceContent, 2 = PartyContent, 3 = PublicContent, 4 = GoldSaucerContent?, 5 = special or test event content?
+        public byte ContentLinkType => As<byte>("ContentLinkType");
 
         /// <summary>
         /// Gets the description of the current content.
