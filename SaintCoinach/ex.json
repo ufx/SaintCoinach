@@ -7773,6 +7773,14 @@
           "converter": {
             "type": "icon"
           }
+        },
+        {
+          "index": 37,
+          "name": "MountAction",
+          "converter": {
+            "type": "link",
+            "target": "MountAction"
+          }
         }
       ]
     },
