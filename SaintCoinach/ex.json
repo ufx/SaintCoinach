@@ -2832,6 +2832,18 @@
           "name": "IsInDutyFinder"
         },
         {
+          "index": 7,
+          "name": "OpenRule",
+          "converter": {
+            "type": "link",
+            "target": "ContentRouletteOpenRule"
+          }
+        },
+        {
+          "index": 9,
+          "name": "RequiredLevel"
+        },
+        {
           "index": 11,
           "name": "ItemLevel{Required}"
         },
@@ -2840,6 +2852,14 @@
           "name": "Icon",
           "converter": {
             "type": "icon"
+          }
+        },
+        {
+          "index": 14,
+          "name": "ContentRouletteRoleBonus",
+          "converter": {
+            "type": "link",
+            "target": "ContentRouletteRoleBonus"
           }
         },
         {
@@ -2869,6 +2889,28 @@
         {
           "index": 32,
           "name": "RequireAllDuties"
+        }
+      ]
+    },
+    {
+      "sheet": "ContentRouletteOpenRule",
+      "definitions": [
+      ]
+    },
+    {
+      "sheet": "ContentRouletteRoleBonus",
+      "definitions": [
+        {
+          "index": 6,
+          "name": "ItemRewardType",
+          "converter": {
+            "type": "link",
+            "target": "Item"
+          }
+        },
+        {
+          "index": 7,
+          "name": "RewardAmount"
         }
       ]
     },
