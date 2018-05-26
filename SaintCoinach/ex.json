@@ -8357,6 +8357,19 @@
       ]
     },
     {
+      "sheet": "PvPAction",
+      "defaultColumn": "Action",
+      "definitions": [
+        {
+          "name": "Action",
+          "converter": {
+            "type": "link",
+            "target": "Action"
+          }
+        }
+      ]
+    },
+    {
       "sheet": "PvPActionSort",
       "defaultColumn": "Name",
       "definitions": [
