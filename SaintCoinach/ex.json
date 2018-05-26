@@ -10053,7 +10053,10 @@
       "sheet": "ScreenImage",
       "definitions": [
         {
-          "name": "Image"
+          "name": "Image",
+          "converter": {
+            "type": "icon"
+          }
         }
       ]
     },
