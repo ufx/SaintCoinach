@@ -7879,10 +7879,10 @@
     },
     {
       "sheet": "MoveVfx",
-      "defaultColumn": "0",
+      "defaultColumn": "VFXNormal",
       "definitions": [
         {
-          "name": "0",
+          "name": "VFXNormal",
           "converter": {
             "type": "link",
             "target": "VFX"
@@ -7890,7 +7890,7 @@
         },
         {
           "index": 1,
-          "name": "1",
+          "name": "VFXWalking",
           "converter": {
             "type": "link",
             "target": "VFX"
