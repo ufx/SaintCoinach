@@ -2757,6 +2757,16 @@
           }
         },
         {
+          "index": 34,
+          "name": "Transient",
+          "converter": {
+            "type": "multiref",
+            "targets": [
+              "ContentFinderConditionTransient"
+            ]
+          }
+        },
+        {
           "index": 37,
           "name": "Icon",
           "converter": {
@@ -2767,6 +2777,7 @@
     },
     {
       "sheet": "ContentFinderConditionTransient",
+      "defaultColumn": "Description",
       "definitions": [
         {
           "name": "Description"
