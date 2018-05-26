@@ -8244,6 +8244,19 @@
       ]
     },
     {
+      "sheet": "PartyContentCutscene",
+      "defaultColumn": "Name",
+      "definitions": [
+        {
+          "name": "Cutscene",
+          "converter": {
+            "type": "link",
+            "target": "Cutscene"
+          }
+        }
+      ]
+    },
+    {
       "sheet": "PerformTransient",
       "defaultColumn": "Text",
       "definitions": [
