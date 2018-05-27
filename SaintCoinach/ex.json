@@ -6060,10 +6060,10 @@
     },
     {
       "sheet": "GuildleveAssignmentTalk",
-      "defaultColumn": "name",
+      "defaultColumn": "Name",
       "definitions": [
         {
-          "name": "name"
+          "name": "Name"
         }
       ]
     },
