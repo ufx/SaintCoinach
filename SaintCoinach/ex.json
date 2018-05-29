@@ -7409,7 +7409,6 @@
       "defaultColumn": "Name",
       "definitions": [
         {
-          "index": 1,
           "name": "LogKind",
           "converter": {
             "type": "link",
