@@ -10388,7 +10388,7 @@
           "name": "Level",
           "converter": {
             "type": "link",
-            "target": "level"
+            "target": "Level"
           }
         }
       ]
