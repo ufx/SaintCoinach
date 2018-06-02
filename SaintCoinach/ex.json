@@ -7314,10 +7314,6 @@
         },
         {
           "index": 6,
-          "name": "ObjectKey"
-        },
-        {
-          "index": 6,
           "name": "ObjectKey",
           "converter": {
             "type": "complexlink",
