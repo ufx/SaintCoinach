@@ -23,12 +23,23 @@ namespace SaintCoinach.Graphics.Viewer.Content {
             this.SgbFile = sgbFile;
             this.Parameters = parameters;
             this.Transformation = Matrix.Identity;
-         
-            foreach(var group in sgbFile.Data.OfType<Sgb.SgbGroup>()) {
-                foreach(var mdl in group.Entries.OfType<Sgb.SgbModelEntry>()) {
-                    _Content.Add(new ContentModel(engine, mdl.Model) { Parameters = parameters });
+            void LoadSgbFile(Sgb.SgbFile file) {
+                if (file == null)
+                    return;
+
+                foreach (var group in file.Data.OfType<Sgb.SgbGroup>()) {
+                    foreach (var mdl in group.Entries.OfType<Sgb.SgbModelEntry>()) {
+                        _Content.Add(new ContentModel(engine, mdl.Model) { Parameters = parameters });
+                    }
+                    foreach (var sgb1cEntry in group.Entries.OfType<Sgb.SgbGroup1CEntry>()) {
+                        LoadSgbFile(sgb1cEntry.Gimmick);
+                    }
+                    foreach (var gimmickEntry in group.Entries.OfType<Sgb.SgbGimmickEntry>()) {
+                        LoadSgbFile(gimmickEntry.Gimmick);
+                    }
                 }
-            }   
+            }
+            LoadSgbFile(sgbFile);
         }
         #endregion
         

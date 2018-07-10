@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SaintCoinach.Graphics.Sgb {
 
-    public class SgbModelEntry : ISgbGroupEntry {
+    public class SgbGimmickEntry : ISgbGroupEntry {
         #region Struct
         [StructLayout(LayoutKind.Sequential)]
         public struct HeaderData {
@@ -17,7 +17,7 @@ namespace SaintCoinach.Graphics.Sgb {
             public Vector3 Translation;
             public Vector3 Rotation;
             public Vector3 Scale;
-            public int ModelFileOffset;
+            public int GimmickFileOffset;
             public int CollisionFileOffset;
         }
         #endregion
@@ -26,20 +26,19 @@ namespace SaintCoinach.Graphics.Sgb {
         SgbGroupEntryType ISgbGroupEntry.Type { get { return Header.Type; } }
         public HeaderData Header { get; private set; }
         public string Name { get; private set; }
-        public string ModelFilePath { get; private set; }
-        public TransformedModel Model { get; private set; }
+        public SgbFile Gimmick { get; private set; }
         #endregion
 
         #region Constructor
-        public SgbModelEntry(IO.PackCollection packs, byte[] buffer, int offset) {
+        public SgbGimmickEntry(IO.PackCollection packs, byte[] buffer, int offset) {
             this.Header = buffer.ToStructure<HeaderData>(offset);
             this.Name = buffer.ReadString(offset + Header.NameOffset);
 
-            ModelFilePath = buffer.ReadString(offset + Header.ModelFileOffset);
-            if (!string.IsNullOrWhiteSpace(ModelFilePath)) {
-                SaintCoinach.IO.File mdlFile;
-                if (packs.TryGetFile(ModelFilePath, out mdlFile))
-                    this.Model = new TransformedModel(new Graphics.ModelFile(mdlFile.Pack, mdlFile.CommonHeader).GetModelDefinition(), Header.Translation, Header.Rotation, Header.Scale);
+            var sgbFileName = buffer.ReadString(offset + Header.GimmickFileOffset);
+            if (!string.IsNullOrWhiteSpace(sgbFileName)) {
+                SaintCoinach.IO.File file;
+                if (packs.TryGetFile(sgbFileName, out file))
+                    this.Gimmick = new SgbFile(file);
             }
         }
         #endregion
