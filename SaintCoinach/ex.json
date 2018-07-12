@@ -4171,6 +4171,10 @@
           }
         },
         {
+          "index": 16,
+          "name": "DrawsWeapon"
+        },
+        {
           "index": 18,
           "name": "TextCommand",
           "converter": {
