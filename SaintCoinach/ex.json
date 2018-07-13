@@ -9938,6 +9938,10 @@
           "name": "BattleNumber"
         },
         {
+          "index": 2,
+          "name": "TimeLimit"
+        },
+        {
           "index": 3,
           "name": "MaxLevel"
         },
