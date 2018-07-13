@@ -4548,6 +4548,14 @@
         {
           "index": 9,
           "name": "Data"
+        },
+        {
+        	"index": 11,
+        	"name": "ModelPath",
+          	"converter": {
+            	"type": "link",
+            	"target": "ExportedSG"
+          	}
         }
       ]
     },
@@ -13021,6 +13029,16 @@
             "type": "link",
             "target": "Quest"
           }
+        }
+      ]
+    },
+    {
+      "sheet": "ExportedSG",
+      "defaultColumn": "ModelPath",
+      "definitions": [
+        {
+          "index": 0,
+          "name": "ModelPath"
         }
       ]
     }
