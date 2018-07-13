@@ -4551,7 +4551,7 @@
         },
         {
           "index": 11,
-          "name": "ModelPath",
+          "name": "SgbPath",
           "converter": {
             "type": "link",
             "target": "ExportedSG"
@@ -13034,11 +13034,11 @@
     },
     {
       "sheet": "ExportedSG",
-      "defaultColumn": "ModelPath",
+      "defaultColumn": "SgbPath",
       "definitions": [
         {
           "index": 0,
-          "name": "ModelPath"
+          "name": "SgbPath"
         }
       ]
     }
