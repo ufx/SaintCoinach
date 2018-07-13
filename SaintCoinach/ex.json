@@ -4550,12 +4550,12 @@
           "name": "Data"
         },
         {
-        	"index": 11,
-        	"name": "ModelPath",
-          	"converter": {
-            	"type": "link",
-            	"target": "ExportedSG"
-          	}
+          "index": 11,
+          "name": "ModelPath",
+          "converter": {
+            "type": "link",
+            "target": "ExportedSG"
+          }
         }
       ]
     },
