@@ -125,7 +125,7 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                     }
                 }
 
-                void Shit(ref Mesh mesh, TransformedModel tlMdl, string materialName, string modelFilePath, TransformedModel ogMdl = null) {
+                void ExportModel(ref Mesh mesh, TransformedModel tlMdl, string materialName, string modelFilePath, TransformedModel ogMdl = null) {
                     i++;
 
                     var k = 0;
@@ -214,7 +214,7 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                                 var path = mtl.File.Path.Replace('/', '_').Replace(".mtrl", ".tex");
 
                                 ExportMaterials(mtl, path);
-                                Shit(ref mesh, mdl.Model, path, mdl.ModelFilePath, tlMdl);
+                                ExportModel(ref mesh, mdl.Model, path, mdl.ModelFilePath, tlMdl);
                             }
                         }
                         foreach (var gimmickEntry in sgbGroup.Entries.OfType<Sgb.SgbGimmickEntry>()) {
@@ -236,7 +236,7 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                             var path = mtl.File.Path.Replace('/', '_').Replace(".mtrl", ".tex");
 
                             ExportMaterials(mtl, path);
-                            Shit(ref mesh, part, path, mdl.Definition.File.Path);
+                            ExportModel(ref mesh, part, path, mdl.Definition.File.Path);
                         }
                     }
                 }
@@ -261,7 +261,7 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                                         var path = mtl.File.Path.Replace('/', '_').Replace(".mtrl", ".tex");
 
                                         ExportMaterials(mtl, path);
-                                        Shit(ref mesh, asMdl.Model, path, asMdl.ModelFilePath);
+                                        ExportModel(ref mesh, asMdl.Model, path, asMdl.ModelFilePath);
                                     }
                                     break;
                                 case Lgb.LgbEntryType.Gimmick:
