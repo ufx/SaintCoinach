@@ -125,7 +125,7 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                     }
                 }
 
-                void ExportModel(ref Mesh mesh, TransformedModel tlMdl, string materialName, string modelFilePath, TransformedModel ogMdl = null) {
+                void ExportModel(ref Mesh mesh, TransformedModel tlMdl, string materialName, string modelFilePath, TransformedModel ogMdl = null, List<Graphics.Vector3> transformations = null) {
                     i++;
 
                     var k = 0;
@@ -138,7 +138,9 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                             var z = v.Position.Value.Z;
                             var w = v.Position.Value.W;
 
-                            var transform = Matrix4x4.CreateScale(tlMdl.Scale.X, tlMdl.Scale.Y, tlMdl.Scale.Z)
+                            //else 
+                            {
+var transform = Matrix4x4.CreateScale(tlMdl.Scale.X, tlMdl.Scale.Y, tlMdl.Scale.Z)
                             * Matrix4x4.CreateRotationX(tlMdl.Rotation.X)
                             * Matrix4x4.CreateRotationY(tlMdl.Rotation.Y)
                             * Matrix4x4.CreateRotationZ(tlMdl.Rotation.Z)
@@ -148,15 +150,37 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                             x = t.Translation.X;
                             y = t.Translation.Y;
                             z = t.Translation.Z;
+                            }
+
+                            if (transformations != null) {
+                                for (var j = transformations.Count; j > 0; j -= 3) {
+
+                                    var translation = transformations[j - 3];
+                                    var rot = transformations[j - 2];
+                                    var scale = transformations[j - 1];
+
+                                    var tform = Matrix4x4.CreateScale(scale.X, scale.Y, scale.Z)
+                                    * Matrix4x4.CreateRotationX(rot.X)
+                                    * Matrix4x4.CreateRotationY(rot.Y)
+                                    * Matrix4x4.CreateRotationZ(rot.Z)
+                                    * Matrix4x4.CreateTranslation(translation.X, translation.Y, translation.Z);
+
+                                    var tlation = Matrix4x4.CreateTranslation(x, y, z) * tform;
+                                    x = tlation.Translation.X;
+                                    y = tlation.Translation.Y;
+                                    z = tlation.Translation.Z;
+                                    break;
+                                }
+                            }
 
                             if (ogMdl != null) {
-                                transform = Matrix4x4.CreateScale(ogMdl.Scale.X, ogMdl.Scale.Y, ogMdl.Scale.Z)
+                                var transform = Matrix4x4.CreateScale(ogMdl.Scale.X, ogMdl.Scale.Y, ogMdl.Scale.Z)
                                 * Matrix4x4.CreateRotationX(ogMdl.Rotation.X)
                                 * Matrix4x4.CreateRotationY(ogMdl.Rotation.Y)
                                 * Matrix4x4.CreateRotationZ(ogMdl.Rotation.Z)
                                 * Matrix4x4.CreateTranslation(ogMdl.Translation.X, ogMdl.Translation.Y, ogMdl.Translation.Z);
 
-                                t = Matrix4x4.CreateTranslation(x, y, z) * transform;
+                                var t = Matrix4x4.CreateTranslation(x, y, z) * transform;
                                 x = t.Translation.X;
                                 y = t.Translation.Y;
                                 z = t.Translation.Z;
@@ -195,7 +219,7 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                 }
 
 
-                void ExportSgbFile(Sgb.SgbFile sgbFile, Graphics.Vector3 translation, Graphics.Vector3 rotation, Graphics.Vector3 scale) {
+                void ExportSgbFile(Sgb.SgbFile sgbFile, Graphics.Vector3 translation, Graphics.Vector3 rotation, Graphics.Vector3 scale, List<Graphics.Vector3> transformations = null) {
                     if (sgbFile == null)
                         return;
                     foreach (var sgbGroup in sgbFile.Data.OfType<Sgb.SgbGroup>()) {
@@ -214,14 +238,21 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                                 var path = mtl.File.Path.Replace('/', '_').Replace(".mtrl", ".tex");
 
                                 ExportMaterials(mtl, path);
-                                ExportModel(ref mesh, mdl.Model, path, mdl.ModelFilePath, tlMdl);
+                                ExportModel(ref mesh, mdl.Model, path, mdl.ModelFilePath, tlMdl, transformations);
                             }
                         }
                         foreach (var gimmickEntry in sgbGroup.Entries.OfType<Sgb.SgbGimmickEntry>()) {
-                            ExportSgbFile(gimmickEntry.Gimmick, translation, rotation, scale);
+
+                            transformations = transformations ?? new List<Graphics.Vector3>();
+                            //transformations.Clear();
+                            transformations.Add(gimmickEntry.Header.Translation);
+                            transformations.Add(gimmickEntry.Header.Rotation);
+                            transformations.Add(gimmickEntry.Header.Scale);
+
+                            ExportSgbFile(gimmickEntry.Gimmick, translation, rotation, scale, transformations);
                         }
                         foreach (var sgb1c in sgbGroup.Entries.OfType<Sgb.SgbGroup1CEntry>()) {
-                            ExportSgbFile(sgb1c.Gimmick, translation, rotation, scale);
+                            //ExportSgbFile(sgb1c.Gimmick, translation, rotation, scale, transformations);
                         }
                     }
                 }
