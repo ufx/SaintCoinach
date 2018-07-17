@@ -3784,6 +3784,16 @@
       ]
     },
     {
+      "sheet": "DeepDungeon",
+      "defaultColumn": "Name",
+      "definitions": [
+        {
+          "index": 22,
+          "name": "Name",
+        }
+      ]
+    },
+    {
       "sheet": "DeepDungeonBan",
       "defaultColumn": "Name",
       "definitions": [
@@ -3936,6 +3946,62 @@
           "converter": {
             "type": "link",
             "target": "Action"
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "DeepDungeonLayer",
+      "definitions": [
+        {
+          "name": "DeepDungeon",
+          "converter": {
+            "type": "link",
+            "target": "DeepDungeon"
+          }
+        },
+        {
+          "index": 1,
+          "type": "repeat",
+          "count": 6,
+          "definition": {
+            "name": "DeepDungeonMap5X",
+            "converter": {
+              "type": "link",
+              "target": "DeepDungeonMap5X"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "DeepDungeonMap5X",
+      "definitions": [
+        {
+          "type": "repeat",
+          "count": 5,
+          "definition": {
+            "name": "DeepDungeonRoom",
+            "converter": {
+              "type": "link",
+              "target": "DeepDungeonRoom"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "DeepDungeonRoom",
+      "definitions": [
+        {
+          "type": "repeat",
+          "count": 5,
+          "definition": {
+            "name": "Level",
+            "converter": {
+              "type": "link",
+              "target": "Level"
+            }
           }
         }
       ]
