@@ -52,14 +52,32 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                             });
                         }
                         if (asEobj != null && asEobj.Gimmick != null) {
-                            _LgbPartsContainer.Add(new ContentSgb(engine, asEobj.Gimmick) {
-                                Transformation =
-                                    Matrix.Scaling(asEobj.Header.Scale.ToDx())
+                            var transformation = Matrix.Scaling(asEobj.Header.Scale.ToDx())
                                     * Matrix.RotationX(asEobj.Header.Rotation.X)
                                     * Matrix.RotationY(asEobj.Header.Rotation.Y)
                                     * Matrix.RotationZ(asEobj.Header.Rotation.Z)
-                                    * Matrix.Translation(asEobj.Header.Translation.ToDx())
+                                    * Matrix.Translation(asEobj.Header.Translation.ToDx());
+
+                            _LgbPartsContainer.Add(new ContentSgb(engine, asEobj.Gimmick) {
+                                Transformation = transformation
                             });
+                            foreach (var rootGimGroup in asEobj.Gimmick.Data.OfType<Sgb.SgbGroup>()) {
+                                foreach (var sgb1CEntry in rootGimGroup.Entries.OfType<Sgb.SgbGroup1CEntry>()) {
+                                    var rootGimEntry = sgb1CEntry;
+                                    if (rootGimEntry.Gimmick != null) {
+                                        _LgbPartsContainer.Add(new ContentSgb(engine, sgb1CEntry.Gimmick) {
+                                            Transformation = transformation
+                                        });
+                                        foreach (var subGimGroup in rootGimEntry.Gimmick.Data.OfType<Sgb.SgbGroup>()) {
+                                            foreach (var subGimEntry in subGimGroup.Entries.OfType<Sgb.SgbGimmickEntry>()) {
+                                                _LgbPartsContainer.Add(new ContentSgb(engine, subGimEntry.Gimmick) {
+                                                    Transformation = transformation
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -91,6 +109,7 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                 Dictionary<string, bool> exportedPaths = new Dictionary<string, bool>();
                 UInt64 vs = 1, vt = 1, vn = 1;
                 UInt64 i = 0;
+                Matrix IdentityMatrix = Matrix.Identity;
 
                 void ExportMaterials(Material m, string path) {
                     bool found = false;
@@ -127,75 +146,47 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                     }
                 }
 
-                Matrix4x4 CreateMatrix(Graphics.Vector3 translation, Graphics.Vector3 rotation, Graphics.Vector3 scale) {
-                    return (Matrix4x4.CreateScale(scale.X, scale.Y, scale.Z)
-                            * Matrix4x4.CreateRotationX(rotation.X)
-                            * Matrix4x4.CreateRotationY(rotation.Y)
-                            * Matrix4x4.CreateRotationZ(rotation.Z)
-                            * Matrix4x4.CreateTranslation(translation.X, translation.Y, translation.Z));
+                Matrix CreateMatrix(SaintCoinach.Graphics.Vector3 translation, SaintCoinach.Graphics.Vector3 rotation, SaintCoinach.Graphics.Vector3 scale) {
+                    return (Matrix.Scaling(scale.ToDx())
+                        * Matrix.RotationX(rotation.X)
+                        * Matrix.RotationY(rotation.Y)
+                        * Matrix.RotationZ(rotation.Z)
+                        * Matrix.Translation(translation.ToDx()));
                 }
 
-                void ExportModel(ref Mesh mesh, TransformedModel tlMdl, string materialName, string modelFilePath,
-                    Matrix4x4 rootGimmickTransform, Matrix4x4 currGimTransform, TransformedModel ogMdl = null, bool applyRootTransform = false, bool applyGimTransform = false) {
+                void ExportModel(ref Mesh mesh, ref Matrix lgbTransform, ref string materialName, ref string modelFilePath,
+                    ref Matrix rootGimTransform, ref Matrix currGimTransform, ref Matrix modelTransform) {
                     i++;
 
                     var k = 0;
                     UInt64 tempVs = 0, tempVn = 0, tempVt = 0;
                     foreach (var v in mesh.Vertices) {
-                        //if (v.Position != null) 
-                        {
 
-                            var x = v.Position.Value.X;
-                            var y = v.Position.Value.Y;
-                            var z = v.Position.Value.Z;
-                            var w = v.Position.Value.W;
+                        var x = v.Position.Value.X;
+                        var y = v.Position.Value.Y;
+                        var z = v.Position.Value.Z;
+                        var w = v.Position.Value.W;
 
-                            var transform = CreateMatrix(tlMdl.Translation, tlMdl.Rotation, tlMdl.Scale);
-                            var t = Matrix4x4.CreateTranslation(x, y, z) * transform;
-                            x = t.Translation.X;
-                            y = t.Translation.Y;
-                            z = t.Translation.Z;
-                            
+                        var transform = (modelTransform * rootGimTransform * currGimTransform) * lgbTransform;
 
-                            if (applyRootTransform) {
-                                t = Matrix4x4.CreateTranslation(x, y, z) * rootGimmickTransform;
-                                x = t.Translation.X;
-                                y = t.Translation.Y;
-                                z = t.Translation.Z;
-                            }
+                        var t = Matrix.Translation(x, y, z) * transform;
+                        x = t.TranslationVector.X;
+                        y = t.TranslationVector.Y;
+                        z = t.TranslationVector.Z;
 
-                            if (applyGimTransform) {
-                                t = Matrix4x4.CreateTranslation(x, y, z) * currGimTransform;
-                                x = t.Translation.X;
-                                y = t.Translation.Y;
-                                z = t.Translation.Z;
-                            }
+                        vertStr.Add($"v {x} {y} {z} {v.Position.Value.W}");
+                        tempVs++;
 
-                            if (ogMdl != null) {
-                                transform = CreateMatrix(ogMdl.Translation, ogMdl.Rotation, ogMdl.Scale);
-                                t = Matrix4x4.CreateTranslation(x, y, z) * transform;
-                                x = t.Translation.X;
-                                y = t.Translation.Y;
-                                z = t.Translation.Z;
-                            }
+                        vertStr.Add($"vn {v.Normal.Value.X} {v.Normal.Value.Y} {v.Normal.Value.Z}");
+                        tempVn++;
 
-                            vertStr.Add($"v {x} {y} {z} {v.Position.Value.W}");
-                            tempVs++;
-                        }
-                        //if (v.Normal != null) 
-                        {
-                            vertStr.Add($"vn {v.Normal.Value.X} {v.Normal.Value.Y} {v.Normal.Value.Z}");
-                            tempVn++;
-                        }
                         if (v.UV != null) {
                             vertStr.Add($"vt {v.UV.Value.X} {v.UV.Value.Y} {v.UV.Value.Z} {v.UV.Value.W}");
                             tempVt++;
                         }
                     }
                     vertStr.Add($"g {modelFilePath}_{i.ToString()}_{k.ToString()}");
-                    if (materialName != null) {
-                        vertStr.Add($"usemtl {materialName}");
-                    }
+                    vertStr.Add($"usemtl {materialName}");
                     for (UInt64 j = 0; j + 3 < (UInt64)mesh.Indices.Length + 1; j += 3) {
                         vertStr.Add(
                             $"f " +
@@ -213,15 +204,8 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                 }
 
                 Dictionary<string, bool> exportedSgbFiles = new Dictionary<string, bool>();
-                void ExportSgbModels(Sgb.SgbFile sgbFile, Graphics.Vector3 translation, Graphics.Vector3 rotation, Graphics.Vector3 scale, 
-                    Matrix4x4 rootGimmickTransformation, Matrix4x4 currentGimmickTransformation) {
-                    bool found = false;
-                    if (exportedSgbFiles.TryGetValue(sgbFile.File.Path, out found)) {
-                        return;
-                    }
-                    exportedSgbFiles.Add(sgbFile.File.Path, true);
-                    bool applyRootTransform = rootGimmickTransformation != Matrix4x4.Identity;
-                    bool applyGimmickTransform = currentGimmickTransformation != Matrix4x4.Identity;
+                void ExportSgbModels(Sgb.SgbFile sgbFile, ref Matrix lgbTransform, ref Matrix rootGimTransform, ref Matrix currGimTransform) {
+
 
                     foreach (var sgbGroup in sgbFile.Data.OfType<Sgb.SgbGroup>()) {
                         bool newGroup = true;
@@ -230,39 +214,27 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                                 vertStr.Add($"o {sgbFile.File.Path}_{sgbGroup.Name}_{i}");
                                 newGroup = false;
                             }
-                            var newMdl = mdl.Model.Model.GetModel(ModelQuality.High);
-                            var tlMdl = new TransformedModel(newMdl.Definition, translation, rotation, scale);
+                            var hq = mdl.Model.Model.GetModel(ModelQuality.High);
+                            var filePath = mdl.ModelFilePath;
+                            var modelTransform = CreateMatrix(mdl.Header.Translation, mdl.Header.Rotation, mdl.Header.Scale);
 
-                            for (var j = 0; j < newMdl.Meshes.Length; ++j) {
-                                var mesh = newMdl.Meshes[j];
+                            for (var j = 0; j < hq.Meshes.Length; ++j) {
+                                var mesh = hq.Meshes[j];
                                 var mtl = mesh.Material.Get();
                                 var path = mtl.File.Path.Replace('/', '_').Replace(".mtrl", ".tex");
 
                                 ExportMaterials(mtl, path);
-                                ExportModel(ref mesh, mdl.Model, path, mdl.ModelFilePath, rootGimmickTransformation, currentGimmickTransformation, tlMdl, applyRootTransform, applyGimmickTransform);
+                                ExportModel(ref mesh, ref lgbTransform, ref path, ref filePath, ref rootGimTransform, ref currGimTransform, ref modelTransform);
                             }
                         }
 
                         foreach (var light in sgbGroup.Entries.OfType<Sgb.SgbLightEntry>()) {
                             var pos = light.Header.Translation;
-                            var transform = Matrix4x4.CreateTranslation(pos.X, pos.Y, pos.Z) * CreateMatrix(translation, rotation, scale);
-                            pos.X = transform.Translation.X;
-                            pos.Y = transform.Translation.Y;
-                            pos.Z = transform.Translation.Z;
+                            var transform = (Matrix.Translation(pos.X, pos.Y, pos.Z) * (rootGimTransform * currGimTransform) * lgbTransform).TranslationVector;
+                            pos.X = transform.X;
+                            pos.Y = transform.Y;
+                            pos.Z = transform.Z;
 
-                            if (applyRootTransform) {
-                                transform = Matrix4x4.CreateTranslation(pos.X, pos.Y, pos.Z) * rootGimmickTransformation;
-                                pos.X = transform.Translation.X;
-                                pos.Y = transform.Translation.Y;
-                                pos.Z = transform.Translation.Z;
-                            }
-
-                            if (applyGimmickTransform) {
-                                transform = Matrix4x4.CreateTranslation(pos.X, pos.Y, pos.Z) * currentGimmickTransformation;
-                                pos.X = transform.Translation.X;
-                                pos.Y = transform.Translation.Y;
-                                pos.Z = transform.Translation.Z;
-                            }
                             lightStrs.Add($"#LIGHT_{lights++}_{light.Name}");
                             lightStrs.Add($"#pos {pos.X} {pos.Y} {pos.Z}");
                             lightStrs.Add($"#UNKNOWN {light.Header.Rotation.X} {light.Header.Rotation.Y} {light.Header.Rotation.Z}");
@@ -278,15 +250,17 @@ namespace SaintCoinach.Graphics.Viewer.Content {
 
                 if (territory.Terrain != null) {
                     foreach (var part in territory.Terrain.Parts) {
-                        var mdl = part.Model.GetModel(ModelQuality.High);
+                        var hq = part.Model.GetModel(ModelQuality.High);
+                        var filePath = hq.Definition.File.Path;
+                        var lgbTransform = CreateMatrix(part.Translation, part.Rotation, part.Scale);
 
-                        for (var j = 0; j < mdl.Meshes.Length; ++j) {
-                            var mesh = mdl.Meshes[j];
+                        for (var j = 0; j < hq.Meshes.Length; ++j) {
+                            var mesh = hq.Meshes[j];
                             var mtl = mesh.Material.Get();
                             var path = mtl.File.Path.Replace('/', '_').Replace(".mtrl", ".tex");
 
                             ExportMaterials(mtl, path);
-                            ExportModel(ref mesh, part, path, mdl.Definition.File.Path, Matrix4x4.Identity, Matrix4x4.Identity);
+                            ExportModel(ref mesh, ref lgbTransform, ref path, ref filePath, ref IdentityMatrix, ref IdentityMatrix, ref IdentityMatrix);
                         }
                     }
                 }
@@ -309,6 +283,8 @@ namespace SaintCoinach.Graphics.Viewer.Content {
 
                                     var asMdl = part as Lgb.LgbModelEntry;
                                     var hq = asMdl.Model.Model.GetModel(ModelQuality.High);
+                                    var lgbTransform = CreateMatrix(asMdl.Header.Translation, asMdl.Header.Rotation, asMdl.Header.Scale);
+                                    var filePath = asMdl.ModelFilePath;
 
                                     for (var j = 0; j < hq.Meshes.Length; ++j) {
                                         var mesh = hq.Meshes[j];
@@ -316,7 +292,7 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                                         var path = mtl.File.Path.Replace('/', '_').Replace(".mtrl", ".tex");
 
                                         ExportMaterials(mtl, path);
-                                        ExportModel(ref mesh, asMdl.Model, path, asMdl.ModelFilePath, Matrix4x4.Identity, Matrix4x4.Identity);
+                                        ExportModel(ref mesh, ref lgbTransform, ref path, ref filePath, ref IdentityMatrix, ref IdentityMatrix, ref IdentityMatrix);
                                     }
                                     break;
                                 case Lgb.LgbEntryType.Gimmick:
@@ -325,20 +301,18 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                                     if (asGim.Gimmick == null)
                                         continue;
 
-                                    var translation = asGim.Header.Translation;
-                                    var rotation = asGim.Header.Rotation;
-                                    var scale = asGim.Header.Scale;
+                                    lgbTransform = CreateMatrix(asGim.Header.Translation, asGim.Header.Rotation, asGim.Header.Scale);
 
-                                    ExportSgbModels(asGim.Gimmick, translation, rotation, scale, Matrix4x4.Identity, Matrix4x4.Identity);
+                                    ExportSgbModels(asGim.Gimmick, ref lgbTransform, ref IdentityMatrix, ref IdentityMatrix);
                                     foreach (var rootGimGroup in asGim.Gimmick.Data.OfType<Sgb.SgbGroup>()) {
                                         foreach (var rootGimEntry in rootGimGroup.Entries.OfType<Sgb.SgbGimmickEntry>()) {
                                             if (rootGimEntry.Gimmick != null) {
-                                                var gimMatrix = CreateMatrix(rootGimEntry.Header.Translation, rootGimEntry.Header.Rotation, rootGimEntry.Header.Scale);
-                                                ExportSgbModels(rootGimEntry.Gimmick, translation, rotation, scale, gimMatrix, Matrix4x4.Identity);
+                                                var rootGimTransform = CreateMatrix(rootGimEntry.Header.Translation, rootGimEntry.Header.Rotation, rootGimEntry.Header.Scale);
+                                                ExportSgbModels(rootGimEntry.Gimmick, ref lgbTransform, ref rootGimTransform, ref IdentityMatrix);
                                                 foreach (var subGimGroup in rootGimEntry.Gimmick.Data.OfType<Sgb.SgbGroup>()) {
                                                     foreach (var subGimEntry in subGimGroup.Entries.OfType<Sgb.SgbGimmickEntry>()) {
-                                                        ExportSgbModels(subGimEntry.Gimmick, translation, rotation, scale,
-                                                        gimMatrix, CreateMatrix(subGimEntry.Header.Translation, subGimEntry.Header.Rotation, subGimEntry.Header.Scale));
+                                                        var subGimTransform = CreateMatrix(subGimEntry.Header.Translation, subGimEntry.Header.Rotation, subGimEntry.Header.Scale); 
+                                                        ExportSgbModels(subGimEntry.Gimmick, ref lgbTransform, ref rootGimTransform, ref subGimTransform);
                                                     }
                                                 }
                                             }
@@ -351,33 +325,29 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                                     if (asEobj.Gimmick == null)
                                         continue;
 
-                                    translation = asEobj.Header.Translation;
-                                    rotation = asEobj.Header.Rotation;
-                                    scale = asEobj.Header.Scale;
+                                    lgbTransform = CreateMatrix(asEobj.Header.Translation, asEobj.Header.Rotation, asEobj.Header.Scale);
 
-                                    ExportSgbModels(asEobj.Gimmick, translation, rotation, scale, Matrix4x4.Identity, Matrix4x4.Identity);
+                                    ExportSgbModels(asEobj.Gimmick, ref lgbTransform, ref IdentityMatrix, ref IdentityMatrix);
                                     foreach (var rootGimGroup in asEobj.Gimmick.Data.OfType<Sgb.SgbGroup>()) {
-                                        foreach (var rootGim in rootGimGroup.Entries.OfType<Sgb.SgbGimmickEntry>()) {
-                                            if (rootGim.Gimmick != null) {
-                                                var gimMatrix = CreateMatrix(rootGim.Header.Translation, rootGim.Header.Rotation, rootGim.Header.Scale);
-                                                ExportSgbModels(rootGim.Gimmick, translation, rotation, scale, gimMatrix, Matrix4x4.Identity);
-                                                foreach (var subGimGroup in rootGim.Gimmick.Data.OfType<Sgb.SgbGroup>()) {
-                                                    foreach (var subGim in subGimGroup.Entries.OfType<Sgb.SgbGimmickEntry>()) {
-                                                        ExportSgbModels(subGim.Gimmick, translation, rotation, scale,
-                                                        gimMatrix, CreateMatrix(subGim.Header.Translation, subGim.Header.Rotation, subGim.Header.Scale));
+                                        foreach (var rootGimEntry in rootGimGroup.Entries.OfType<Sgb.SgbGimmickEntry>()) {
+                                            if (rootGimEntry.Gimmick != null) {
+                                                var rootGimTransform = CreateMatrix(rootGimEntry.Header.Translation, rootGimEntry.Header.Rotation, rootGimEntry.Header.Scale);
+                                                ExportSgbModels(rootGimEntry.Gimmick, ref lgbTransform, ref rootGimTransform, ref IdentityMatrix);
+                                                foreach (var subGimGroup in rootGimEntry.Gimmick.Data.OfType<Sgb.SgbGroup>()) {
+                                                    foreach (var subGimEntry in subGimGroup.Entries.OfType<Sgb.SgbGimmickEntry>()) {
+                                                        var subGimTransform = CreateMatrix(subGimEntry.Header.Translation, subGimEntry.Header.Rotation, subGimEntry.Header.Scale);
+                                                        ExportSgbModels(subGimEntry.Gimmick, ref lgbTransform, ref rootGimTransform, ref subGimTransform);
                                                     }
                                                 }
                                             }
                                         }
                                         foreach (var sgb1CEntry in rootGimGroup.Entries.OfType<Sgb.SgbGroup1CEntry>()) {
-                                            var rootGim = sgb1CEntry;
-                                            if (rootGim.Gimmick != null) {
-                                                var gimMatrix = Matrix4x4.Identity;
-                                                ExportSgbModels(rootGim.Gimmick, translation, rotation, scale, gimMatrix, Matrix4x4.Identity);
-                                                foreach (var subGimGroup in rootGim.Gimmick.Data.OfType<Sgb.SgbGroup>()) {
-                                                    foreach (var subGim in subGimGroup.Entries.OfType<Sgb.SgbGimmickEntry>()) {
-                                                        ExportSgbModels(subGim.Gimmick, translation, rotation, scale,
-                                                        gimMatrix, CreateMatrix(subGim.Header.Translation, subGim.Header.Rotation, subGim.Header.Scale));
+                                            if (sgb1CEntry.Gimmick != null) {
+                                                ExportSgbModels(sgb1CEntry.Gimmick, ref lgbTransform, ref IdentityMatrix, ref IdentityMatrix);
+                                                foreach (var subGimGroup in sgb1CEntry.Gimmick.Data.OfType<Sgb.SgbGroup>()) {
+                                                    foreach (var subGimEntry in subGimGroup.Entries.OfType<Sgb.SgbGimmickEntry>()) {
+                                                        var subGimTransform = CreateMatrix(subGimEntry.Header.Translation, subGimEntry.Header.Rotation, subGimEntry.Header.Scale);
+                                                        ExportSgbModels(subGimEntry.Gimmick, ref lgbTransform, ref IdentityMatrix, ref subGimTransform);
                                                     }
                                                 }
                                             }
