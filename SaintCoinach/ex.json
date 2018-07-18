@@ -3060,6 +3060,13 @@
         },
         {
           "index": 37,
+          "name": "Image",
+          "converter": {
+            "type": "icon"
+          }
+        },
+        {
+          "index": 38,
           "name": "Icon",
           "converter": {
             "type": "icon"
@@ -3941,6 +3948,42 @@
       ]
     },
     {
+      "sheet": "DeepDungeonMagicStone",
+      "defaultColumn": "Name",
+      "definitions": [
+        {
+          "name": "Icon",
+          "converter": {
+            "type": "icon"
+          }
+        },
+        {
+          "index": 1,
+          "name": "Singular"
+        },
+        {
+          "index": 3,
+          "name": "Plural"
+        },
+        {
+          "index": 5,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Rarity"
+        },
+        {
+          "index": 9,
+          "name": "Name"
+        },
+        {
+          "index": 10,
+          "name": "Tooltip"
+        }
+      ]
+    },
+    {
       "sheet": "DeepDungeonStatus",
       "definitions": [
         {
@@ -4169,6 +4212,10 @@
             "type": "link",
             "target": "EmoteMode"
           }
+        },
+        {
+          "index": 15,
+          "name": "HasCancelEmote"
         },
         {
           "index": 16,
@@ -4552,6 +4599,14 @@
         {
           "index": 9,
           "name": "Data"
+        },
+        {
+          "index": 11,
+          "name": "SgbPath",
+          "converter": {
+            "type": "link",
+            "target": "ExportedSG"
+          }
         }
       ]
     },
@@ -5266,6 +5321,55 @@
           "converter": {
             "type": "link",
             "target": "GatheringSubCategory"
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "Frontline03",
+      "definitions": [
+        {
+          "index": 9,
+          "type": "repeat",
+          "count": 3,
+          "definition": {
+            "name": "EmptyIcon",
+            "converter": {
+              "type": "icon"
+            }
+          }
+        },
+        {
+          "index": 12,
+          "type": "repeat",
+          "count": 3,
+          "definition": {
+            "name": "MaelstromIcon",
+            "converter": {
+              "type": "icon"
+            }
+          }
+        },
+        {
+          "index": 15,
+          "type": "repeat",
+          "count": 3,
+          "definition": {
+            "name": "TwinAdderIcon",
+            "converter": {
+              "type": "icon"
+            }
+          }
+        },
+        {
+          "index": 18,
+          "type": "repeat",
+          "count": 3,
+          "definition": {
+            "name": "ImmortalFlamesIcon",
+            "converter": {
+              "type": "icon"
+            }
           }
         }
       ]
@@ -13025,6 +13129,16 @@
             "type": "link",
             "target": "Quest"
           }
+        }
+      ]
+    },
+    {
+      "sheet": "ExportedSG",
+      "defaultColumn": "SgbPath",
+      "definitions": [
+        {
+          "index": 0,
+          "name": "SgbPath"
         }
       ]
     }
