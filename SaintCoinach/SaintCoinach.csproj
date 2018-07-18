@@ -89,7 +89,9 @@
     <Compile Include="Ex\Relational\Definition\ViewDefinition.cs" />
     <Compile Include="Ex\ViewCollection.cs" />
     <Compile Include="Graphics\ColorMap.cs" />
+    <Compile Include="Graphics\Lgb\LgbLightEntry.cs" />
     <Compile Include="Graphics\Lgb\LgbEventObjectEntry.cs" />
+    <Compile Include="Graphics\Sgb\LgbLightEntry.cs" />
     <Compile Include="Graphics\Sgb\SgbGimmickEntry.cs" />
     <Compile Include="Graphics\Sgb\SgbGroup1CEntry.cs" />
     <Compile Include="Graphics\Pcb\IPcbBlockData.cs" />

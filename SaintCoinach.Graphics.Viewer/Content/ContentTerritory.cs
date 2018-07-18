@@ -209,10 +209,14 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                     vt += tempVt;
                 }
 
-
+                Dictionary<string, bool> exportedSgbFiles = new Dictionary<string, bool>();
                 void ExportSgbModels(Sgb.SgbFile sgbFile, Graphics.Vector3 translation, Graphics.Vector3 rotation, Graphics.Vector3 scale, 
                     Matrix4x4 rootGimmickTransformation, Matrix4x4 currentGimmickTransformation) {
-
+                    bool found = false;
+                    if (exportedSgbFiles.TryGetValue(sgbFile.File.Path, out found)) {
+                        return;
+                    }
+                    exportedSgbFiles.Add(sgbFile.File.Path, true);
                     foreach (var sgbGroup in sgbFile.Data.OfType<Sgb.SgbGroup>()) {
                         bool newGroup = true;
                         foreach (var mdl in sgbGroup.Entries.OfType<Sgb.SgbModelEntry>()) {
@@ -250,6 +254,8 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                     }
                 }
 
+                int lights = 0;
+                List<string> lightStrs = new List<string>() { "import bpy" };
                 foreach (var lgb in territory.LgbFiles) {
                     foreach (var lgbGroup in lgb.Groups) {
                         bool newGroup = true;
@@ -257,6 +263,10 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                             if (part == null)
                                 continue;
                             bool validEntry = false;
+                            /*
+                            if (part.Type != Lgb.LgbEntryType.Light)
+                                continue;
+                            //*/
                             switch (part.Type) {
                                 case Lgb.LgbEntryType.Model:
                                     validEntry = true;
@@ -338,6 +348,19 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                                         }
                                     }
                                     break;
+                                case Lgb.LgbEntryType.Light:
+                                    //validEntry = true;
+                                    var asLight = part as Lgb.LgbLightEntry;
+                                    lightStrs.Add($"#LIGHT_{lights++}");
+                                    lightStrs.Add($"#pos {asLight.Header.Translation.X} {asLight.Header.Translation.Y} {asLight.Header.Translation.Z}");
+                                    lightStrs.Add($"#UNKNOWN {asLight.Header.Rotation.X} {asLight.Header.Rotation.Y} {asLight.Header.Rotation.Z}");
+                                    lightStrs.Add($"#UNKNOWN2 {asLight.Header.Scale.X} {asLight.Header.Scale.Y} {asLight.Header.Scale.Z}");
+                                    lightStrs.Add($"#unk {asLight.Header.Entry1.X} {asLight.Header.Entry1.Y}");
+                                    lightStrs.Add($"#unk2 {asLight.Header.Entry2.X} {asLight.Header.Entry2.Y}");
+                                    lightStrs.Add($"#unk3 {asLight.Header.Entry3.X} {asLight.Header.Entry3.Y}");
+                                    lightStrs.Add($"#unk4 {asLight.Header.Entry4.X} {asLight.Header.Entry4.Y}");
+                                    lightStrs.Add("");
+                                    break;
                             }
                             if (newGroup && validEntry) {
                                 vertStr.Add($"o {lgbGroup.Name}_{i}");
@@ -347,7 +370,8 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                     }
                 }
                 System.IO.File.AppendAllLines(fileName, vertStr);
-                vertStr.Clear();
+                System.IO.File.WriteAllLines(fileName + "_lights.txt", lightStrs);
+                vertStr = null;
                 System.Windows.Forms.MessageBox.Show("Finished exporting " + fileName, "", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
             }
             catch (Exception e) {
