@@ -84,6 +84,8 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                 f.Close();
                 System.IO.File.AppendAllText(fileName, $"o {territory.Name}\n");
 
+                int lights = 0;
+                List<string> lightStrs = new List<string>() { "import bpy" };
                 List<string> vertStr = new List<string>();
                 List<string> faceStr = new List<string>();
                 Dictionary<string, bool> exportedPaths = new Dictionary<string, bool>();
@@ -133,7 +135,8 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                             * Matrix4x4.CreateTranslation(translation.X, translation.Y, translation.Z));
                 }
 
-                void ExportModel(ref Mesh mesh, TransformedModel tlMdl, string materialName, string modelFilePath, Matrix4x4 rootGimmickTransform, Matrix4x4 currGimTransform, TransformedModel ogMdl = null) {
+                void ExportModel(ref Mesh mesh, TransformedModel tlMdl, string materialName, string modelFilePath,
+                    Matrix4x4 rootGimmickTransform, Matrix4x4 currGimTransform, TransformedModel ogMdl = null, bool applyRootTransform = false, bool applyGimTransform = false) {
                     i++;
 
                     var k = 0;
@@ -154,14 +157,14 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                             z = t.Translation.Z;
                             
 
-                            if (rootGimmickTransform != Matrix4x4.Identity) {
+                            if (applyRootTransform) {
                                 t = Matrix4x4.CreateTranslation(x, y, z) * rootGimmickTransform;
                                 x = t.Translation.X;
                                 y = t.Translation.Y;
                                 z = t.Translation.Z;
                             }
 
-                            if (currGimTransform != Matrix4x4.Identity) {
+                            if (applyGimTransform) {
                                 t = Matrix4x4.CreateTranslation(x, y, z) * currGimTransform;
                                 x = t.Translation.X;
                                 y = t.Translation.Y;
@@ -217,6 +220,9 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                         return;
                     }
                     exportedSgbFiles.Add(sgbFile.File.Path, true);
+                    bool applyRootTransform = rootGimmickTransformation != Matrix4x4.Identity;
+                    bool applyGimmickTransform = currentGimmickTransformation != Matrix4x4.Identity;
+
                     foreach (var sgbGroup in sgbFile.Data.OfType<Sgb.SgbGroup>()) {
                         bool newGroup = true;
                         foreach (var mdl in sgbGroup.Entries.OfType<Sgb.SgbModelEntry>()) {
@@ -233,8 +239,39 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                                 var path = mtl.File.Path.Replace('/', '_').Replace(".mtrl", ".tex");
 
                                 ExportMaterials(mtl, path);
-                                ExportModel(ref mesh, mdl.Model, path, mdl.ModelFilePath, rootGimmickTransformation, currentGimmickTransformation, tlMdl);
+                                ExportModel(ref mesh, mdl.Model, path, mdl.ModelFilePath, rootGimmickTransformation, currentGimmickTransformation, tlMdl, applyRootTransform, applyGimmickTransform);
                             }
+                        }
+
+                        foreach (var light in sgbGroup.Entries.OfType<Sgb.SgbLightEntry>()) {
+                            var pos = light.Header.Translation;
+                            var transform = Matrix4x4.CreateTranslation(pos.X, pos.Y, pos.Z) * CreateMatrix(translation, rotation, scale);
+                            pos.X = transform.Translation.X;
+                            pos.Y = transform.Translation.Y;
+                            pos.Z = transform.Translation.Z;
+
+                            if (applyRootTransform) {
+                                transform = Matrix4x4.CreateTranslation(pos.X, pos.Y, pos.Z) * rootGimmickTransformation;
+                                pos.X = transform.Translation.X;
+                                pos.Y = transform.Translation.Y;
+                                pos.Z = transform.Translation.Z;
+                            }
+
+                            if (applyGimmickTransform) {
+                                transform = Matrix4x4.CreateTranslation(pos.X, pos.Y, pos.Z) * currentGimmickTransformation;
+                                pos.X = transform.Translation.X;
+                                pos.Y = transform.Translation.Y;
+                                pos.Z = transform.Translation.Z;
+                            }
+                            lightStrs.Add($"#LIGHT_{lights++}_{light.Name}");
+                            lightStrs.Add($"#pos {pos.X} {pos.Y} {pos.Z}");
+                            lightStrs.Add($"#UNKNOWN {light.Header.Rotation.X} {light.Header.Rotation.Y} {light.Header.Rotation.Z}");
+                            lightStrs.Add($"#UNKNOWN2 {light.Header.Scale.X} {light.Header.Scale.Y} {light.Header.Scale.Z}");
+                            lightStrs.Add($"#unk {light.Header.Entry1.X} {light.Header.Entry1.Y}");
+                            lightStrs.Add($"#unk2 {light.Header.Entry2.X} {light.Header.Entry2.Y}");
+                            lightStrs.Add($"#unk3 {light.Header.Entry3.X} {light.Header.Entry3.Y}");
+                            lightStrs.Add($"#unk4 {light.Header.Entry4.X} {light.Header.Entry4.Y}");
+                            lightStrs.Add("");
                         }
                     }
                 }
@@ -254,8 +291,7 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                     }
                 }
 
-                int lights = 0;
-                List<string> lightStrs = new List<string>() { "import bpy" };
+
                 foreach (var lgb in territory.LgbFiles) {
                     foreach (var lgbGroup in lgb.Groups) {
                         bool newGroup = true;
@@ -351,7 +387,7 @@ namespace SaintCoinach.Graphics.Viewer.Content {
                                 case Lgb.LgbEntryType.Light:
                                     //validEntry = true;
                                     var asLight = part as Lgb.LgbLightEntry;
-                                    lightStrs.Add($"#LIGHT_{lights++}");
+                                    lightStrs.Add($"#LIGHT_{lights++}_{asLight.Name}");
                                     lightStrs.Add($"#pos {asLight.Header.Translation.X} {asLight.Header.Translation.Y} {asLight.Header.Translation.Z}");
                                     lightStrs.Add($"#UNKNOWN {asLight.Header.Rotation.X} {asLight.Header.Rotation.Y} {asLight.Header.Rotation.Z}");
                                     lightStrs.Add($"#UNKNOWN2 {asLight.Header.Scale.X} {asLight.Header.Scale.Y} {asLight.Header.Scale.Z}");
