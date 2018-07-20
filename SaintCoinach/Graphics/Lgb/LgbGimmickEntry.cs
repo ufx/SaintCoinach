@@ -11,7 +11,7 @@ namespace SaintCoinach.Graphics.Lgb {
         [StructLayout(LayoutKind.Sequential)]
         public struct HeaderData {
             public LgbEntryType Type;
-            public uint Unknown2;
+            public uint GimmickId;
             public int NameOffset;
             public Vector3 Translation;
             public Vector3 Rotation;

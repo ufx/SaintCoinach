@@ -7,10 +7,6 @@ using System.Threading.Tasks;
 
 namespace SaintCoinach.Graphics.Lgb {
     public class LgbLightEntry : ILgbEntry {
-        private static Ex.ExCollection Collection;
-        private static Ex.ISheet EventObjectSheet;
-        private static Ex.ISheet ExportedSgSheet;
-
         #region Struct
         [StructLayout(LayoutKind.Sequential)]
         public struct HeaderData {
