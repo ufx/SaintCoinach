@@ -269,8 +269,9 @@ namespace Godbert.ViewModels {
                             pos.Y = transform.Y;
                             pos.Z = transform.Z;
 
-                            lightStrs.Add($"#LIGHT_{lights++}_{light.Name}");
+                            lightStrs.Add($"#LIGHT_{lights++}_{light.Name}_{light.Header.UnknownId}");
                             lightStrs.Add($"#pos {pos.X} {pos.Y} {pos.Z}");
+                            lightStrs.Add($"#UNKNOWNFLAGS 0x{light.Header.UnknownFlag1:X8} 0x{light.Header.UnknownFlag2:X8} 0x{light.Header.UnknownFlag3:X8} 0x{light.Header.UnknownFlag4:X8}");
                             lightStrs.Add($"#UNKNOWN {light.Header.Rotation.X} {light.Header.Rotation.Y} {light.Header.Rotation.Z}");
                             lightStrs.Add($"#UNKNOWN2 {light.Header.Scale.X} {light.Header.Scale.Y} {light.Header.Scale.Z}");
                             lightStrs.Add($"#unk {light.Header.Entry1.X} {light.Header.Entry1.Y}");
@@ -396,8 +397,9 @@ namespace Godbert.ViewModels {
                                     break;
                                 case SaintCoinach.Graphics.Lgb.LgbEntryType.Light:
                                     var asLight = part as SaintCoinach.Graphics.Lgb.LgbLightEntry;
-                                    lightStrs.Add($"#LIGHT_{lights++}_{asLight.Name}");
+                                    lightStrs.Add($"#LIGHT_{lights++}_{asLight.Name}_{asLight.Header.UnknownId}");
                                     lightStrs.Add($"#pos {asLight.Header.Translation.X} {asLight.Header.Translation.Y} {asLight.Header.Translation.Z}");
+                                    lightStrs.Add($"#UNKNOWNFLAGS 0x{asLight.Header.UnknownFlag1:X8} 0x{asLight.Header.UnknownFlag2:X8} 0x{asLight.Header.UnknownFlag3:X8} 0x{asLight.Header.UnknownFlag4:X8}");
                                     lightStrs.Add($"#UNKNOWN {asLight.Header.Rotation.X} {asLight.Header.Rotation.Y} {asLight.Header.Rotation.Z}");
                                     lightStrs.Add($"#UNKNOWN2 {asLight.Header.Scale.X} {asLight.Header.Scale.Y} {asLight.Header.Scale.Z}");
                                     lightStrs.Add($"#unk {asLight.Header.Entry1.X} {asLight.Header.Entry1.Y}");

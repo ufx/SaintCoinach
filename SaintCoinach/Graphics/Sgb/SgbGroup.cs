@@ -43,14 +43,14 @@ namespace SaintCoinach.Graphics.Sgb {
             public int EntryCount;
             public uint Unknown14;
             public int ModelFileOffset;
-            public Vector3 Translation;
-            public Vector3 Rotation;
+            public Vector3 UnknownFloat3;
+            public Vector3 UnknownFloat3_2;
             public int StateOffset;
             public int ModelFileOffset2;
             public uint Unknown3;
             public float Unknown4;
             public int NameOffset2;
-            public Vector3 Scale;
+            public Vector3 UnknownFloat3_3;
         }
         #endregion
 

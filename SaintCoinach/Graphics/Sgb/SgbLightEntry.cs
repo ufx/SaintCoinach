@@ -11,7 +11,7 @@ namespace SaintCoinach.Graphics.Sgb {
         [StructLayout(LayoutKind.Sequential)]
         public struct HeaderData {
             public SgbGroupEntryType Type;
-            public uint EventObjectId;
+            public uint UnknownId;
             public int NameOffset;
             public Vector3 Translation;
             public Vector3 Rotation;
