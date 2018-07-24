@@ -33,7 +33,7 @@ namespace SaintCoinach.Graphics.Sgb {
                 SaintCoinach.IO.File file;
                 if (mdlFilePath.Contains(".mdl")) {
                     if (packs.TryGetFile(mdlFilePath, out file))
-                        this.Model = new Graphics.ModelFile(file.Pack, file.CommonHeader).GetModelDefinition().GetModel(ModelQuality.High);
+                        this.Model = ((Graphics.ModelFile)file).GetModelDefinition().GetModel(ModelQuality.High);
                 }
                 else if (mdlFilePath.Contains(".sgb")) {
                     if (packs.TryGetFile(mdlFilePath, out file))

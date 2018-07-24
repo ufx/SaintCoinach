@@ -321,6 +321,9 @@ namespace Godbert.ViewModels {
                                     var asMdl = part as SaintCoinach.Graphics.Lgb.LgbModelEntry;
                                     progress.ReportProgress(0, currentTitle = "Exporting LgbModel", asMdl.ModelFilePath);
 
+                                    if (asMdl.Model == null)
+                                        continue;
+
                                     var hq = asMdl.Model.Model.GetModel(ModelQuality.High);
                                     var lgbTransform = CreateMatrix(asMdl.Header.Translation, asMdl.Header.Rotation, asMdl.Header.Scale);
                                     var filePath = asMdl.ModelFilePath;

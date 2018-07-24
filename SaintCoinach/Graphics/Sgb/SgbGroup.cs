@@ -115,7 +115,7 @@ namespace SaintCoinach.Graphics.Sgb {
                                 Entries[i] = new SgbLightEntry(Parent.File.Pack.Collection, buffer, entryOffset);
                                 break;
                             default:
-                                System.Diagnostics.Trace.WriteLine(string.Format("{0}: Type {1} at 0x{2:X} in {3}", Parent.File.Path, type, entryOffset, Name));
+                                //System.Diagnostics.Trace.WriteLine(string.Format("{0}: Type {1} at 0x{2:X} in {3}", Parent.File.Path, type, entryOffset, Name));
                                 break;
                                 // TODO: Work out other parts.
                         }

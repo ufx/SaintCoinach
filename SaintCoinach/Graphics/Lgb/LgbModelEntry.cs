@@ -44,7 +44,7 @@ namespace SaintCoinach.Graphics.Lgb {
             if (!string.IsNullOrWhiteSpace(ModelFilePath)) {
                 SaintCoinach.IO.File mdlFile;
                 if (packs.TryGetFile(ModelFilePath, out mdlFile))
-                    this.Model = new TransformedModel(new Graphics.ModelFile(mdlFile.Pack, mdlFile.CommonHeader).GetModelDefinition(), Header.Translation, Header.Rotation, Header.Scale);
+                    this.Model = new TransformedModel(((Graphics.ModelFile)mdlFile).GetModelDefinition(), Header.Translation, Header.Rotation, Header.Scale);
             }
         }
         #endregion
