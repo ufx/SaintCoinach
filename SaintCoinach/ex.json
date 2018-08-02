@@ -8784,8 +8784,20 @@
           "name": "Plural"
         },
         {
+          "index": 8,
+          "name": "ModelChara",
+          "converter": {
+            "type": "link",
+            "target": "ModelChara"
+          }
+        },
+        {
           "index": 10,
-          "name": "FlyingCondition"
+          "name": "FlyingCondition",
+          "converter": {
+            "type": "link",
+            "target": "MountFlyingCondition"
+          }
         },
         {
           "index": 14,
@@ -8836,6 +8848,32 @@
               "type": "link",
               "target": "Action"
             }
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "MountFlyingCondition",
+      "defaultColumn": "Quest",
+      "definitions": [
+        {
+          "name": "Quest",
+          "converter": {
+            "type": "link",
+            "target": "Quest"
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "MountSpeed",
+      "defaultColumn": "Quest",
+      "definitions": [
+        {
+          "name": "Quest",
+          "converter": {
+            "type": "link",
+            "target": "Quest"
           }
         }
       ]
