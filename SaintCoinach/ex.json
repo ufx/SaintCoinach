@@ -3959,18 +3959,6 @@
             "type": "link",
             "target": "DeepDungeon"
           }
-        },
-        {
-          "index": 1,
-          "type": "repeat",
-          "count": 6,
-          "definition": {
-            "name": "DeepDungeonMap5X",
-            "converter": {
-              "type": "link",
-              "target": "DeepDungeonMap5X"
-            }
-          }
         }
       ]
     },
