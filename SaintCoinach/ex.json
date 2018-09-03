@@ -7089,16 +7089,8 @@
           }
         },
         {
-          "index": 5,
-          "name": "CustomTalk[1]",
-          "converter": {
-            "type": "link",
-            "target": "CustomTalk"
-          }
-        },
-        {
           "index": 6,
-          "name": "CustomTalk[2]",
+          "name": "CustomTalk",
           "converter": {
             "type": "link",
             "target": "CustomTalk"
