@@ -7190,7 +7190,7 @@
         },
         {
           "index": 1,
-          "name": "LanguageRule[1]"
+          "name": "Adjective"
         },
         {
           "index": 2,
@@ -7198,7 +7198,7 @@
         },
         {
           "index": 3,
-          "name": "LanguageRule[2]"
+          "name": "PossessivePronoun"
         },
         {
           "index": 4,
@@ -7210,7 +7210,7 @@
         },
         {
           "index": 6,
-          "name": "LanguageRule[3]"
+          "name": "Pronoun"
         },
         {
           "index": 8,
