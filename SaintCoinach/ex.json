@@ -7193,6 +7193,18 @@
           "name": "Plural"
         },
         {
+          "index": 8,
+          "name": "PlaceName",
+          "converter": {
+            "type": "link",
+            "target": "PlaceName"
+          }
+        },
+        {
+          "index": 9,
+          "name": "HousingSize"
+        },
+        {
           "index": 10,
           "name": "ExteriorRoof",
           "converter": {
