@@ -9053,6 +9053,19 @@
       ]
     },
     {
+      "sheet": "MiniGameRA",
+      "defaultColumn": "Icon",
+      "definitions": [
+        {
+          "index": 1,
+          "name": "Icon",
+          "converter": {
+            "type": "icon"
+          }
+        }
+      ]
+    },
+    {
       "sheet": "MinionRace",
       "defaultColumn": "Name",
       "definitions": [
