@@ -9054,7 +9054,6 @@
     },
     {
       "sheet": "MiniGameRA",
-      "defaultColumn": "Icon",
       "definitions": [
         {
           "index": 1,
