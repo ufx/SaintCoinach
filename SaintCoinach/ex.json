@@ -1,5 +1,5 @@
 {
-  "version": "2018.08.09.0000.0000",
+  "version": "2018.09.11.0000.0000",
   "sheets": [
     {
       "sheet": "Achievement",
@@ -3322,6 +3322,7 @@
     },
     {
       "sheet": "ContentFinderCondition",
+      "defaultColumn": "Name",
       "definitions": [
         {
           "index": 1,
@@ -3646,27 +3647,27 @@
           }
         },
         {
-          "index": 1,
+          "index": 2,
           "name": "MenuOrder"
         },
         {
-          "index": 2,
+          "index": 3,
           "name": "RequiredAmount"
         },
         {
-          "index": 4,
+          "index": 5,
           "name": "ExpMultiplier"
         },
         {
-          "index": 6,
+          "index": 7,
           "name": "GilRward"
         },
         {
-          "index": 7,
+          "index": 8,
           "name": "LevelUnlock"
         },
         {
-          "index": 8,
+          "index": 9,
           "name": "HowTo",
           "converter": {
             "type": "link",
@@ -3674,30 +3675,16 @@
           }
         },
         {
-          "index": 9,
+          "index": 11,
           "name": "Name"
         },
         {
-          "index": 10,
+          "index": 12,
           "name": "Description"
         },
         {
-          "index": 11,
+          "index": 13,
           "name": "ExpCap"
-        }
-      ]
-    },
-    {
-      "sheet": "ContentsNoteCategory",
-      "defaultColumn": "Type",
-      "definitions": [
-        {
-          "index": 1,
-          "name": "Type",
-          "converter": {
-            "type": "link",
-            "target": "ContentType"
-          }
         }
       ]
     },
@@ -4150,6 +4137,16 @@
       ]
     },
     {
+      "sheet": "DeepDungeon",
+      "defaultColumn": "Name",
+      "definitions": [
+        {
+          "index": 22,
+          "name": "Name"
+        }
+      ]
+    },
+    {
       "sheet": "DeepDungeonBan",
       "defaultColumn": "Name",
       "definitions": [
@@ -4307,6 +4304,18 @@
       ]
     },
     {
+      "sheet": "DeepDungeonLayer",
+      "definitions": [
+        {
+          "name": "DeepDungeon",
+          "converter": {
+            "type": "link",
+            "target": "DeepDungeon"
+          }
+        }
+      ]
+    },
+    {
       "sheet": "DeepDungeonMagicStone",
       "defaultColumn": "Name",
       "definitions": [
@@ -4339,6 +4348,38 @@
         {
           "index": 10,
           "name": "Tooltip"
+        }
+      ]
+    },
+    {
+      "sheet": "DeepDungeonMap5X",
+      "definitions": [
+        {
+          "type": "repeat",
+          "count": 5,
+          "definition": {
+            "name": "DeepDungeonRoom",
+            "converter": {
+              "type": "link",
+              "target": "DeepDungeonRoom"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "DeepDungeonRoom",
+      "definitions": [
+        {
+          "type": "repeat",
+          "count": 5,
+          "definition": {
+            "name": "Level",
+            "converter": {
+              "type": "link",
+              "target": "Level"
+            }
+          }
         }
       ]
     },
@@ -5377,6 +5418,15 @@
       ]
     },
     {
+      "sheet": "Festival",
+      "defaultColumn": "Name",
+      "definitions": [
+        {
+          "name": "Name"
+        }
+      ]
+    },
+    {
       "sheet": "FCActivity",
       "defaultColumn": "Text",
       "definitions": [
@@ -5672,7 +5722,19 @@
           "name": "GatheringItemLevel"
         },
         {
-          "index": 4,
+          "index": 3,
+          "name": "IsHidden"
+        },
+        {
+          "index": 5,
+          "name": "FishingRecordType",
+          "converter": {
+            "type": "link",
+            "target": "FishingRecordType"
+          }
+        },
+        {
+          "index": 6,
           "name": "TerritoryType",
           "converter": {
             "type": "link",
@@ -5680,15 +5742,36 @@
           }
         },
         {
-          "index": 5,
-          "name": "IsFish"
+          "index": 7,
+          "name": "IsInLog"
         },
         {
-          "index": 6,
+          "index": 8,
+          "name": "TimeRestricted"
+        },
+        {
+          "index": 9,
+          "name": "WeatherRestricted"
+        },
+        {
+          "index": 10,
           "name": "GatheringSubCategory",
           "converter": {
             "type": "link",
             "target": "GatheringSubCategory"
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "FishingRecordType",
+      "defaultColumn": "Addon",
+      "definitions": [
+        {
+          "name": "Addon",
+          "converter": {
+            "type": "link",
+            "target": "Addon"
           }
         }
       ]
@@ -6679,6 +6762,18 @@
       ]
     },
     {
+      "sheet": "GFateClimbing2",
+      "definitions": [
+        {
+          "name": "ContentEntry",
+          "converter": {
+            "type": "link",
+            "target": "ContentEntry"
+          }
+        }
+      ]
+    },
+    {
       "sheet": "GilShop",
       "defaultColumn": "Name",
       "isGenericReferenceTarget": true,
@@ -6996,7 +7091,11 @@
       "sheet": "HousingAethernet",
       "definitions": [
         {
-          "name": "Level"
+          "name": "Level",
+          "converter": {
+            "type": "link",
+            "target": "Level"
+          }
         },
         {
           "index": 1,
@@ -7016,6 +7115,26 @@
         },
         {
           "index": 3,
+          "name": "Order"
+        }
+      ]
+    },
+    {
+      "sheet": "HousingAppeal",
+      "defaultColumn": "Tag",
+      "definitions": [
+        {
+          "name": "Tag"
+        },
+        {
+          "index": 1,
+          "name": "Icon",
+          "converter": {
+            "type": "icon"
+          }
+        },
+        {
+          "index": 2,
           "name": "Order"
         }
       ]
@@ -7085,16 +7204,12 @@
           }
         },
         {
-          "index": 5,
+          "index": 6,
           "name": "CustomTalk",
           "converter": {
             "type": "link",
             "target": "CustomTalk"
           }
-        },
-        {
-          "index": 6,
-          "name": "Event"
         },
         {
           "index": 7,
@@ -7119,6 +7234,23 @@
       ]
     },
     {
+      "sheet": "HousingMerchantPose",
+      "defaultColumn": "Pose",
+      "definitions": [
+        {
+          "name": "ActionTimeline",
+          "converter": {
+            "type": "link",
+            "target": "ActionTimeline"
+          }
+        },
+        {
+          "index": 1,
+          "name": "Pose"
+        }
+      ]
+    },
+    {
       "sheet": "HousingPlacement",
       "defaultColumn": "Text",
       "definitions": [
@@ -7134,8 +7266,40 @@
           "name": "Singular"
         },
         {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
           "index": 2,
           "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 5,
+          "name": "Rarity"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 8,
+          "name": "PlaceName",
+          "converter": {
+            "type": "link",
+            "target": "PlaceName"
+          }
+        },
+        {
+          "index": 9,
+          "name": "HousingSize"
         },
         {
           "index": 10,
@@ -7247,6 +7411,36 @@
           "converter": {
             "type": "link",
             "target": "Item"
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "HousingMapMarkerInfo",
+      "definitions": [
+        {
+          "index": 4,
+          "name": "Map",
+          "converter": {
+            "type": "link",
+            "target": "Map"
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "HousingUnitedExterior",
+      "definitions": [
+        {
+          "index": 1,
+          "type": "repeat",
+          "count": 8,
+          "definition": {
+            "name": "Item",
+            "converter": {
+              "type": "link",
+              "target": "HousingExterior"
+            }
           }
         }
       ]
@@ -7400,18 +7594,10 @@
         },
         {
           "index": 9,
-          "name": "TerritoryType",
-          "converter": {
-            "type": "link",
-            "target": "TerritoryType"
-          }
-        },
-        {
-          "index": 10,
           "name": "Order"
         },
         {
-          "index": 13,
+          "index": 12,
           "name": "InstanceContentTextData{Boss}{Start}",
           "converter": {
             "type": "link",
@@ -7419,7 +7605,7 @@
           }
         },
         {
-          "index": 14,
+          "index": 13,
           "name": "InstanceContentTextData{Boss}{End}",
           "converter": {
             "type": "link",
@@ -7427,7 +7613,7 @@
           }
         },
         {
-          "index": 15,
+          "index": 14,
           "name": "BNpcBase{Boss}",
           "converter": {
             "type": "link",
@@ -7435,7 +7621,7 @@
           }
         },
         {
-          "index": 16,
+          "index": 15,
           "name": "InstanceContentTextData{Objective}{Start}",
           "converter": {
             "type": "link",
@@ -7443,7 +7629,7 @@
           }
         },
         {
-          "index": 17,
+          "index": 16,
           "name": "InstanceContentTextData{Objective}{End}",
           "converter": {
             "type": "link",
@@ -7451,35 +7637,35 @@
           }
         },
         {
-          "index": 18,
+          "index": 17,
           "name": "SortKey"
         },
         {
-          "index": 21,
+          "index": 20,
           "name": "NewPlayerBonusA"
         },
         {
-          "index": 22,
+          "index": 21,
           "name": "NewPlayerBonusB"
         },
         {
-          "index": 23,
+          "index": 22,
           "name": "FinalBossExp"
         },
         {
-          "index": 24,
+          "index": 23,
           "name": "FinalBossCurrencyA"
         },
         {
-          "index": 25,
+          "index": 24,
           "name": "FinalBossCurrencyB"
         },
         {
-          "index": 26,
+          "index": 25,
           "name": "FinalBossCurrencyC"
         },
         {
-          "index": 27,
+          "index": 26,
           "type": "repeat",
           "count": 5,
           "definition": {
@@ -7492,7 +7678,7 @@
           }
         },
         {
-          "index": 32,
+          "index": 31,
           "type": "repeat",
           "count": 5,
           "definition": {
@@ -7505,7 +7691,7 @@
           }
         },
         {
-          "index": 37,
+          "index": 36,
           "type": "repeat",
           "count": 5,
           "definition": {
@@ -7518,7 +7704,7 @@
           }
         },
         {
-          "index": 42,
+          "index": 41,
           "type": "repeat",
           "count": 5,
           "definition": {
@@ -7531,11 +7717,11 @@
           }
         },
         {
-          "index": 47,
+          "index": 46,
           "name": "InstanceClearExp"
         },
         {
-          "index": 52,
+          "index": 51,
           "name": "InstanceContentBuff",
           "converter": {
             "type": "link",
@@ -7543,7 +7729,7 @@
           }
         },
         {
-          "index": 53,
+          "index": 52,
           "name": "ReqInstance",
           "converter": {
             "type": "link",
@@ -7551,7 +7737,7 @@
           }
         },
         {
-          "index": 56,
+          "index": 55,
           "name": "PartyCondition"
         }
       ]
@@ -7625,10 +7811,67 @@
         },
         {
           "index": 14,
-          "name": "Stain",
+          "name": "AdditionalData",
           "converter": {
-            "type": "link",
-            "target": "Stain"
+            "type": "complexlink",
+            "links": [
+              {
+                "sheet": "Stain",
+                "when": {
+                  "key": "FilterGroup",
+                  "value": 15
+                }
+              },
+              {
+                "sheet": "TreasureHuntRank",
+                "when": {
+                  "key": "FilterGroup",
+                  "value": 18
+                }
+              },
+              {
+                "sheet": "GardeningSeed",
+                "when": {
+                  "key": "FilterGroup",
+                  "value": 20
+                }
+              },
+              {
+                "sheet": "AetherialWheel",
+                "when": {
+                  "key": "FilterGroup",
+                  "value": 25
+                }
+              },
+              {
+                "sheet": "CompanyAction",
+                "when": {
+                  "key": "FilterGroup",
+                  "value": 26
+                }
+              },
+              {
+                "sheet": "TripleTriadCard",
+                "when": {
+                  "key": "FilterGroup",
+                  "value": 27
+                }
+              },
+              {
+                "sheet": "AirshipExplorationPart",
+                "when": {
+                  "key": "FilterGroup",
+                  "value": 28
+                }
+              },
+              {
+                "sheet": "SubmarinePart",
+                "when": {
+                  "key": "FilterGroup",
+                  "value": 37
+                }
+              }
+            ]
           }
         },
         {
@@ -7670,6 +7913,10 @@
         {
           "index": 22,
           "name": "IsIndisposable"
+        },
+        {
+          "index": 23,
+          "name": "IsEquippable"
         },
         {
           "index": 24,
@@ -9183,12 +9430,36 @@
           "name": "Plural"
         },
         {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 8,
+          "name": "ModelChara",
+          "converter": {
+            "type": "link",
+            "target": "ModelChara"
+          }
+        },
+        {
           "index": 10,
-          "name": "FlyingCondition"
+          "name": "FlyingCondition",
+          "converter": {
+            "type": "link",
+            "target": "MountFlyingCondition"
+          }
         },
         {
           "index": 14,
           "name": "IsFlying"
+        },
+        {
+          "index": 16,
+          "name": "MountCustomize",
+          "converter": {
+            "type": "link",
+            "target": "MountCustomize"
+          }
         },
         {
           "index": 17,
@@ -9235,6 +9506,85 @@
               "type": "link",
               "target": "Action"
             }
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "MountCustomize",
+      "definitions": [
+        {
+          "index": 1,
+          "name": "HyurMaleScale"
+        },
+        {
+          "index": 2,
+          "name": "HyurFemaleScale"
+        },
+        {
+          "index": 3,
+          "name": "ElezenMaleScale"
+        },
+        {
+          "index": 4,
+          "name": "ElezenFemaleScale"
+        },
+        {
+          "index": 5,
+          "name": "LalaMaleScale"
+        },
+        {
+          "index": 6,
+          "name": "LalaFemaleScale"
+        },
+        {
+          "index": 7,
+          "name": "MiqoMaleScale"
+        },
+        {
+          "index": 8,
+          "name": "MiqoFemaleScale"
+        },
+        {
+          "index": 9,
+          "name": "RoeMaleScale"
+        },
+        {
+          "index": 10,
+          "name": "RoeFemaleScale"
+        },
+        {
+          "index": 11,
+          "name": "AuRaMaleScale"
+        },
+        {
+          "index": 12,
+          "name": "AuRaFemaleScale"
+        }
+      ]
+    },
+    {
+      "sheet": "MountFlyingCondition",
+      "defaultColumn": "Quest",
+      "definitions": [
+        {
+          "name": "Quest",
+          "converter": {
+            "type": "link",
+            "target": "Quest"
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "MountSpeed",
+      "defaultColumn": "Quest",
+      "definitions": [
+        {
+          "name": "Quest",
+          "converter": {
+            "type": "link",
+            "target": "Quest"
           }
         }
       ]
@@ -9767,6 +10117,13 @@
           "name": "Description"
         },
         {
+          "index": 2,
+          "name": "Icon",
+          "converter": {
+            "type": "icon"
+          }
+        },
+        {
           "index": 3,
           "name": "Action",
           "converter": {
@@ -9877,11 +10234,35 @@
           "name": "Name"
         },
         {
-          "index": 7,
-          "name": "TerritoryType",
+          "index": 4,
+          "name": "TextData{Start}",
           "converter": {
             "type": "link",
-            "target": "TerritoryType"
+            "target": "PublicContentTextData"
+          }
+        },
+        {
+          "index": 5,
+          "name": "TextData{End}",
+          "converter": {
+            "type": "link",
+            "target": "PublicContentTextData"
+          }
+        },
+        {
+          "index": 7,
+          "name": "ContentFinderCondition",
+          "converter": {
+            "type": "link",
+            "target": "ContentFinderCondition"
+          }
+        },
+        {
+          "index": 8,
+          "name": "Eureka",
+          "converter": {
+            "type": "link",
+            "target": "Eureka"
           }
         }
       ]
@@ -9903,6 +10284,15 @@
             "type": "link",
             "target": "Cutscene"
           }
+        }
+      ]
+    },
+    {
+      "sheet": "PublicContentTextData",
+      "defaultColumn": "TextData",
+      "definitions": [
+        {
+          "name": "TextData"
         }
       ]
     },
@@ -10028,6 +10418,10 @@
           "name": "QuestLevelOffset"
         },
         {
+          "index": 6,
+          "name": "Level{Max}"
+        },
+        {
           "index": 7,
           "name": "ClassJobCategory[1]",
           "converter": {
@@ -10124,6 +10518,14 @@
           }
         },
         {
+          "index": 27,
+          "name": "Festival",
+          "converter": {
+            "type": "link",
+            "target": "Festival"
+          }
+        },
+        {
           "index": 30,
           "name": "Bell{Start}"
         },
@@ -10182,6 +10584,14 @@
         {
           "index": 44,
           "name": "RepeatIntervalType"
+        },
+        {
+          "index": 45,
+          "name": "QuestRepeatFlag",
+          "converter": {
+            "type": "link",
+            "target": "QuestRepeatFlag"
+          }
         },
         {
           "index": 50,
@@ -12661,7 +13071,7 @@
           }
         },
         {
-          "index": 2,
+          "index": 4,
           "name": "BNpcCustomize",
           "converter": {
             "type": "link",
@@ -12669,15 +13079,7 @@
           }
         },
         {
-          "index": 3,
-          "name": "BNpcEquip",
-          "converter": {
-            "type": "link",
-            "target": "BNpcEquip"
-          }
-        },
-        {
-          "index": 4,
+          "index": 5,
           "type": "repeat",
           "count": 6,
           "definition": {
@@ -12689,23 +13091,23 @@
           }
         },
         {
-          "index": 12,
+          "index": 13,
           "name": "Speed"
         },
         {
-          "index": 13,
+          "index": 14,
           "name": "Scale"
         },
         {
-          "index": 14,
+          "index": 15,
           "name": "IsPvP"
         },
         {
-          "index": 15,
+          "index": 16,
           "name": "IsEvent"
         },
         {
-          "index": 16,
+          "index": 17,
           "name": "PlayerCamera"
         }
       ]
