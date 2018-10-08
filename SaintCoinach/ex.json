@@ -872,6 +872,33 @@
       "defaultColumn": "PlaceName",
       "definitions": [
         {
+          "name": "Singular"
+        },
+        {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
+          "index": 2,
+          "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
+        },
+        {
           "index": 8,
           "name": "PlaceName",
           "converter": {
@@ -1899,12 +1926,28 @@
           "name": "Singular"
         },
         {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
           "index": 2,
           "name": "Plural"
         },
         {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
           "index": 4,
           "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         }
       ]
     },
@@ -2124,16 +2167,28 @@
           "name": "Singular"
         },
         {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
           "index": 2,
           "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
         },
         {
           "index": 4,
           "name": "StartsWithVowel"
         },
         {
-          "index": 5,
-          "name": "Rarity"
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
@@ -2874,16 +2929,28 @@
           "name": "Singular"
         },
         {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
           "index": 2,
           "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
         },
         {
           "index": 4,
           "name": "StartsWithVowel"
         },
         {
-          "index": 5,
-          "name": "Rarity"
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
@@ -4226,16 +4293,28 @@
           "name": "Singular"
         },
         {
+          "index": 2,
+          "name": "Adjective"
+        },
+        {
           "index": 3,
           "name": "Plural"
+        },
+        {
+          "index": 4,
+          "name": "PossessivePronoun"
         },
         {
           "index": 5,
           "name": "StartsWithVowel"
         },
         {
-          "index": 6,
-          "name": "Rarity"
+          "index": 7,
+          "name": "Pronoun"
+        },
+        {
+          "index": 8,
+          "name": "Article"
         },
         {
           "index": 9,
@@ -4282,16 +4361,28 @@
           "name": "Singular"
         },
         {
+          "index": 2,
+          "name": "Adjective"
+        },
+        {
           "index": 3,
           "name": "Plural"
+        },
+        {
+          "index": 4,
+          "name": "PossessivePronoun"
         },
         {
           "index": 5,
           "name": "StartsWithVowel"
         },
         {
-          "index": 6,
-          "name": "Rarity"
+          "index": 7,
+          "name": "Pronoun"
+        },
+        {
+          "index": 8,
+          "name": "Article"
         },
         {
           "index": 9,
@@ -4338,16 +4429,28 @@
           "name": "Singular"
         },
         {
+          "index": 2,
+          "name": "Adjective"
+        },
+        {
           "index": 3,
           "name": "Plural"
+        },
+        {
+          "index": 4,
+          "name": "PossessivePronoun"
         },
         {
           "index": 5,
           "name": "StartsWithVowel"
         },
         {
-          "index": 6,
-          "name": "Rarity"
+          "index": 7,
+          "name": "Pronoun"
+        },
+        {
+          "index": 8,
+          "name": "Article"
         },
         {
           "index": 9,
@@ -4983,8 +5086,28 @@
           "name": "Singular"
         },
         {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
           "index": 2,
           "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
@@ -5024,6 +5147,30 @@
       "definitions": [
         {
           "name": "Singular"
+        },
+        {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
+          "index": 2,
+          "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         }
       ]
     },
@@ -5120,6 +5267,43 @@
         {
           "index": 13,
           "name": "SoulCrystal"
+        }
+      ]
+    },
+    {
+      "sheet": "EurekaAetherItem",
+      "defaultColumn": "Singular",
+      "definitions": [
+        {
+          "name": "Singular"
+        },
+        {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
+          "index": 2,
+          "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
+        },
+        {
+          "index": 8,
+          "name": "Name"
         }
       ]
     },
@@ -5245,16 +5429,28 @@
           "name": "Singular"
         },
         {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
           "index": 2,
           "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
         },
         {
           "index": 4,
           "name": "StartsWithVowel"
         },
         {
-          "index": 5,
-          "name": "Rarity"
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 9,
@@ -6162,12 +6358,28 @@
           "name": "Singular"
         },
         {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
           "index": 2,
           "name": "Plural"
         },
         {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
           "index": 4,
           "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         }
       ]
     },
@@ -6498,14 +6710,34 @@
     },
     {
       "sheet": "GCRankGridaniaFemaleText",
-      "defaultColumn": "Name",
+      "defaultColumn": "Singular",
       "definitions": [
         {
-          "name": "Name"
+          "name": "Singular"
+        },
+        {
+          "index": 1,
+          "name": "Adjective"
         },
         {
           "index": 2,
           "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
@@ -6515,14 +6747,34 @@
     },
     {
       "sheet": "GCRankGridaniaMaleText",
-      "defaultColumn": "Name",
+      "defaultColumn": "Singular",
       "definitions": [
         {
-          "name": "Name"
+          "name": "Singular"
+        },
+        {
+          "index": 1,
+          "name": "Adjective"
         },
         {
           "index": 2,
           "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
@@ -6532,14 +6784,34 @@
     },
     {
       "sheet": "GCRankLimsaFemaleText",
-      "defaultColumn": "Name",
+      "defaultColumn": "Singular",
       "definitions": [
         {
-          "name": "Name"
+          "name": "Singular"
+        },
+        {
+          "index": 1,
+          "name": "Adjective"
         },
         {
           "index": 2,
           "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
@@ -6549,14 +6821,34 @@
     },
     {
       "sheet": "GCRankLimsaMaleText",
-      "defaultColumn": "Name",
+      "defaultColumn": "Singular",
       "definitions": [
         {
-          "name": "Name"
+          "name": "Singular"
+        },
+        {
+          "index": 1,
+          "name": "Adjective"
         },
         {
           "index": 2,
           "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
@@ -6566,14 +6858,34 @@
     },
     {
       "sheet": "GCRankUldahFemaleText",
-      "defaultColumn": "Name",
+      "defaultColumn": "Singular",
       "definitions": [
         {
-          "name": "Name"
+          "name": "Singular"
+        },
+        {
+          "index": 1,
+          "name": "Adjective"
         },
         {
           "index": 2,
           "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
@@ -6583,14 +6895,34 @@
     },
     {
       "sheet": "GCRankUldahMaleText",
-      "defaultColumn": "Name",
+      "defaultColumn": "Singular",
       "definitions": [
         {
-          "name": "Name"
+          "name": "Singular"
+        },
+        {
+          "index": 1,
+          "name": "Adjective"
         },
         {
           "index": 2,
           "name": "Plural"
+        },
+        {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
+          "index": 4,
+          "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
@@ -7327,12 +7659,12 @@
           "name": "StartsWithVowel"
         },
         {
-          "index": 5,
-          "name": "Rarity"
-        },
-        {
           "index": 6,
           "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
@@ -7803,12 +8135,28 @@
           "name": "Singular"
         },
         {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
           "index": 2,
           "name": "Plural"
         },
         {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
           "index": 4,
           "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
@@ -9470,12 +9818,28 @@
           "name": "Singular"
         },
         {
+          "index": 1,
+          "name": "Adjective"
+        },
+        {
           "index": 2,
           "name": "Plural"
         },
         {
+          "index": 3,
+          "name": "PossessivePronoun"
+        },
+        {
           "index": 4,
           "name": "StartsWithVowel"
+        },
+        {
+          "index": 6,
+          "name": "Pronoun"
+        },
+        {
+          "index": 7,
+          "name": "Article"
         },
         {
           "index": 8,
