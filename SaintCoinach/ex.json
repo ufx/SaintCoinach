@@ -10219,7 +10219,7 @@
       "defaultColumn": "Name",
       "definitions": [
         {
-          "name": "Key"
+          "name": "Type"
         },
         {
           "index": 1,
