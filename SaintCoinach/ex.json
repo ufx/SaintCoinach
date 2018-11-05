@@ -5595,6 +5595,7 @@
             "target": "BGM"
           }
         },
+        {
         "index": 19
         "name": "HasWorldMapIcon"
         },
