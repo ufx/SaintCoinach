@@ -5334,6 +5334,14 @@
       ]
     },
     {
+      "sheet": "EurekaLogosMixerProbability",
+      "definitions": [
+        {
+          "name": "Probability<%>"
+        }
+      ]
+    },
+    {
       "sheet": "EurekaMagiaAction",
       "definitions": [
         {
