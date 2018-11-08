@@ -9331,7 +9331,7 @@
         },
         {
           "index": 5,
-          "name": "Id"
+          "name": "MiniMapId"
         },
         {
           "index": 6,
@@ -9968,6 +9968,14 @@
         {
           "index": 38,
           "name": "IsAirborne"
+        },
+        {
+          "index": 40,
+          "name": "UseEP"
+        },
+        {
+          "index": 42,
+          "name": "IsImmobile"
         }
       ]
     },
