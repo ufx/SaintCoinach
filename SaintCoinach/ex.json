@@ -5342,6 +5342,10 @@
             "type": "link",
             "target": "Action"
           }
+        },
+        {
+          "index": 1,
+          "name": "MaxUses"
         }
       ]
     },
