@@ -1,5 +1,5 @@
 {
-  "version": "2018.10.11.0000.0000",
+  "version": "2018.10.30.0000.0000",
   "sheets": [
     {
       "sheet": "Achievement",
@@ -5330,6 +5330,55 @@
       "definitions": [
         {
           "name": "BaseResistance"
+        }
+      ]
+    },
+    {
+      "sheet": "EurekaMagiaAction",
+      "definitions": [
+        {
+          "name": "Action",
+          "converter": {
+            "type": "link",
+            "target": "Action"
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "EurekaMagiciteItem",
+      "definitions": [
+        {
+          "name": "EurekaMagiciteItemType",
+          "converter": {
+            "type": "link",
+            "target": "EurekaMagiciteItemType"
+          }
+        },
+        {
+          "index": 1,
+          "name": "ClassJobCategory",
+          "converter": {
+            "type": "link",
+            "target": "ClassJobCategory"
+          }
+        },
+        {
+          "index": 2,
+          "name": "Item",
+          "converter": {
+            "type": "link",
+            "target": "Item"
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "EurekaMagiciteItemType",
+      "defaultColumn": "Type",
+      "definitions": [
+        {
+          "name": "Type"
         }
       ]
     },
