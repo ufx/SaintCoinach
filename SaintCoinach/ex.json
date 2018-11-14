@@ -8684,66 +8684,70 @@
         },
         {
           "index": 4,
-          "name": "Piety"
+          "name": "Mind"
         },
         {
           "index": 5,
-          "name": "HP"
+          "name": "Piety"
         },
         {
           "index": 6,
-          "name": "MP"
+          "name": "HP"
         },
         {
           "index": 7,
-          "name": "TP"
+          "name": "MP"
         },
         {
           "index": 8,
-          "name": "GP"
+          "name": "TP"
         },
         {
           "index": 9,
-          "name": "CP"
+          "name": "GP"
         },
         {
           "index": 10,
-          "name": "PhysicalDamage"
+          "name": "CP"
         },
         {
           "index": 11,
-          "name": "Magic Damage"
+          "name": "PhysicalDamage"
         },
         {
           "index": 12,
-          "name": "Delay"
+          "name": "MagicalDamage"
         },
         {
           "index": 13,
-          "name": "AdditionalEffect"
+          "name": "Delay"
         },
         {
           "index": 14,
-          "name": "AttackSpeed"
+          "name": "AdditionalEffect"
         },
         {
           "index": 15,
-          "name": "BlockRate"
+          "name": "AttackSpeed"
         },
         {
           "index": 16,
-          "name": "BlockStrength"
+          "name": "BlockRate"
         },
         {
           "index": 17,
-          "name": "Tenacity"
+          "name": "BlockStrength"
         },
         {
           "index": 18,
-          "name": "AttackPower"
+          "name": "Tenacity"
         },
         {
           "index": 19,
+          "name": "AttackPower"
+        },
+        {
+          "index": 20,
           "name": "Defense"
         },
         {
