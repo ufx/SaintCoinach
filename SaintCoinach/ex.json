@@ -1379,6 +1379,9 @@
       "defaultColumn": "Name",
       "definitions": [
         {
+          "name": "Order"
+        },
+        {
           "index": 1,
           "name": "Name"
         },
