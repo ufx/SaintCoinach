@@ -7717,10 +7717,6 @@
           "name": "Z"
         },
         {
-          "index": 3,
-          "name": "PlotNumberDistance"
-        },
-        {
           "index": 4,
           "name": "Map",
           "converter": {
