@@ -128,7 +128,9 @@ namespace Godbert.ViewModels {
                     System.IO.Directory.CreateDirectory(Environment.CurrentDirectory + $"{_ExportDirectory}");
                 }
 
-                var fileName = $"./{_ExportDirectory}/{territory.Name}.obj";
+                var teriFileName = $"./{_ExportDirectory}/{territory.Name}.obj";
+                var fileName = teriFileName;
+                var lightsFileName = $"./{_ExportDirectory}/{territory.Name}-lights.txt";
                 var _ExportFileName = fileName;
                 {
                     var f = System.IO.File.Create(fileName);
@@ -136,7 +138,7 @@ namespace Godbert.ViewModels {
                     f.Close();
                 }
                 System.IO.File.AppendAllText(fileName, $"o {territory.Name}\n");
-
+                System.IO.File.WriteAllText(lightsFileName, "");
                 int lights = 0;
                 List<string> lightStrs = new List<string>() { "import bpy" };
                 List<string> vertStr = new List<string>();
@@ -228,7 +230,7 @@ namespace Godbert.ViewModels {
                             $"{mesh.Indices[j + 1] + vs}/{mesh.Indices[j + 1] + vt}/{mesh.Indices[j + 1] + vn} " +
                             $"{mesh.Indices[j + 2] + vs}/{mesh.Indices[j + 2] + vt}/{mesh.Indices[j + 2] + vn}");
                     }
-                    if (i % 3000 == 0) {
+                    if (i % 1000 == 0) {
                         System.IO.File.AppendAllLines(_ExportFileName, vertStr);
                         vertStr.Clear();
                     }
@@ -242,16 +244,22 @@ namespace Godbert.ViewModels {
                     foreach (var sgbGroup in sgbFile.Data.OfType<SaintCoinach.Graphics.Sgb.SgbGroup>()) {
                         bool newGroup = true;
                         foreach (var mdl in sgbGroup.Entries.OfType<SaintCoinach.Graphics.Sgb.SgbModelEntry>()) {
-                            if (newGroup) {
-                                vertStr.Add($"o {sgbFile.File.Path}_{sgbGroup.Name}_{i}");
-                                newGroup = false;
-                            }
-                            var hq = mdl.Model.Model.GetModel(ModelQuality.High);
+                            Model hq = null;
                             var filePath = mdl.ModelFilePath;
                             var modelTransform = CreateMatrix(mdl.Header.Translation, mdl.Header.Rotation, mdl.Header.Scale);
 
                             progress.ReportProgress(0, currentTitle, filePath);
-
+                            try {
+                                hq = mdl.Model.Model.GetModel(ModelQuality.High);
+                            }
+                            catch (Exception e) {
+                                System.Diagnostics.Debug.WriteLine($"Unable to load model for {mdl.Name} path: {filePath}");
+                                continue;
+                            }
+                            if (newGroup) {
+                                vertStr.Add($"o {sgbFile.File.Path}_{sgbGroup.Name}_{i}");
+                                newGroup = false;
+                            }
                             for (var j = 0; j < hq.Meshes.Length; ++j) {
                                 var mesh = hq.Meshes[j];
                                 var mtl = mesh.Material.Get();
@@ -303,16 +311,21 @@ namespace Godbert.ViewModels {
                     }
                 }
 
+                System.IO.File.AppendAllLines(_ExportFileName, vertStr);
+                vertStr.Clear();
+
                 foreach (var lgb in territory.LgbFiles) {
                     foreach (var lgbGroup in lgb.Groups) {
+
                         bool newGroup = true;
                         foreach (var part in lgbGroup.Entries) {
                             if (part == null)
                                 continue;
 
                             if (newGroup && (part.Type == SaintCoinach.Graphics.Lgb.LgbEntryType.Model || part.Type == SaintCoinach.Graphics.Lgb.LgbEntryType.Gimmick || part.Type == SaintCoinach.Graphics.Lgb.LgbEntryType.Light)) {
-                                progress.ReportProgress(0, currentTitle = $"Exporting {territory.Name} Group {lgbGroup.Name}", "");
-                                vertStr.Add($"o {lgbGroup.Name}_{i}");
+                                progress.WindowTitle = $"Exporting {territory.Name} ({lgbGroup.Name})";
+                                progress.ReportProgress(0, currentTitle = $"Exporting {territory.Name} Group {lgbGroup.Name}", $"Group {lgbGroup.Name}");
+
                                 newGroup = false;
                             }
 
@@ -341,9 +354,9 @@ namespace Godbert.ViewModels {
                                     var asGim = part as SaintCoinach.Graphics.Lgb.LgbGimmickEntry;
                                     if (asGim.Gimmick == null)
                                         continue;
-
+                                               
                                     progress.ReportProgress(0, currentTitle = $"Exporting Gimmick {asGim.Name} {asGim.Header.GimmickId}", "");
-
+                                    
                                     lgbTransform = CreateMatrix(asGim.Header.Translation, asGim.Header.Rotation, asGim.Header.Scale);
 
                                     ExportSgbModels(asGim.Gimmick, ref lgbTransform, ref IdentityMatrix, ref IdentityMatrix);
@@ -413,11 +426,17 @@ namespace Godbert.ViewModels {
                                     break;
                             }
                         }
+                        System.IO.File.AppendAllLines(_ExportFileName, vertStr);
+                        vertStr.Clear();
+                        System.IO.File.AppendAllLines(lightsFileName, lightStrs);
+                        lightStrs.Clear();
                     }
                 }
-                System.IO.File.AppendAllLines(fileName, vertStr);
-                System.IO.File.WriteAllLines(fileName + "_lights.txt", lightStrs);
-                System.Windows.Forms.MessageBox.Show("Finished exporting " + fileName, "", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                System.IO.File.AppendAllLines(_ExportFileName, vertStr);
+                vertStr.Clear();
+                System.IO.File.AppendAllLines(lightsFileName, lightStrs);
+                lightStrs.Clear();
+                System.Windows.Forms.MessageBox.Show("Finished exporting " + territory.Name, "", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
             }
             catch (ExportCancelException e) {
                 System.Windows.Forms.MessageBox.Show(e.Message, $"Canceled {teriName} export");
