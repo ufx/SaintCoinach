@@ -134,7 +134,6 @@ namespace Godbert.ViewModels {
                 var _ExportFileName = fileName;
                 {
                     var f = System.IO.File.Create(fileName);
-                    f.Dispose();
                     f.Close();
                 }
                 System.IO.File.AppendAllText(fileName, $"o {territory.Name}\n");
@@ -335,8 +334,11 @@ namespace Godbert.ViewModels {
 
                                 vs = 1; vn = 1; vt = 1; i = 0;
                                 _ExportFileName = $"./{_ExportDirectory}/{teriName}-{lgbGroup.Name}.obj";
+                                lightsFileName = $"./{_ExportDirectory}/{teriName}-{lgbGroup.Name}-lights.txt";
+
                                 var f = System.IO.File.Create(_ExportFileName);
-                                f.Dispose();
+                                f.Close();
+                                f = System.IO.File.Create(lightsFileName);
                                 f.Close();
                             }
 
