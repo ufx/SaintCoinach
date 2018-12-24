@@ -147,13 +147,13 @@ namespace Godbert.ViewModels {
                 Matrix IdentityMatrix = Matrix.Identity;
 
                 void ExportMaterials(Material m, string path) {
+                    vertStr.Add($"mtllib {path}.mtl");
                     bool found = false;
                     if (exportedPaths.TryGetValue(path, out found)) {
                         return;
                     }
                     exportedPaths.Add(path, true);
                     System.IO.File.Delete($"{_ExportDirectory}/{path}.mtl");
-                    vertStr.Add($"mtllib {path}.mtl");
                     System.IO.File.AppendAllText($"{_ExportDirectory}/{path}.mtl", $"newmtl {path}\n");
                     foreach (var img in m.TexturesFiles) {
                         var mtlName = img.Path.Replace('/', '_');
@@ -313,7 +313,7 @@ namespace Godbert.ViewModels {
 
                 System.IO.File.AppendAllLines(_ExportFileName, vertStr);
                 vertStr.Clear();
-
+                vs = 1; vn = 1; vt = 1; i = 0;
                 foreach (var lgb in territory.LgbFiles) {
                     foreach (var lgbGroup in lgb.Groups) {
 
@@ -327,6 +327,17 @@ namespace Godbert.ViewModels {
                                 progress.ReportProgress(0, currentTitle = $"Exporting {territory.Name} Group {lgbGroup.Name}", $"Group {lgbGroup.Name}");
 
                                 newGroup = false;
+
+                                System.IO.File.AppendAllLines(_ExportFileName, vertStr);
+                                vertStr.Clear();
+
+                                //vertStr.Add($"o {lgbGroup.Name}");
+
+                                vs = 1; vn = 1; vt = 1; i = 0;
+                                _ExportFileName = $"./{_ExportDirectory}/{teriName}-{lgbGroup.Name}.obj";
+                                var f = System.IO.File.Create(_ExportFileName);
+                                f.Dispose();
+                                f.Close();
                             }
 
                             switch (part.Type) {
@@ -426,8 +437,6 @@ namespace Godbert.ViewModels {
                                     break;
                             }
                         }
-                        System.IO.File.AppendAllLines(_ExportFileName, vertStr);
-                        vertStr.Clear();
                         System.IO.File.AppendAllLines(lightsFileName, lightStrs);
                         lightStrs.Clear();
                     }
