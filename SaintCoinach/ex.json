@@ -12888,6 +12888,10 @@
       "sheet": "RecastNavimesh",
       "definitions": [
         {
+          "name": "Tile{Size}",
+          "index": 1
+        },
+        {
           "name": "Cell{Size}",
           "index": 2
         },
