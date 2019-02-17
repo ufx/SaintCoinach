@@ -8,6 +8,7 @@ using System.Windows.Input;
 using SaintCoinach.Graphics;
 using SaintCoinach.Graphics.Viewer;
 using SaintCoinach.Graphics.Viewer.Content;
+using SaintCoinach.Graphics.Viewer.Interop;
 using SaintCoinach.Xiv;
 
 namespace Godbert.ViewModels {
@@ -17,6 +18,7 @@ namespace Godbert.ViewModels {
         const string ImcPathFormat = "chara/monster/m{0:D4}/obj/body/b{1:D4}/b{1:D4}.imc";
         const string ModelPathFormat = "chara/monster/m{0:D4}/obj/body/b{1:D4}/model/m{0:D4}b{1:D4}.mdl";
         const string SkeletonPathFormat = "chara/monster/m{0:D4}/skeleton/base/b{1:D4}/skl_m{0:D4}b{1:D4}.sklb";
+        const string PapPathFormat = "chara/monster/m{0:D4}/animation/a0001/bt_common/resident/monster.pap";
 
         #region Fields
         private Models.ModelCharaHierarchy _Entries;
@@ -64,10 +66,12 @@ namespace Godbert.ViewModels {
         #region Command
         private ICommand _AddCommand;
         private ICommand _ReplaceCommand;
+        private ICommand _ExportCommand;
         private ICommand _NewCommand;
 
         public ICommand AddCommand { get { return _AddCommand ?? (_AddCommand = new DelegateCommand(OnAdd)); } }
         public ICommand ReplaceCommand { get { return _ReplaceCommand ?? (_ReplaceCommand = new DelegateCommand(OnReplace)); } }
+        public ICommand ExportCommand { get { return _ExportCommand ?? (_ExportCommand = new DelegateCommand(OnExport)); } }
         public ICommand NewCommand { get { return _NewCommand ?? (_NewCommand = new DelegateCommand(OnNew)); } }
 
         private void OnAdd() {
@@ -86,6 +90,37 @@ namespace Godbert.ViewModels {
             if (TryGetModel(out skele, out model, out variant, out m, out b))
                 Parent.EngineHelper.ReplaceInLast(SelectedEntry.ToString(), (e) => CreateModel(e, skele, model, variant, m, b));
         }
+        private void OnExport()
+        {
+            Skeleton skele;
+            ModelDefinition model;
+            ImcVariant variant;
+            int m, b;
+            if (TryGetModel(out skele, out model, out variant, out m, out b)) {
+                var papPath = string.Format(PapPathFormat, m, b);
+
+                SaintCoinach.IO.File papFileBase;
+                PapFile pap = null;
+                // We have animation
+                if (Parent.Realm.Packs.TryGetFile(papPath, out papFileBase))
+                    pap = new PapFile(papFileBase);
+
+                if (pap == null)
+                {
+                    FbxExport.ExportFbx("test.fbx",
+                        model.GetModel(0).Meshes,
+                        skele,
+                        new byte[0]);
+                }
+                else
+                {
+                    FbxExport.ExportFbx("test.fbx",
+                        model.GetModel(0).Meshes,
+                        skele,
+                        pap.HavokData);
+                }
+            }
+        }
         private void OnNew() {
             Skeleton skele;
             ModelDefinition model;
@@ -98,14 +133,8 @@ namespace Godbert.ViewModels {
         static string[] DefaultAnimationNames = new string[] { "cbnm_id0", "cbbm_id0" };
 
         private IComponent CreateModel(Engine engine, Skeleton skeleton, ModelDefinition model, ImcVariant variant, int m, int b) {
-            const string PapPathFormat = "chara/monster/m{0:D4}/animation/a0001/bt_common/resident/monster.pap";
-
             
-            var component = new AnimatedModel(engine, skeleton, variant, model, ModelQuality.High) {
-                
-            };
-
-
+            var component = new AnimatedModel(engine, skeleton, variant, model, ModelQuality.High) {};
             var papPath = string.Format(PapPathFormat, m, b);
 
             SaintCoinach.IO.File papFileBase;
@@ -153,6 +182,8 @@ namespace Godbert.ViewModels {
                 return false;
             }
 
+            
+
             SaintCoinach.IO.File sklFileBase;
             if(!Parent.Realm.Packs.TryGetFile(sklPath, out sklFileBase)) {
                 System.Windows.MessageBox.Show(string.Format("Unable to find skeleton for {0}.", asVariant), "File not found", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
@@ -164,6 +195,7 @@ namespace Godbert.ViewModels {
             try {
                 var imcFile = new ImcFile(imcFileBase);
                 model = ((ModelFile)mdlFileBase).GetModelDefinition();
+                System.Diagnostics.Trace.WriteLine(model.File.Path + " has " + model.GetModel(0).Meshes.Length + " meshes!");
                 variant = imcFile.GetVariant(v);
 
                 return true;

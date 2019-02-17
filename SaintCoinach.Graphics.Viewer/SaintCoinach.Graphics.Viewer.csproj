@@ -110,9 +110,13 @@
     <Compile Include="Effects\SkinnedEffect.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="EngineTime.cs" />
+    <Compile Include="Interop\FbxExport.cs" />
+    <Compile Include="Interop\FbxInterop.cs" />
     <Compile Include="Interop\HavokInterop.cs" />
+    <Compile Include="Interop\InteropMesh.cs" />
     <Compile Include="Interop\InteropTransform.cs" />
     <Compile Include="Interop\InteropVector4.cs" />
+    <Compile Include="Interop\InteropVertex.cs" />
     <Compile Include="RendererSources\BaseImageRendererSource.cs" />
     <Compile Include="RendererSources\EquipmentImageRendererSource.cs" />
     <Compile Include="FormEngine.cs" />
