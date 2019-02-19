@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
+using Ookii.Dialogs.Wpf;
 using SaintCoinach.Graphics;
 using SaintCoinach.Graphics.Viewer;
 using SaintCoinach.Graphics.Viewer.Content;
@@ -92,6 +92,7 @@ namespace Godbert.ViewModels {
         }
         private void OnExport()
         {
+            ProgressDialog progress = null;
             Skeleton skele;
             ModelDefinition model;
             ImcVariant variant;
@@ -105,21 +106,41 @@ namespace Godbert.ViewModels {
                 if (Parent.Realm.Packs.TryGetFile(papPath, out papFileBase))
                     pap = new PapFile(papFileBase);
 
-                if (pap == null)
+                VistaSaveFileDialog dialog = new VistaSaveFileDialog {
+                    OverwritePrompt = true,
+                    Title = "Export FBX to...",
+                    FileName = SelectedEntry.ToString().Replace(" / ", "_"),
+                    DefaultExt = ".fbx",
+                    Filter = "Autodesk FBX Files|*.fbx"
+                };
+
+                bool? result = dialog.ShowDialog();
+                
+                if (result.HasValue && result.Value && !String.IsNullOrEmpty(dialog.FileName))
                 {
-                    FbxExport.ExportFbx("test.fbx",
-                        model.GetModel(0).Meshes,
-                        skele,
-                        new byte[0]);
-                }
-                else
-                {
-                    FbxExport.ExportFbx("test.fbx",
-                        model.GetModel(0).Meshes,
-                        skele,
-                        pap.HavokData);
+                    System.Diagnostics.Trace.WriteLine("Enter result check");
+                    progress = new ProgressDialog
+                    {
+                        ShowCancelButton = false,
+                        Description = "Exporting FBX...",
+                        WindowTitle = "Export",
+                        ProgressBarStyle = ProgressBarStyle.MarqueeProgressBar
+                    };
+
+                    progress.Show();
+                    progress.DoWork += (object sender, System.ComponentModel.DoWorkEventArgs eventArgs) =>
+                    {
+                        FbxExport.ExportFbx(dialog.FileName, model.GetModel(0).Meshes, skele, pap);
+//                        System.Threading.Tasks.Task.Run(() =>
+//                        {
+//                            FbxExport.ExportFbx(dialog.FileName, model.GetModel(0).Meshes, skele, pap);
+//                        });
+                    };
+                    System.Diagnostics.Trace.WriteLine("End result check");
                 }
             }
+            progress?.Dispose();
+            progress = null;
         }
         private void OnNew() {
             Skeleton skele;
