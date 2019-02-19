@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,20 +15,20 @@ namespace SaintCoinach.Graphics.Viewer.Interop
         static class Interop
         {
             [DllImport("fbxInterop.dll", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void exportFbx([In, Out] IntPtr[] meshes, int numMeshes,
+            public static extern int exportFbx([In, Out] IntPtr[] meshes, int numMeshes,
                                                 [In, Out] byte[] skeleton, int skeletonSize,
                                                 [In, Out] byte[] animation, int animationSize, [In, Out] string[] animNames,
                                                 [In, Out] int[] boneMap, int mapLength,
                                                 string filename, int mode);
         }
 
-        public static void ExportFbx(string fileName,
+        [HandleProcessCorruptedStateExceptions]
+        public static int ExportFbx(string fileName,
                                         Mesh[] ma,
                                         Skeleton skele,
                                         PapFile pap,
                                         int mode = 0)
         {
-            System.Diagnostics.Trace.WriteLine("Begin export");
             ModelDefinition thisDefinition = ma[0].Model.Definition;
 
             // Create bonemap in the same manner that hkAnimationInterop does
@@ -46,14 +48,36 @@ namespace SaintCoinach.Graphics.Viewer.Interop
             // Null pap handling
             byte[] anims = pap == null ? new byte[0] : pap.HavokData;
             string[] animNames = pap == null ? new string[0] : pap.Animations.Select(_ => _.Name).ToArray();
-            
-            Interop.exportFbx(meshes, meshes.Length,
-                skele.File.HavokData, skele.File.HavokData.Length,
-                anims, anims.Length, animNames,
-                boneMap, boneMap.Length,
-                fileName, mode);
 
-            System.Diagnostics.Trace.WriteLine("Finish export");
+            int result = 0;
+
+            try
+            {
+                result = Interop.exportFbx(meshes, meshes.Length,
+                    skele.File.HavokData, skele.File.HavokData.Length,
+                    anims, anims.Length, animNames,
+                    boneMap, boneMap.Length,
+                    fileName, mode);
+            }
+            catch (Win32Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Native error code " + e.NativeErrorCode + " encountered.");
+                return 1;
+            }
+            catch (Exception e)
+            {
+                if (e is AccessViolationException || e is SEHException)
+                {
+                    System.Diagnostics.Debug.WriteLine("Access violation with\n" +
+                                                       "Model:\t" + thisDefinition.File.Path + "\n" +
+                                                       "Pap:\t" + pap?.File.Path + "\n" +
+                                                       "Skele:\t" + skele.File.File.Path + "\n");
+                }
+
+                return 1;
+            }
+
+            return result;
 
             //todo: materials/textures
         }

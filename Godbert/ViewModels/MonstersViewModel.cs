@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
 using SaintCoinach.Graphics;
@@ -10,6 +14,8 @@ using SaintCoinach.Graphics.Viewer;
 using SaintCoinach.Graphics.Viewer.Content;
 using SaintCoinach.Graphics.Viewer.Interop;
 using SaintCoinach.Xiv;
+using File = SaintCoinach.IO.File;
+using ProgressBarStyle = Ookii.Dialogs.Wpf.ProgressBarStyle;
 
 namespace Godbert.ViewModels {
     using Commands;
@@ -23,6 +29,16 @@ namespace Godbert.ViewModels {
         #region Fields
         private Models.ModelCharaHierarchy _Entries;
         private object _SelectedEntry;
+
+        private bool _IsExporting = false;
+
+        public bool IsExporting {
+            get { return _IsExporting; }
+            private set {
+                _IsExporting = value;
+                OnPropertyChanged(() => IsExporting);
+            }
+        }
         #endregion
 
         #region Properties
@@ -57,7 +73,6 @@ namespace Godbert.ViewModels {
                 var mdlPath = string.Format(ModelPathFormat, mc.ModelKey, mc.BaseKey);
                 if(!Parent.Realm.Packs.FileExists(imcPath) ||!Parent.Realm.Packs.FileExists(mdlPath))
                     continue;
-
                 Entries.Add(mc);
             }
         }
@@ -92,55 +107,54 @@ namespace Godbert.ViewModels {
         }
         private void OnExport()
         {
-            ProgressDialog progress = null;
             Skeleton skele;
             ModelDefinition model;
             ImcVariant variant;
             int m, b;
-            if (TryGetModel(out skele, out model, out variant, out m, out b)) {
-                var papPath = string.Format(PapPathFormat, m, b);
+            if (!TryGetModel(out skele, out model, out variant, out m, out b)) return;
 
-                SaintCoinach.IO.File papFileBase;
-                PapFile pap = null;
-                // We have animation
-                if (Parent.Realm.Packs.TryGetFile(papPath, out papFileBase))
-                    pap = new PapFile(papFileBase);
+            var papPath = string.Format(PapPathFormat, m, b);
 
-                VistaSaveFileDialog dialog = new VistaSaveFileDialog {
-                    OverwritePrompt = true,
-                    Title = "Export FBX to...",
-                    FileName = SelectedEntry.ToString().Replace(" / ", "_"),
-                    DefaultExt = ".fbx",
-                    Filter = "Autodesk FBX Files|*.fbx"
-                };
+            PapFile pap = null;
+            // We have animation
+            if (Parent.Realm.Packs.TryGetFile(papPath, out var papFileBase))
+                pap = new PapFile(papFileBase);
 
-                bool? result = dialog.ShowDialog();
+            VistaSaveFileDialog dialog = new VistaSaveFileDialog {
+                OverwritePrompt = true,
+                Title = "Export FBX to...",
+                FileName = SelectedEntry.ToString().Replace(" / ", "_"),
+                DefaultExt = ".fbx",
+                Filter = "Autodesk FBX Files|*.fbx"
+            };
+
+            bool? result = dialog.ShowDialog();
                 
-                if (result.HasValue && result.Value && !String.IsNullOrEmpty(dialog.FileName))
+            if (result.HasValue && result.Value && !string.IsNullOrEmpty(dialog.FileName))
+            {
+                Task.Run(() =>
                 {
-                    System.Diagnostics.Trace.WriteLine("Enter result check");
-                    progress = new ProgressDialog
-                    {
-                        ShowCancelButton = false,
-                        Description = "Exporting FBX...",
-                        WindowTitle = "Export",
-                        ProgressBarStyle = ProgressBarStyle.MarqueeProgressBar
-                    };
-
-                    progress.Show();
-                    progress.DoWork += (object sender, System.ComponentModel.DoWorkEventArgs eventArgs) =>
-                    {
-                        FbxExport.ExportFbx(dialog.FileName, model.GetModel(0).Meshes, skele, pap);
-//                        System.Threading.Tasks.Task.Run(() =>
-//                        {
-//                            FbxExport.ExportFbx(dialog.FileName, model.GetModel(0).Meshes, skele, pap);
-//                        });
-                    };
-                    System.Diagnostics.Trace.WriteLine("End result check");
-                }
+                    // Set IsExporting for feedback
+                    IsExporting = true;
+                    int exportResult = FbxExport.ExportFbx(dialog.FileName, model.GetModel(0).Meshes, skele, pap);
+                    IsExporting = false;
+                        
+                    if (exportResult == 0)
+                        System.Windows.MessageBox.Show("The export of " + Path.GetFileName(dialog.FileName) + " has completed.",
+                            "Export Complete",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information,
+                            MessageBoxResult.OK,
+                            System.Windows.MessageBoxOptions.DefaultDesktopOnly);
+                    else
+                        System.Windows.MessageBox.Show("The export of " + Path.GetFileName(dialog.FileName) + " has failed.",
+                            "Export Failed",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error,
+                            MessageBoxResult.OK,
+                            System.Windows.MessageBoxOptions.DefaultDesktopOnly);
+                });
             }
-            progress?.Dispose();
-            progress = null;
         }
         private void OnNew() {
             Skeleton skele;
@@ -202,9 +216,7 @@ namespace Godbert.ViewModels {
                 System.Windows.MessageBox.Show(string.Format("Unable to find files for {0}.", asVariant), "File not found", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
                 return false;
             }
-
             
-
             SaintCoinach.IO.File sklFileBase;
             if(!Parent.Realm.Packs.TryGetFile(sklPath, out sklFileBase)) {
                 System.Windows.MessageBox.Show(string.Format("Unable to find skeleton for {0}.", asVariant), "File not found", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
@@ -216,7 +228,6 @@ namespace Godbert.ViewModels {
             try {
                 var imcFile = new ImcFile(imcFileBase);
                 model = ((ModelFile)mdlFileBase).GetModelDefinition();
-                System.Diagnostics.Trace.WriteLine(model.File.Path + " has " + model.GetModel(0).Meshes.Length + " meshes!");
                 variant = imcFile.GetVariant(v);
 
                 return true;

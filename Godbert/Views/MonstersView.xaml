@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -36,6 +37,12 @@
                           ItemTemplate="{StaticResource ModelCharaTree}"
                           SelectedItemChanged="MonsterTreeView_SelectedItemChanged" />
 
+        <ProgressBar x:Name="ExportProgress" x:FieldModifier="private"
+                     Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="3"
+                     IsEnabled="True" IsIndeterminate="true" Height="20"
+                     Visibility="{Binding Path=IsExporting, Converter={StaticResource BooleanToVisibilityConverter}}"
+                     />
+
         <Button Content="Add" Command="{Binding Path=AddCommand}"
                         Grid.Row="2" Grid.Column="0"
                         IsEnabled="{Binding Path=IsValidSelection}"
@@ -53,4 +60,5 @@
                         IsEnabled="{Binding Path=IsValidSelection}"
                         Margin="2" />
     </Grid>
+
 </UserControl>
