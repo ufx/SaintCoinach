@@ -111,7 +111,6 @@
     <Compile Include="Engine.cs" />
     <Compile Include="EngineTime.cs" />
     <Compile Include="Interop\FbxExport.cs" />
-    <Compile Include="Interop\FbxInterop.cs" />
     <Compile Include="Interop\HavokInterop.cs" />
     <Compile Include="Interop\InteropMesh.cs" />
     <Compile Include="Interop\InteropTransform.cs" />
