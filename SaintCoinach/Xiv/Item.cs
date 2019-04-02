@@ -204,7 +204,9 @@ namespace SaintCoinach.Xiv {
 
         public bool IsGlamourous => AsBoolean("IsGlamourous");
 
+        public Quad ModelMain { get { return AsQuad("Model{Main}"); } }
 
+        public Quad ModelSub { get { return AsQuad("Model{Sub}"); } }
         /// <summary>
         ///     Gets the <see cref="ClassJob" /> required to repair or desynth the current item.
         /// </summary>
