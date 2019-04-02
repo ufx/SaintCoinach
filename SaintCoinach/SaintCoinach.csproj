@@ -845,9 +845,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config">
+    <EmbeddedResource Include="app.config">
       <SubType>Designer</SubType>
-    </None>
+    </EmbeddedResource>
     <EntityDeploy Include="Libra\LibraModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>LibraModel.Designer.cs</LastGenOutput>
