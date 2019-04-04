@@ -104,6 +104,7 @@
     <Compile Include="Graphics\Pcb\PcbFile.cs" />
     <Compile Include="Xiv\ActionTransient.cs" />
     <Compile Include="Xiv\CharaMakeCustomize.cs" />
+    <Compile Include="Xiv\CharaMakeType.cs" />
     <Compile Include="Xiv\CompanionTransient.cs" />
     <Compile Include="Xiv\ContentFinderCondition.cs" />
     <Compile Include="Xiv\ContentMemberType.cs" />

@@ -119,7 +119,11 @@ namespace SaintCoinach.Xiv {
         /// </summary>
         /// <value>The price in Gil of the current item in shops.</value>
         public int Ask { get { return AsInt32("Price{Mid}"); } }
-        public int EquipSlotCategory { get { return AsInt32("EquipSlotCategory"); } }
+        /// <summary>
+        ///     Gets the <see cref="EquipSlotCategory" /> of the current item.
+        /// </summary>
+        /// <value>The <see cref="EquipSlotCategory" /> of the current item.</value>
+        public EquipSlotCategory EquipSlotCategory { get { return As<EquipSlotCategory>(); } }
 
         /// <summary>
         ///     Gets the recipes using the current item as material.
