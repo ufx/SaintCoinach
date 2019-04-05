@@ -18,11 +18,11 @@ namespace SaintCoinach.Xiv {
 
         #region Properties
         public int ModelID { get { return AsInt32("ModelID"); } }
-        public int Race { get { return AsInt32("Race"); } }
+        public Race Race { get { return As<Race>("Race"); } }
         public int Gender { get { return AsInt32("Gender"); } }
         public int BodyType { get { return AsInt32("BodyType"); } }
         public int Height { get { return AsInt32("Height"); } }
-        public int Tribe { get { return AsInt32("Tribe"); } }
+        public Tribe Tribe { get { return As<Tribe>("Tribe"); } }
         public int Face { get { return AsInt32("Face"); } }
         public int HairStyle { get { return AsInt32("HairStyle"); } }
         public int HairHighlight { get { return AsInt32("HairHighlight"); } }
@@ -48,9 +48,9 @@ namespace SaintCoinach.Xiv {
 
 
         public Quad ModelMain { get { return AsQuad("Model{MainHand}"); } }
-        public int DyeMain { get { return AsInt32("Dye{MainHand}"); } }
+        public Stain DyeMain { get { return As<Stain>("Dye{MainHand}"); } }
         public Quad ModelSub { get { return AsQuad("Model{OffHand}"); } }
-        public int DyeOff { get { return AsInt32("Dye{OffHand}"); } }
+        public Stain DyeOff { get { return As<Stain>("Dye{OffHand}"); } }
         public int[] ModelHead { get { return convertToIntArray("Model{Head}"); } }
         public int[] ModelBody { get { return convertToIntArray("Model{Body}"); } }
         public int[] ModelHands { get { return convertToIntArray("Model{Hands}"); } }
@@ -61,16 +61,16 @@ namespace SaintCoinach.Xiv {
         public int[] ModelWrists { get { return convertToIntArray("Model{Wrists}"); } }
         public int[] ModelLeftRing { get { return convertToIntArray("Model{LeftRing}"); } }
         public int[] ModelRightRing { get { return convertToIntArray("Model{RightRing}"); } }
-        public int DyeHead { get { return AsInt32("Dye{Head}"); } }
-        public int DyeBody { get { return AsInt32("Dye{Body}"); } }
-        public int DyeHands { get { return AsInt32("Dye{Hands}"); } }
-        public int DyeLegs { get { return AsInt32("Dye{Legs}"); } }
-        public int DyeFeet { get { return AsInt32("Dye{Feet}"); } }
-        public int DyeEars { get { return AsInt32("Dye{Ears}"); } }
-        public int DyeNeck { get { return AsInt32("Dye{Neck}"); } }
-        public int DyeWrists { get { return AsInt32("Dye{Wrists}"); } }
-        public int DyeLeftRing { get { return AsInt32("Dye{LeftRing}"); } }
-        public int DyeRightRing { get { return AsInt32("Dye{RightRing}"); } }
+        public Stain DyeHead { get { return As<Stain>("Dye{Head}"); } }
+        public Stain DyeBody { get { return As<Stain>("Dye{Body}"); } }
+        public Stain DyeHands { get { return As<Stain>("Dye{Hands}"); } }
+        public Stain DyeLegs { get { return As<Stain>("Dye{Legs}"); } }
+        public Stain DyeFeet { get { return As<Stain>("Dye{Feet}"); } }
+        public Stain DyeEars { get { return As<Stain>("Dye{Ears}"); } }
+        public Stain DyeNeck { get { return As<Stain>("Dye{Neck}"); } }
+        public Stain DyeWrists { get { return As<Stain>("Dye{Wrists}"); } }
+        public Stain DyeLeftRing { get { return As<Stain>("Dye{LeftRing}"); } }
+        public Stain DyeRightRing { get { return As<Stain>("Dye{RightRing}"); } }
         public NpcEquip NpcEquip { get { return As<NpcEquip>(); } }
 
         public IEnumerable<IRelationalRow> AssignedData { get { return _AssignedData ?? (_AssignedData = BuildAssignedData()); } }

@@ -5359,7 +5359,11 @@
         },
         {
           "index": 36,
-          "name": "Race"
+          "name": "Race",
+          "converter": {
+            "type": "link",
+            "target": "Race"
+          }
         },
         {
           "index": 37,
@@ -5375,7 +5379,11 @@
         },
         {
           "index": 40,
-          "name": "Tribe"
+          "name": "Tribe",
+          "converter": {
+            "type": "link",
+            "target": "Tribe"
+          }
         },
         {
           "index": 41,
@@ -5483,7 +5491,11 @@
         },
         {
           "index": 66,
-          "name": "Dye{MainHand}"
+          "name": "Dye{MainHand}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 67,
@@ -5491,7 +5503,11 @@
         },
         {
           "index": 68,
-          "name": "Dye{OffHand}"
+          "name": "Dye{OffHand}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 69,
@@ -5499,7 +5515,11 @@
         },
         {
           "index": 70,
-          "name": "Dye{Head}"
+          "name": "Dye{Head}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 71,
@@ -5511,7 +5531,11 @@
         },
         {
           "index": 73,
-          "name": "Dye{Body}"
+          "name": "Dye{Body}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 74,
@@ -5519,7 +5543,11 @@
         },
         {
           "index": 75,
-          "name": "Dye{Hands}"
+          "name": "Dye{Hands}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 76,
@@ -5527,7 +5555,11 @@
         },
         {
           "index": 77,
-          "name": "Dye{Legs}"
+          "name": "Dye{Legs}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 78,
@@ -5535,7 +5567,11 @@
         },
         {
           "index": 79,
-          "name": "Dye{Feet}"
+          "name": "Dye{Feet}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 80,
@@ -5543,7 +5579,11 @@
         },
         {
           "index": 81,
-          "name": "Dye{Ears}"
+          "name": "Dye{Ears}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 82,
@@ -5551,7 +5591,11 @@
         },
         {
           "index": 83,
-          "name": "Dye{Neck}"
+          "name": "Dye{Neck}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 84,
@@ -5559,7 +5603,11 @@
         },
         {
           "index": 85,
-          "name": "Dye{Wrists}"
+          "name": "Dye{Wrists}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 86,
@@ -5567,7 +5615,11 @@
         },
         {
           "index": 87,
-          "name": "Dye{LeftRing}"
+          "name": "Dye{LeftRing}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 88,
@@ -5575,7 +5627,11 @@
         },
         {
           "index": 89,
-          "name": "Dye{RightRing}"
+          "name": "Dye{RightRing}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 91,
@@ -11166,7 +11222,11 @@
         },
         {
           "index": 1,
-          "name": "Dye{MainHand}"
+          "name": "Dye{MainHand}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 2,
@@ -11174,7 +11234,11 @@
         },
         {
           "index": 3,
-          "name": "Dye{OffHand}"
+          "name": "Dye{OffHand}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 4,
@@ -11182,7 +11246,11 @@
         },
         {
           "index": 5,
-          "name": "Dye{Head}"
+          "name": "Dye{Head}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 6,
@@ -11194,7 +11262,11 @@
         },
         {
           "index": 8,
-          "name": "Dye{Body}"
+          "name": "Dye{Body}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 9,
@@ -11202,7 +11274,11 @@
         },
         {
           "index": 10,
-          "name": "Dye{Hands}"
+          "name": "Dye{Hands}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 11,
@@ -11210,7 +11286,11 @@
         },
         {
           "index": 12,
-          "name": "Dye{Legs}"
+          "name": "Dye{Legs}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 13,
@@ -11218,7 +11298,11 @@
         },
         {
           "index": 14,
-          "name": "Dye{Feet}"
+          "name": "Dye{Feet}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 15,
@@ -11226,7 +11310,11 @@
         },
         {
           "index": 16,
-          "name": "Dye{Ears}"
+          "name": "Dye{Ears}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 17,
@@ -11234,7 +11322,11 @@
         },
         {
           "index": 18,
-          "name": "Dye{Neck}"
+          "name": "Dye{Neck}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 19,
@@ -11242,7 +11334,11 @@
         },
         {
           "index": 20,
-          "name": "Dye{Wrists}"
+          "name": "Dye{Wrists}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 21,
@@ -11250,7 +11346,11 @@
         },
         {
           "index": 22,
-          "name": "Dye{LeftRing}"
+          "name": "Dye{LeftRing}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         },
         {
           "index": 23,
@@ -11258,7 +11358,11 @@
         },
         {
           "index": 24,
-          "name": "Dye{RightRing}"
+          "name": "Dye{RightRing}",
+          "converter": {
+            "type": "link",
+            "target": "Stain"
+          }
         }
       ]
     },
