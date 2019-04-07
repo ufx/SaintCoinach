@@ -62,11 +62,19 @@ namespace SaintCoinach.IO {
         }
 
         public bool TryGetFile(string path, out File file) {
-            if (TryGetPack(path, out var pack))
-                return pack.TryGetFile(path, out file);
+            try {
 
-            file = null;
-            return false;
+
+                if (TryGetPack(path, out var pack))
+                    return pack.TryGetFile(path, out file);
+
+                file = null;
+                return false;
+            }
+            catch {
+                file = null;
+                return false;
+            }
         }
 
         public bool TryGetPack(string path, out Pack pack) {
