@@ -93,8 +93,8 @@ namespace Godbert.Controls {
                 if (ry == null)
                     return 1;
 
-                var vx = rx[Column.Index];
-                var vy = ry[Column.Index];
+                var vx = ColumnFactory.ForceRaw ? rx.GetRaw(Column.Index) : rx[Column.Index];
+                var vy = ColumnFactory.ForceRaw ? ry.GetRaw(Column.Index) : ry[Column.Index];
                 if (vx == vy)
                     return 0;
                 if (vx == null)
