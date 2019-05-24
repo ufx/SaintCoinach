@@ -234,7 +234,12 @@ namespace SaintCoinach {
                 ActiveLanguage = language
             };
 
-            _GameVersion = File.ReadAllText(Path.Combine(gameDirectory.FullName, "game", "ffxivgame.ver"));
+            var versionFileName = Path.Combine(gameDirectory.FullName, "game", "ffxivgame.ver");
+            if (File.Exists(versionFileName))
+            {
+                _GameVersion = File.ReadAllText(versionFileName);
+            }
+
             _StateFile = storeFile;
 
             Views = ReadViewCollection();

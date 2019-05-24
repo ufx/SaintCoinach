@@ -105,7 +105,14 @@ namespace SaintCoinach.Ex {
             if (_PartialSheetsCreated)
                 return;
             foreach (var range in Header.DataFileRanges.Where(range => !_PartialSheets.ContainsKey(range))) {
-                CreatePartialSheet(range);
+                try
+                {
+                    CreatePartialSheet(range);
+                }
+                catch (Exception)
+                {
+
+                }
             }
             _PartialSheetsCreated = true;
         }

@@ -86,7 +86,7 @@ namespace Godbert {
             if (!Directory.Exists(path))
                 return false;
 
-            return File.Exists(Path.Combine(path, "game", "ffxivgame.ver"));
+            return File.Exists(Path.Combine(path, "game", "ffxiv_dx11.exe"));
         }
         #endregion
     }
