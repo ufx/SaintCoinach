@@ -3919,6 +3919,14 @@
           "index": 50,
           "name": "MentorRoulette",
         },
+        {
+          "index": 56,
+          "name": "AllianceRoulette",
+        },
+        {
+          "index": 58,
+          "name": "NormalRaidRoulette",
+        },
       ]
     },
     {
