@@ -1962,14 +1962,6 @@
         },
         {
           "index": 6,
-          "name": "AlliedBeastTribeQuest",
-          "converter": {
-            "type": "link",
-            "target": "Quest"
-          }
-        },
-        {
-          "index": 7,
           "name": "Expansion",
           "converter": {
             "type": "link",
@@ -1977,7 +1969,7 @@
           }
         },
         {
-          "index": 8,
+          "index": 7,
           "name": "CurrencyItem",
           "converter": {
             "type": "link",
@@ -1985,15 +1977,15 @@
           }
         },
         {
-          "index": 9,
+          "index": 8,
           "name": "DisplayOrder"
         },
         {
-          "index": 10,
+          "index": 9,
           "name": "Name"
         },
         {
-          "index": 18,
+          "index": 17,
           "name": "Name{Relation}"
         }
       ]
@@ -2002,7 +1994,7 @@
       "sheet": "Behavior",
       "definitions": [
         {
-          "index": 6,
+          "index": 7,
           "name": "Balloon",
           "converter": {
             "type": "link",
@@ -3079,6 +3071,22 @@
           }
         },
         {
+          "index": 30,
+          "name": "Role"
+        },
+        {
+          "index": 31,
+          "name": "StartingTown",
+          "converter": {
+            "type": "link",
+            "target": "Town"
+          }
+        },
+        {
+          "index": 33,
+          "name": "PrimaryStat"
+        },
+        {
           "index": 34,
           "name": "LimitBreak1",
           "converter": {
@@ -3137,6 +3145,18 @@
         {
           "index": 42,
           "name": "StartingLevel"
+        },
+        {
+          "index": 43,
+          "name": "PartyBonus"
+        },
+        {
+          "index": 44,
+          "name": "IsLimitedJob"
+        },
+        {
+          "index": 45,
+          "name": "CanQueueForDuty"
         }
       ]
     },
@@ -3290,6 +3310,18 @@
         {
           "index": 36,
           "name": "RDM"
+        },
+        {
+          "index": 37,
+          "name": "BLU"
+        },
+        {
+          "index": 38,
+          "name": "GBR"
+        },
+        {
+          "index": 39,
+          "name": "DNC"
         }
       ]
     },
@@ -3965,6 +3997,19 @@
               "type": "link",
               "target": "ContentTalk"
             }
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "ContentRandomSelect",
+      "defaultColumn": "Name",
+      "definitions": [
+        {
+          "name": "Name",
+          "converter": {
+            "type": "link",
+            "target": "ContentFinderCondition"
           }
         }
       ]
@@ -5864,10 +5909,18 @@
         },
         {
           "index": 6,
-          "name": "Male"
+          "name": "Hrothgar"
         },
         {
           "index": 7,
+          "name": "Viera"
+        },
+        {
+          "index": 8,
+          "name": "Male"
+        },
+        {
+          "index": 9,
           "name": "Female"
         }
       ]
@@ -6856,7 +6909,7 @@
           }
         },
         {
-          "index": 2,
+          "index": 3,
           "name": "IsHidden"
         }
       ]
@@ -11100,51 +11153,83 @@
         },
         {
           "index": 13,
-          "name": "HyurMaleCameraHeight"
+          "name": "HrothgarMaleScale"
         },
         {
           "index": 14,
-          "name": "HyurFemaleCameraHeight"
+          "name": "HrothgarFemaleScale"
         },
         {
           "index": 15,
-          "name": "ElezenMaleCameraHeight"
+          "name": "VieraMaleScale"
         },
         {
           "index": 16,
-          "name": "ElezenFemaleCameraHeight"
+          "name": "VieraFemaleScale"
         },
         {
           "index": 17,
-          "name": "LalaMaleCameraHeight"
+          "name": "HyurMaleCameraHeight"
         },
         {
           "index": 18,
-          "name": "LalaFemaleCameraHeight"
+          "name": "HyurFemaleCameraHeight"
         },
         {
           "index": 19,
-          "name": "MiqoMaleCameraHeight"
+          "name": "ElezenMaleCameraHeight"
         },
         {
           "index": 20,
-          "name": "MiqoFemaleCameraHeight"
+          "name": "ElezenFemaleCameraHeight"
         },
         {
           "index": 21,
-          "name": "RoeMaleCameraHeight"
+          "name": "LalaMaleCameraHeight"
         },
         {
           "index": 22,
-          "name": "RoeFemaleCameraHeight"
+          "name": "LalaFemaleCameraHeight"
         },
         {
           "index": 23,
-          "name": "AuRaMaleCameraHeight"
+          "name": "MiqoMaleCameraHeight"
         },
         {
           "index": 24,
+          "name": "MiqoFemaleCameraHeight"
+        },
+        {
+          "index": 25,
+          "name": "RoeMaleCameraHeight"
+        },
+        {
+          "index": 26,
+          "name": "RoeFemaleCameraHeight"
+        },
+        {
+          "index": 27,
+          "name": "AuRaMaleCameraHeight"
+        },
+        {
+          "index": 28,
           "name": "AuRaFemaleCameraHeight"
+        },
+        {
+          "index": 29,
+          "name": "HrothgarMaleCameraHeight"
+        },
+        {
+          "index": 30,
+          "name": "HrothgarRoeFemaleCameraHeight"
+        },
+        {
+          "index": 31,
+          "name": "VieraMaleCameraHeight"
+        },
+        {
+          "index": 32,
+          "name": "VieraFemaleCameraHeight"
         }
       ]
     },
@@ -11591,6 +11676,10 @@
           "name": "MpModifier"
         },
         {
+          "index": 3,
+          "name": "ScaledQuestXP"
+        },
+        {
           "index": 5,
           "name": "BaseSpeed"
         },
@@ -11609,6 +11698,14 @@
         {
           "index": 9,
           "name": "HuntingLogExpReward"
+        },
+        {
+          "index": 11,
+          "name": "ItemLevelSync"
+        },
+        {
+          "index": 14,
+          "name": "cLevel"
         }
       ]
     },
