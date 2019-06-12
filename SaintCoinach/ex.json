@@ -3079,6 +3079,22 @@
           }
         },
         {
+          "index": 30,
+          "name": "Role"
+        },
+        {
+          "index": 31,
+          "name": "StartingTown",
+          "converter": {
+            "type": "link",
+            "target": "Town"
+          }
+        },
+        {
+          "index": 33,
+          "name": "PrimaryStat"
+        },
+        {
           "index": 34,
           "name": "LimitBreak1",
           "converter": {
@@ -3137,6 +3153,14 @@
         {
           "index": 42,
           "name": "StartingLevel"
+        },
+        {
+          "index": 43,
+          "name": "PartyBonus"
+        },
+        {
+          "index": 44,
+          "name": "IsLimitedJob"
         }
       ]
     },
@@ -3346,6 +3370,10 @@
           "converter": {
             "type": "icon"
           }
+        },
+        {
+          "index": 27,
+          "name": "Order"
         },
         {
           "index": 30,
@@ -3687,6 +3715,40 @@
       ]
     },
     {
+      "sheet": "CompanyLeve",
+      "definitions": [
+        {
+          "index": 32,
+          "name": "EventItem",
+          "converter": {
+            "type": "link",
+            "target": "EventItem"
+          }
+        },
+        {
+          "index": 40,
+          "name": "EventItem{Amount}"
+        },
+        {
+          "index": 176,
+          "name": "CompanyLeveRule",
+          "converter": {
+            "type": "link",
+            "target": "CompanyLeveRule"
+          }
+        }
+      ]
+    },
+    {
+      "sheet": "CompanyLeveRule",
+      "defaultColumn": "Type",
+      "definitions": [
+        {
+          "name": "Type"
+        }
+      ]
+    },
+    {
       "sheet": "CompleteJournal",
       "defaultColumn": "Name",
       "definitions": [
@@ -3920,6 +3982,50 @@
           "converter": {
             "type": "icon"
           }
+        },
+        {
+          "index": 42,
+          "name": "LevelingRoulette"
+        },
+        { 
+          "index": 43,
+          "name": "Level50/60Roulette"
+        },
+        {
+          "index": 44,
+          "name": "MSQRoulette"
+        },
+        {
+          "index": 45,
+          "name": "GuildHestRoulette"
+        },
+        {
+          "index": 46,
+          "name": "ExpertRoulette"
+        },
+        {
+          "index": 47,
+          "name": "TrialRoulette"
+        },
+        {
+          "index": 48,
+          "name": "DailyFrontlineChallenge"
+        },
+        {
+          "index": 49,
+          "name": "Level70Roulette"
+        },
+        {
+          "index": 50,
+          "name": "MentorRoulette"
+        },
+        {
+          "index": 56,
+          "name": "AllianceRoulette"
+        },
+        {
+          "index": 58,
+          "name": "NormalRaidRoulette"
         }
       ]
     },
@@ -11629,6 +11735,10 @@
           "name": "MpModifier"
         },
         {
+          "index": 3,
+          "name": "ScaledQuestXP"
+        },
+        {
           "index": 5,
           "name": "BaseSpeed"
         },
@@ -11647,6 +11757,10 @@
         {
           "index": 9,
           "name": "HuntingLogExpReward"
+        },
+        {
+          "index": 11,
+          "name": "ItemLevelSync"
         }
       ]
     },
@@ -14778,6 +14892,20 @@
           "name": "WeatherRate"
         },
         {
+          "index": 20,
+          "name": "PlaceName{Region}Icon",
+          "converter": {
+            "type": "icon"
+          }
+        },
+        {
+          "index": 21,
+          "name": "PlaceNameIcon",
+          "converter": {
+            "type": "icon"
+          }
+        },
+        {
           "index": 22,
           "name": "ArrayEventHandler",
           "converter": {
@@ -14792,6 +14920,10 @@
             "type": "link",
             "target": "Aetheryte"
           }
+        },
+        {
+          "index": 28,
+          "name": "IsPvpZone"
         }
       ]
     },
@@ -15011,11 +15143,27 @@
           }
         },
         {
-          "index": 4,
+          "index": 2,
+          "name": "BNpcName",
+          "converter": {
+            "type": "link",
+            "target": "BNpcName"
+          }
+        },
+        {
+          "index": 3,
           "name": "BNpcCustomize",
           "converter": {
             "type": "link",
             "target": "BNpcCustomize"
+          }
+        },
+        {
+          "index": 4,
+          "name": "NpcEquip",
+          "converter": {
+            "type": "link",
+            "target": "NpcEquip"
           }
         },
         {
@@ -15049,6 +15197,30 @@
         {
           "index": 17,
           "name": "PlayerCamera"
+        },
+        {
+          "index": 18,
+          "name": "StartVFX",
+          "converter": {
+            "type": "link",
+            "target": "VFX"
+          }
+        },
+        {
+          "index": 19,
+          "name": "EndVFX",
+          "converter": {
+            "type": "link",
+            "target": "VFX"
+          }
+        },
+        {
+          "index": 23,
+          "name": "RPParameter",
+          "converter": {
+            "type": "link",
+            "target": "RPParameter"
+          }
         }
       ]
     },
@@ -15108,6 +15280,19 @@
         {
           "index": 6,
           "name": "MinPartySize"
+        }
+      ]
+    },
+    {
+      "sheet": "TreasureSpot",
+      "defaultColumn": "Location",
+      "definitions": [
+        {
+          "name": "Location",
+          "converter": {
+            "type": "link",
+            "target": "Level"
+          }
         }
       ]
     },
@@ -15606,7 +15791,20 @@
           "type": "repeat",
           "count": 10,
           "definition": {
-            "name": "Argument"
+            "type": "group",
+            "members": [
+              {
+                "name": "Argument",
+                "converter": {
+                  "type": "multiref",
+                  "targets": [
+                    "HowTo",
+                    "Item",
+                    "Quest"
+                  ]
+                }
+              }
+            ]
           }
         },
         {
