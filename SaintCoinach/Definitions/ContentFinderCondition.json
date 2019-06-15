@@ -60,14 +60,6 @@
       }
     },
     {
-      "index": 13,
-      "name": "UnlockQuest",
-      "converter": {
-        "type": "link",
-        "target": "Quest"
-      }
-    },
-    {
       "index": 15,
       "name": "ClassJobLevel{Required}"
     },
@@ -108,46 +100,16 @@
       }
     },
     {
-      "index": 36,
-      "name": "TransientKey",
-    },
-    {
       "index": 37,
       "name": "Transient",
       "converter": {
-        "type": "complexlink",
-        "links": [
-          {
-            "when": {
-              "key": "TransientKey",
-              "value": 6
-            },
-            "sheet": "ContentFinderConditionTransient"
-          },
-          {
-            "when": {
-              "key": "TransientKey",
-              "value": 7
-            },
-            "sheet": "ContentFinderConditionTransient"
-          }
-        ]
+        "type": "link",
+        "target": "ContentFinderConditionTransient"
       }
-    },
-    {
-      "index": 38,
-      "name": "SortKey",
     },
     {
       "index": 39,
       "name": "Image",
-      "converter": {
-        "type": "icon"
-      }
-    },
-    {
-      "index": 40,
-      "name": "Icon",
       "converter": {
         "type": "icon"
       }
