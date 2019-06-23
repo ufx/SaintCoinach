@@ -2277,7 +2277,7 @@
     </Content>
     <Content Include="Definitions\GuildOrder.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content
+    </Content>
     <Content Include="Definitions\ModelSkeleton.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
