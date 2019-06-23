@@ -2277,6 +2277,12 @@
     </Content>
     <Content Include="Definitions\GuildOrder.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content
+    <Content Include="Definitions\ModelSkeleton.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Definitions\QuestBattle.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Libra\LibraModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
