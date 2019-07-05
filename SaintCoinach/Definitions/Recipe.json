@@ -51,16 +51,12 @@
       }
     },
     {
-      "index": 25,
-      "name": "RecipeElement",
-      "converter": {
-        "type": "link",
-        "target": "RecipeElement"
-      }
+      "index": 26,
+      "name": "IsSecondary"
     },
     {
       "index": 27,
-      "name": "IsSecondary"
+      "name": "MaterialQualityFactor"
     },
     {
       "index": 28,

@@ -14,14 +14,18 @@
     },
     {
       "index": 3,
-      "name": "Difficulty"
+      "name": "SuggestedControl"
     },
     {
       "index": 4,
-      "name": "Quality"
+      "name": "Difficulty"
     },
     {
       "index": 5,
+      "name": "Quality"
+    },
+    {
+      "index": 6,
       "name": "Durability"
     }
   ]

@@ -3,11 +3,8 @@
   "defaultColumn": "Name",
   "definitions": [
     {
-      "name": "MinLevel"
-    },
-    {
       "index": 1,
-      "name": "MaxLevel"
+      "name": "MinLevel"
     },
     {
       "index": 2,
