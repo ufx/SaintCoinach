@@ -16,7 +16,7 @@ namespace SaintCoinach.Xiv {
         public CharaMakeType(IXivSheet sheet, IRelationalRow sourceRow) : base(sheet, sourceRow) { }
 
         private CharaMakeFeatureIcon[] BuildItems() {
-            const int Count = 42;
+            const int Count = 56;
 
             var items = new List<CharaMakeFeatureIcon>();
 
