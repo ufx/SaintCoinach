@@ -17,7 +17,7 @@ namespace SaintCoinach.Xiv {
         #endregion
 
         #region Properties
-        public int ModelID { get { return AsInt32("ModelID"); } }
+        public ModelChara ModelChara { get { return As<ModelChara>("ModelChara"); } }
         public Race Race { get { return As<Race>("Race"); } }
         public int Gender { get { return AsInt32("Gender"); } }
         public int BodyType { get { return AsInt32("BodyType"); } }
