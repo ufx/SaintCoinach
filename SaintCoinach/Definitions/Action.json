@@ -195,6 +195,10 @@
       }
     },
     {
+      "index": 45,
+      "name": "MaxCharges"
+    },
+    {
       "index": 46,
       "name": "Status{GainSelf}",
       "converter": {
