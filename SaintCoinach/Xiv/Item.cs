@@ -95,6 +95,12 @@ namespace SaintCoinach.Xiv {
         /// <value>The <see cref="EquipSlotCategory" /> of the current item.</value>
         public EquipSlotCategory EquipSlotCategory { get { return As<EquipSlotCategory>(); } }
 
+        /// <summary>
+        ///     Gets the <see cref="ClassJobCategory" /> of the current item.
+        /// </summary>
+        /// <value>The <see cref="ClassJobCategory" /> of the current item.</value>
+        public ClassJobCategory ClassJobCategory { get { return As<ClassJobCategory>(); } }
+
         // ReSharper disable once InconsistentNaming
         /// <summary>
         ///     Gets the <see cref="ItemUICategory" /> of the current item.
