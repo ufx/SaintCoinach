@@ -1,6 +1,5 @@
 {
   "sheet": "DescriptionSection",
-  "defaultColumn": "String",
   "definitions": [
     {
       "name": "String",
