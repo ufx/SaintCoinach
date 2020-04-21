@@ -147,7 +147,7 @@ namespace SaintCoinach.Xiv {
 
             if (libraDatabase != null && libraDatabase.Exists) {
                 const string LibraConnectionStringFormat = @"metadata=res://*/Libra.LibraModel.csdl|res://*/Libra.LibraModel.ssdl|res://*/Libra.LibraModel.msl;provider=System.Data.SQLite.EF6;provider connection string='data source=""{0}""'";
-                var connStr = string.Format(LibraConnectionStringFormat, libraDatabase.FullName);
+                string connStr = string.Format(LibraConnectionStringFormat, libraDatabase.FullName);
                 _Libra = new Libra.Entities(connStr);
             }
         }
@@ -162,13 +162,13 @@ namespace SaintCoinach.Xiv {
         /// <typeparam name="T">Type of the rows to get the <see cref="IXivSheet{T}" /> for.</typeparam>
         /// <returns>Returns the <see cref="IXivSheet{T}" /> for the specified <c>T</c>.</returns>
         public IXivSheet<T> GetSheet<T>() where T : IXivRow {
-            var t = typeof(T);
+            Type t = typeof(T);
 
-            var attr = t.GetCustomAttribute<XivSheetAttribute>();
+            XivSheetAttribute attr = t.GetCustomAttribute<XivSheetAttribute>();
             if (attr != null)
                 return GetSheet<T>(attr.SheetName);
 
-            var name = t.FullName.Substring(t.FullName.IndexOf(".Xiv.", StringComparison.OrdinalIgnoreCase) + 5);
+            string name = t.FullName.Substring(t.FullName.IndexOf(".Xiv.", StringComparison.OrdinalIgnoreCase) + 5);
             return GetSheet<T>(name);
         }
 
@@ -179,13 +179,13 @@ namespace SaintCoinach.Xiv {
         /// <returns>Returns the <see cref="XivSheet2{T}" /> for the specified <c>T</c>.</returns>
         public XivSheet2<T> GetSheet2<T>() where T : IXivSubRow
         {
-            var t = typeof(T);
+            Type t = typeof(T);
 
-            var attr = t.GetCustomAttribute<XivSheetAttribute>();
+            XivSheetAttribute attr = t.GetCustomAttribute<XivSheetAttribute>();
             if (attr != null)
                 return GetSheet2<T>(attr.SheetName);
 
-            var name = t.FullName.Substring(t.FullName.IndexOf(".Xiv.", StringComparison.OrdinalIgnoreCase) + 5);
+            string name = t.FullName.Substring(t.FullName.IndexOf(".Xiv.", StringComparison.OrdinalIgnoreCase) + 5);
             return GetSheet2<T>(name);
         }
 
@@ -276,9 +276,9 @@ namespace SaintCoinach.Xiv {
         /// <param name="header"><see cref="Header"/> to create the sheet for.</param>
         /// <returns>Returns the created <see cref="ISheet"/>.</returns>
         protected override ISheet CreateSheet(Header header) {
-            var baseSheet = (IRelationalSheet)base.CreateSheet(header);
+            IRelationalSheet baseSheet = (IRelationalSheet)base.CreateSheet(header);
 
-            var xivSheet = TryCreateXivSheet(baseSheet);
+            IXivSheet xivSheet = TryCreateXivSheet(baseSheet);
             if (xivSheet != null)
                 return xivSheet;
 
@@ -296,17 +296,17 @@ namespace SaintCoinach.Xiv {
         /// <param name="sourceSheet"><see cref="IRelationalSheet"/> to access the source data.</param>
         /// <returns>Returns a <see cref="IXivSheet"/> if a matching one could be created; <c>null</c> otherwise.</returns>
         protected virtual IXivSheet TryCreateXivSheet(IRelationalSheet sourceSheet) {
-            if (SpecialSheetTypes.TryGetValue(sourceSheet.Name, out var specialCreator))
+            if (SpecialSheetTypes.TryGetValue(sourceSheet.Name, out XivSheetCreator specialCreator))
                 return specialCreator(this, sourceSheet);
 
-            var match = GetXivRowType(sourceSheet.Name);
+            Type match = GetXivRowType(sourceSheet.Name);
             if (match == null)
                 return null;
 
-            var genericType = sourceSheet.Header.Variant == 2 ? typeof(XivSheet2<>) : typeof(XivSheet<>);
+            Type genericType = sourceSheet.Header.Variant == 2 ? typeof(XivSheet2<>) : typeof(XivSheet<>);
 
-            var constructedType = genericType.MakeGenericType(match);
-            var constructor = constructedType.GetConstructor(
+            Type constructedType = genericType.MakeGenericType(match);
+            ConstructorInfo constructor = constructedType.GetConstructor(
                                                              BindingFlags.Instance | BindingFlags.NonPublic
                                                              | BindingFlags.Public,
                 null,
@@ -325,14 +325,14 @@ namespace SaintCoinach.Xiv {
 
             // Record failed matches too.
             return _SheetNameToTypeMap.GetOrAdd(sheetName, s => {
-                var search = "Xiv." + sheetName.Replace('/', '.');
+                string search = "Xiv." + sheetName.Replace('/', '.');
                 return _IXivRowTypes.FirstOrDefault(_ => _.FullName.EndsWith(search));
             });
         }
 
         private Type[] _IXivRowTypes;
         private void BuildSheetToTypeMap() {
-            var allTypes = Assembly.GetExecutingAssembly().GetTypes();
+            Type[] allTypes = Assembly.GetExecutingAssembly().GetTypes();
             var attrTypes = allTypes.Select(t => new { Type = t, Attr = t.GetCustomAttribute<XivSheetAttribute>() }).Where(t => t.Attr != null);
             _IXivRowTypes = allTypes.Where(t => typeof(IXivRow).IsAssignableFrom(t)).ToArray();
 

@@ -89,14 +89,14 @@ namespace SaintCoinach.Xiv {
 
         #region Build
         private BNpcLocation[] BuildLocations(Libra.BNpcName libraRow) {
-            var values = new List<BNpcLocation>();
-            var placeNames = Collection.Collection.GetSheet<PlaceName>();
+            List<BNpcLocation> values = new List<BNpcLocation>();
+            IXivSheet<PlaceName> placeNames = Collection.Collection.GetSheet<PlaceName>();
 
-            foreach (var srcRegion in libraRow.Regions) {
-                var region = placeNames[srcRegion.Item1];
+            foreach (Tuple<int, Tuple<int, int[]>[]> srcRegion in libraRow.Regions) {
+                PlaceName region = placeNames[srcRegion.Item1];
 
-                foreach (var srcZone in srcRegion.Item2) {
-                    var zone = placeNames[srcZone.Item1];
+                foreach (Tuple<int, int[]> srcZone in srcRegion.Item2) {
+                    PlaceName zone = placeNames[srcZone.Item1];
                     int lvMin, lvMax;
                     if (srcZone.Item2.Length > 0) {
                         lvMin = srcZone.Item2.Min();
@@ -112,10 +112,10 @@ namespace SaintCoinach.Xiv {
         }
 
         private Item[] BuildItems(Libra.BNpcName libraRow) {
-            var values = new List<Item>();
-            var items = Collection.Collection.GetSheet<Item>();
+            List<Item> values = new List<Item>();
+            IXivSheet<Item> items = Collection.Collection.GetSheet<Item>();
 
-            foreach (var srcItem in libraRow.Items) {
+            foreach (int srcItem in libraRow.Items) {
                 values.Add(items[srcItem]);
             }
 
@@ -123,10 +123,10 @@ namespace SaintCoinach.Xiv {
         }
 
         private InstanceContent[] BuildInstanceContents(Libra.BNpcName libraRow) {
-            var values = new List<InstanceContent>();
-            var instanceContents = Collection.Collection.GetSheet<InstanceContent>();
+            List<InstanceContent> values = new List<InstanceContent>();
+            IXivSheet<InstanceContent> instanceContents = Collection.Collection.GetSheet<InstanceContent>();
 
-            foreach (var srcContent in libraRow.InstanceContents) {
+            foreach (int srcContent in libraRow.InstanceContents) {
                 values.Add(instanceContents[srcContent]);
             }
 

@@ -70,7 +70,7 @@ namespace SaintCoinach.Xiv {
         /// </summary>
         /// <returns>An array of the <see cref="GilShop" />s offering the current item.</returns>
         private GilShop[] BuildShops() {
-            var sSheet = Sheet.Collection.GetSheet<GilShop>();
+            IXivSheet<GilShop> sSheet = Sheet.Collection.GetSheet<GilShop>();
             return sSheet.Where(shop => shop.Items.Contains(this)).ToArray();
         }
 

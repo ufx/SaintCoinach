@@ -17,14 +17,14 @@ namespace SaintCoinach.Graphics {
         }
 
         private void Build() {
-            var buffer = File.GetData();
+            byte[] buffer = File.GetData();
             this.Colors = new Color[buffer.Length / 4];
 
-            for (var i = 0; i < buffer.Length; i += 4) {
-                var r = buffer[i];
-                var g = buffer[i + 1];
-                var b = buffer[i + 2];
-                var a = buffer[i + 3];
+            for (int i = 0; i < buffer.Length; i += 4) {
+                byte r = buffer[i];
+                byte g = buffer[i + 1];
+                byte b = buffer[i + 2];
+                byte a = buffer[i + 3];
                 this.Colors[i / 4] = Color.FromArgb(a, r, g, b);
             }
         }

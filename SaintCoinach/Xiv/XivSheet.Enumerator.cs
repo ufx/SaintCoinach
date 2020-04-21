@@ -24,7 +24,7 @@ namespace SaintCoinach.Xiv {
 
             public T Current {
                 get {
-                    var srcRow = (Ex.Relational.IRelationalRow)_SourceEnumerator.Current;
+                    Ex.Relational.IRelationalRow srcRow = (Ex.Relational.IRelationalRow)_SourceEnumerator.Current;
                     return _Sheet._Rows.GetOrAdd(srcRow.Key, k => _Sheet.CreateRow(srcRow));
                 }
             }

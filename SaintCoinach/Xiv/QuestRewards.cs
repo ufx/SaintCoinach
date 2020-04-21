@@ -38,9 +38,9 @@ namespace SaintCoinach.Xiv {
             const int Group1Count = 6;
             const int Group2Count = 5;
 
-            var groupsType = Quest.AsInt32("ItemRewardType");
-            var t1 = QuestRewardGroupType.Unknown;
-            var t2 = QuestRewardGroupType.Unknown;
+            int groupsType = Quest.AsInt32("ItemRewardType");
+            QuestRewardGroupType t1 = QuestRewardGroupType.Unknown;
+            QuestRewardGroupType t2 = QuestRewardGroupType.Unknown;
             switch (groupsType) {
                 case 0:
                     return new QuestRewardItemGroup[0];
@@ -61,14 +61,14 @@ namespace SaintCoinach.Xiv {
                     break;
             }
 
-            var groups = new List<QuestRewardItemGroup>();
+            List<QuestRewardItemGroup> groups = new List<QuestRewardItemGroup>();
 
-            var catalysts = BuildItemGroup(QuestRewardGroupType.All, "Item{Catalyst}", "ItemCount{Catalyst}", null, null, CatalystCount);
+            QuestRewardItemGroup catalysts = BuildItemGroup(QuestRewardGroupType.All, "Item{Catalyst}", "ItemCount{Catalyst}", null, null, CatalystCount);
             groups.Add(catalysts);
 
-            var tomestoneCount = Quest.AsInt32("TomestoneCount{Reward}");
+            int tomestoneCount = Quest.AsInt32("TomestoneCount{Reward}");
             if (tomestoneCount > 0) {
-                var tomestoneItem = Quest.As<Item>("Tomestone{Reward}");
+                Item tomestoneItem = Quest.As<Item>("Tomestone{Reward}");
                 if (tomestoneItem != null)
                 {
                     groups.Add(
@@ -80,9 +80,9 @@ namespace SaintCoinach.Xiv {
 
             if (groupsType == 3) {
                 {
-                    var mItem = Quest.As<Item>("Item{Reward}[0]", 0);
-                    var mCount = Quest.AsInt32("ItemCount{Reward}[0]", 0);
-                    var mStain = Quest.As<Stain>("Stain{Reward}[0]", 0);
+                    Item mItem = Quest.As<Item>("Item{Reward}[0]", 0);
+                    int mCount = Quest.AsInt32("ItemCount{Reward}[0]", 0);
+                    Stain mStain = Quest.As<Stain>("Stain{Reward}[0]", 0);
 
                     groups.Add(
                         new QuestRewardItemGroup(
@@ -90,9 +90,9 @@ namespace SaintCoinach.Xiv {
                             QuestRewardGroupType.GenderSpecificMale, null));
                 }
                 {
-                    var fItem = Quest.As<Item>("Item{Reward}[0]", 1);
-                    var fCount = Quest.AsInt32("ItemCount{Reward}[0]", 1);
-                    var fStain = Quest.As<Stain>("Stain{Reward}[0]", 1);
+                    Item fItem = Quest.As<Item>("Item{Reward}[0]", 1);
+                    int fCount = Quest.AsInt32("ItemCount{Reward}[0]", 1);
+                    Stain fStain = Quest.As<Stain>("Stain{Reward}[0]", 1);
 
                     groups.Add(
                         new QuestRewardItemGroup(
@@ -105,10 +105,10 @@ namespace SaintCoinach.Xiv {
                 groups.Add(BuildItemGroup(t2, "Item{Reward}[1]", "ItemCount{Reward}[1]", "Stain{Reward}[1]", "IsHQ{Reward}[1]", Group2Count));
             }
             else if (groupsType == 7) {
-                var beastRankBonus = (XivRow)Quest.BeastTribe["BeastRankBonus"];
-                var item = beastRankBonus.As<Item>();
-                var counts = new List<int>();
-                for (var i = 0; i < 8; i++)
+                XivRow beastRankBonus = (XivRow)Quest.BeastTribe["BeastRankBonus"];
+                Item item = beastRankBonus.As<Item>();
+                List<int> counts = new List<int>();
+                for (int i = 0; i < 8; i++)
                     counts.Add(beastRankBonus.AsInt32("Item{Quantity}", i));
                 groups.Add(new QuestRewardItemGroup(new[] { new QuestRewardItem(item, counts.Distinct(), null, false) }, QuestRewardGroupType.BeastRankBonus, null));
             } else {
@@ -119,11 +119,11 @@ namespace SaintCoinach.Xiv {
             return groups.Where(g => g.Items.Any()).ToArray();
         }
         private QuestRewardItemGroup BuildItemGroup(QuestRewardGroupType type, string itemPrefix, string countPrefix, string stainPrefix, string hqPrefix, int count) {
-            var items = new List<QuestRewardItem>();
+            List<QuestRewardItem> items = new List<QuestRewardItem>();
 
-            for (var i = 0; i < count; ++i) {
-                var itm = Quest.As<Item>(itemPrefix, i);
-                var c = Quest.AsInt32(countPrefix, i);
+            for (int i = 0; i < count; ++i) {
+                Item itm = Quest.As<Item>(itemPrefix, i);
+                int c = Quest.AsInt32(countPrefix, i);
 
                 if (itm == null || itm.Key == 0 || c == 0)
                     continue;
@@ -132,7 +132,7 @@ namespace SaintCoinach.Xiv {
                 if (stainPrefix != null)
                     s = Quest.As<Stain>(stainPrefix, i);
 
-                var isHq = false;
+                bool isHq = false;
                 if (hqPrefix != null)
                     isHq = Quest.AsBoolean(hqPrefix, i);
 
@@ -143,20 +143,20 @@ namespace SaintCoinach.Xiv {
         }
 
         private List<QuestRewardItemGroup> BuildClassQuestJobRewardItemGroups(string itemPrefix, int count) {
-            var groups = new List<QuestRewardItemGroup>();
+            List<QuestRewardItemGroup> groups = new List<QuestRewardItemGroup>();
             
-            for (var i = 0; i < count; ++i) {
-                var row = (XivRow)Quest[$"{itemPrefix}[{i}]"];
+            for (int i = 0; i < count; ++i) {
+                XivRow row = (XivRow)Quest[$"{itemPrefix}[{i}]"];
                 if (row == null)
                     continue;
 
-                var parentRow = (SaintCoinach.Ex.Variant2.DataRow)row.SourceRow;
-                foreach (var subRow in parentRow.SubRows) {
-                    var category = (ClassJobCategory)subRow["ClassJobCategory"];
-                    var items = new List<QuestRewardItem>();
-                    for (var ii = 0; ii < 3; ++ii) {
-                        var itm = (Item)subRow["Reward{Item}[" + ii + "]"];
-                        var c = (byte)subRow["Reward{Amount}[" + ii + "]"];
+                Ex.Variant2.DataRow parentRow = (SaintCoinach.Ex.Variant2.DataRow)row.SourceRow;
+                foreach (Ex.Variant2.SubRow subRow in parentRow.SubRows) {
+                    ClassJobCategory category = (ClassJobCategory)subRow["ClassJobCategory"];
+                    List<QuestRewardItem> items = new List<QuestRewardItem>();
+                    for (int ii = 0; ii < 3; ++ii) {
+                        Item itm = (Item)subRow["Reward{Item}[" + ii + "]"];
+                        byte c = (byte)subRow["Reward{Amount}[" + ii + "]"];
                         if (itm.Key == 0 || c == 0 || category.Key == 0)
                             continue;
 

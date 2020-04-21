@@ -47,13 +47,13 @@ namespace SaintCoinach.Xiv {
         private ProbabilityPair<LeveRewardItemGroup>[] BuildItemGroups() {
             const int Count = 8;
 
-            var itemGroups = new List<ProbabilityPair<LeveRewardItemGroup>>();
-            for (var i = 0; i < Count; ++i) {
-                var probability = AsInt32("Probability<%>", i);
+            List<ProbabilityPair<LeveRewardItemGroup>> itemGroups = new List<ProbabilityPair<LeveRewardItemGroup>>();
+            for (int i = 0; i < Count; ++i) {
+                int probability = AsInt32("Probability<%>", i);
                 if (probability == 0)
                     continue;
 
-                var group = As<LeveRewardItemGroup>(i);
+                LeveRewardItemGroup group = As<LeveRewardItemGroup>(i);
                 if (group.Key == 0)
                     continue;
 

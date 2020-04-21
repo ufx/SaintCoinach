@@ -26,22 +26,22 @@ namespace SaintCoinach.Graphics.TerritoryParts {
             const int BlockPositionsOffset = 0x34;
             const int BlockPositionSize = 0x04;
 
-            var buffer = File.GetData();
+            byte[] buffer = File.GetData();
 
-            var blockCount = BitConverter.ToInt32(buffer, CountOffset);
-            var blockSize = BitConverter.ToInt32(buffer, SizeOffset);
+            int blockCount = BitConverter.ToInt32(buffer, CountOffset);
+            int blockSize = BitConverter.ToInt32(buffer, SizeOffset);
 
-            var blockDirectory = File.Path.Substring(0, File.Path.LastIndexOf('/') + 1);
+            string blockDirectory = File.Path.Substring(0, File.Path.LastIndexOf('/') + 1);
 
             Parts = new TransformedModel[blockCount];
-            for (var i = 0; i < blockCount; ++i) {
-                var blockPath = blockDirectory + string.Format("{0:D4}.mdl", i);
-                var blockModelFile = (ModelFile)File.Pack.Collection.GetFile(blockPath);
+            for (int i = 0; i < blockCount; ++i) {
+                string blockPath = blockDirectory + string.Format("{0:D4}.mdl", i);
+                ModelFile blockModelFile = (ModelFile)File.Pack.Collection.GetFile(blockPath);
 
-                var x = BitConverter.ToInt16(buffer, BlockPositionsOffset + BlockPositionSize * i + 0);
-                var z = BitConverter.ToInt16(buffer, BlockPositionsOffset + BlockPositionSize * i + 2);
+                short x = BitConverter.ToInt16(buffer, BlockPositionsOffset + BlockPositionSize * i + 0);
+                short z = BitConverter.ToInt16(buffer, BlockPositionsOffset + BlockPositionSize * i + 2);
 
-                var translation = new Vector3 {
+                Vector3 translation = new Vector3 {
                     X = blockSize * (x + 0.5f),
                     Y = 0,
                     Z = blockSize * (z + 0.5f)

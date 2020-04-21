@@ -36,7 +36,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
             if (index < 0 || index >= Length)
                 throw new ArgumentOutOfRangeException("index");
 
-            var innerIndex = index % RepeatedDefinition.Length;
+            int innerIndex = index % RepeatedDefinition.Length;
 
             return RepeatedDefinition.Convert(row, value, innerIndex);
         }
@@ -45,10 +45,10 @@ namespace SaintCoinach.Ex.Relational.Definition {
             if (index < 0 || index >= Length)
                 throw new ArgumentOutOfRangeException("index");
 
-            var repeatNr = index / RepeatedDefinition.Length;
-            var innerIndex = index % RepeatedDefinition.Length;
+            int repeatNr = index / RepeatedDefinition.Length;
+            int innerIndex = index % RepeatedDefinition.Length;
 
-            var baseName = RepeatedDefinition.GetName(innerIndex);
+            string baseName = RepeatedDefinition.GetName(innerIndex);
             return string.Format("{0}[{1}]", baseName, repeatNr + NamingOffset);
         }
 
@@ -56,7 +56,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
             if (index < 0 || index >= Length)
                 throw new ArgumentOutOfRangeException("index");
 
-            var innerIndex = index % RepeatedDefinition.Length;
+            int innerIndex = index % RepeatedDefinition.Length;
 
             return RepeatedDefinition.GetValueTypeName(innerIndex);
         }
@@ -65,7 +65,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
             if (index < 0 || index >= Length)
                 throw new ArgumentOutOfRangeException("index");
 
-            var innerIndex = index % RepeatedDefinition.Length;
+            int innerIndex = index % RepeatedDefinition.Length;
 
             return RepeatedDefinition.GetValueType(innerIndex);
         }

@@ -57,10 +57,10 @@ namespace SaintCoinach.Ex.Relational.Update {
             _UpdatedDefinition.DataDefinitions.Add(updater.GetDefinition(newIndex));
 
             _Updaters.Remove(updater);
-            foreach (var u in _Updaters)
+            foreach (KeyValuePair<DefinitionUpdater, IDictionary<int, double>> u in _Updaters)
                 u.Value.Remove(newIndex);
 
-            for (var i = 0; i < updater.DataDefinition.Length; ++i) {
+            for (int i = 0; i < updater.DataDefinition.Length; ++i) {
                 _UsedColumns.Add(newIndex + i);
                 _ColumnMatches.Remove(newIndex + 1);
             }
@@ -106,12 +106,12 @@ namespace SaintCoinach.Ex.Relational.Update {
         void ProcessDefinitionMatches() {
             _ColumnMatches = new Dictionary<int, IDictionary<DefinitionUpdater, double>>();
 
-            foreach (var updater in _Updaters.ToArray()) {
+            foreach (KeyValuePair<DefinitionUpdater, IDictionary<int, double>> updater in _Updaters.ToArray()) {
                 int bestMatchIndex = -1;
                 double bestMatchConfidence = double.NegativeInfinity;
 
                 // Purge unsatisfactory matches
-                foreach(var match in updater.Value.ToArray()) {
+                foreach(KeyValuePair<int, double> match in updater.Value.ToArray()) {
                     if(match.Value > bestMatchConfidence || (match.Value == bestMatchConfidence && match.Key == updater.Key.DataDefinition.Index)) {
                         bestMatchIndex = match.Key;
                         bestMatchConfidence = match.Value;
@@ -138,15 +138,15 @@ namespace SaintCoinach.Ex.Relational.Update {
                 }
 
                 // Populate column matches
-                foreach(var match in updater.Value) {
-                    if (!_ColumnMatches.TryGetValue(match.Key, out var d))
+                foreach(KeyValuePair<int, double> match in updater.Value) {
+                    if (!_ColumnMatches.TryGetValue(match.Key, out IDictionary<DefinitionUpdater, double> d))
                         _ColumnMatches.Add(match.Key, d = new Dictionary<DefinitionUpdater, double>());
                     d.Add(updater.Key, match.Value);
                 }
             }
         }
         void ProcessColumnMatches() {
-            foreach(var col in _ColumnMatches.ToArray()) {
+            foreach(KeyValuePair<int, IDictionary<DefinitionUpdater, double>> col in _ColumnMatches.ToArray()) {
                 if (_UsedColumns.Contains(col.Key))
                     continue;
                 var groups = col.Value
@@ -180,8 +180,8 @@ namespace SaintCoinach.Ex.Relational.Update {
             }
         }
         void ProcessLeftovers() {
-            foreach(var updater in _Updaters.ToArray()) {
-                var remainingMatches = updater.Value.Where(r => IsUnusedColumnRange(r.Key, updater.Key.DataDefinition.Length)).OrderByDescending(m => m.Value).ToArray();
+            foreach(KeyValuePair<DefinitionUpdater, IDictionary<int, double>> updater in _Updaters.ToArray()) {
+                KeyValuePair<int, double>[] remainingMatches = updater.Value.Where(r => IsUnusedColumnRange(r.Key, updater.Key.DataDefinition.Length)).OrderByDescending(m => m.Value).ToArray();
                 if (remainingMatches.Length == 0)
                     _ChangeLog.Add(new DefinitionRemoved(_PreviousDefinition.Name, updater.Key.DataDefinition.Index));
                 else
@@ -191,12 +191,12 @@ namespace SaintCoinach.Ex.Relational.Update {
 
 
         private IEnumerable<DefinitionUpdater> MatchRows() {
-            var defUpdaters =
+            DefinitionUpdater[] defUpdaters =
                 _PreviousDefinition.DataDefinitions.Select(_ => new DefinitionUpdater(_PreviousDefinition, _)).ToArray();
 
             // Record a list of compatible indexes by previous sheet column.
             // These are the only columns to be tested.
-            var comparers = _PreviousSheet.Header.Columns
+            ColumnComparer[] comparers = _PreviousSheet.Header.Columns
                 .Select(c => ColumnComparer.Create(c, _UpdatedSheet.Header.Columns))
                 .ToArray();
 
@@ -206,13 +206,13 @@ namespace SaintCoinach.Ex.Relational.Update {
             foreach (IRow prevRow in _PreviousSheet) {
                 if (!_UpdatedSheet.ContainsRow(prevRow.Key)) continue;
 
-                var prevRowFields =
+                object[] prevRowFields =
                     _PreviousSheet.Header.Columns.OrderBy(_ => _.Index).Select(_ => prevRow[_.Index]).ToArray();
-                var updatedRow = _UpdatedSheet[prevRow.Key];
-                var updatedRowFields =
+                IRelationalRow updatedRow = _UpdatedSheet[prevRow.Key];
+                object[] updatedRowFields =
                     _UpdatedSheet.Header.Columns.OrderBy(_ => _.Index).Select(_ => updatedRow[_.Index]).ToArray();
 
-                foreach (var def in defUpdaters)
+                foreach (DefinitionUpdater def in defUpdaters)
                     def.MatchRow(prevRowFields, updatedRowFields, comparers);
             }
 
@@ -220,20 +220,20 @@ namespace SaintCoinach.Ex.Relational.Update {
         }
 
         private IEnumerable<DefinitionUpdater> MatchVariant2Rows(DefinitionUpdater[] defUpdaters, ColumnComparer[] comparers) {
-            var prevRows = _PreviousSheet.Cast<Variant2.RelationalDataRow>().SelectMany(r => r.SubRows).ToArray();
-            var updatedRows = _UpdatedSheet.Cast<Variant2.RelationalDataRow>().SelectMany(r => r.SubRows).ToArray();
-            var updatedRowIndex = updatedRows.ToDictionary(r => r.FullKey);
+            Variant2.SubRow[] prevRows = _PreviousSheet.Cast<Variant2.RelationalDataRow>().SelectMany(r => r.SubRows).ToArray();
+            Variant2.SubRow[] updatedRows = _UpdatedSheet.Cast<Variant2.RelationalDataRow>().SelectMany(r => r.SubRows).ToArray();
+            Dictionary<string, Variant2.SubRow> updatedRowIndex = updatedRows.ToDictionary(r => r.FullKey);
 
-            foreach (var prevRow in prevRows) {
-                if (!updatedRowIndex.TryGetValue(prevRow.FullKey, out var updatedRow))
+            foreach (Variant2.SubRow prevRow in prevRows) {
+                if (!updatedRowIndex.TryGetValue(prevRow.FullKey, out Variant2.SubRow updatedRow))
                     continue;
 
-                var prevRowFields =
+                object[] prevRowFields =
                     _PreviousSheet.Header.Columns.OrderBy(_ => _.Index).Select(_ => prevRow[_.Index]).ToArray();
-                var updatedRowFields =
+                object[] updatedRowFields =
                     _UpdatedSheet.Header.Columns.OrderBy(_ => _.Index).Select(_ => updatedRow[_.Index]).ToArray();
 
-                foreach (var def in defUpdaters)
+                foreach (DefinitionUpdater def in defUpdaters)
                     def.MatchRow(prevRowFields, updatedRowFields, comparers);
             }
 

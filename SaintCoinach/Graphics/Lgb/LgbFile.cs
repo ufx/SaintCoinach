@@ -38,9 +38,9 @@ namespace SaintCoinach.Graphics.Lgb {
 
         #region Build
         private void Build() {
-            var buffer = File.GetData();
+            byte[] buffer = File.GetData();
 
-            var baseOffset = 0;
+            int baseOffset = 0;
 
             this.Header = buffer.ToStructure<HeaderData>(ref baseOffset);
             if (Header.Magic1 != 0x3142474C || Header.Magic2 != 0x3150474C)     // LGB1 & LGP1
@@ -48,7 +48,7 @@ namespace SaintCoinach.Graphics.Lgb {
 
             Groups = new LgbGroup[Header.GroupCount];
             for (int i = 0; i < Header.GroupCount; ++i) {
-                var groupOffset = baseOffset + BitConverter.ToInt32(buffer, baseOffset + i * 4);
+                int groupOffset = baseOffset + BitConverter.ToInt32(buffer, baseOffset + i * 4);
                 Groups[i] = new LgbGroup(this, buffer, groupOffset);
             }
         }

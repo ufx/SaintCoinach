@@ -19,14 +19,14 @@ namespace SaintCoinach.Ex.Relational {
 
         public RelationalColumn DefaultColumn {
             get {
-                var def = SheetDefinition;
+                SheetDefinition def = SheetDefinition;
                 if (def == null) return null;
 
-                var i = def.GetDefaultColumnIndex();
+                int? i = def.GetDefaultColumnIndex();
                 return i.HasValue ? GetColumn(i.Value) : null;
             }
             set {
-                var def = GetOrCreateSheetDefinition();
+                SheetDefinition def = GetOrCreateSheetDefinition();
                 def.DefaultColumn = value == null ? null : value.Name;
             }
         }
@@ -72,10 +72,10 @@ namespace SaintCoinach.Ex.Relational {
         #region Helpers
 
         public RelationalColumn FindColumn(string name) {
-            var def = SheetDefinition;
+            SheetDefinition def = SheetDefinition;
             if (def == null) return null;
 
-            var i = def.FindColumn(name);
+            int? i = def.FindColumn(name);
             return i.HasValue ? GetColumn(i.Value) : null;
         }
 

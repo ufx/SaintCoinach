@@ -36,8 +36,8 @@ namespace SaintCoinach.Xiv.ItemActions {
             // XXX: Here be magic numbers
             const int MpBaseParamKey = 8;
 
-            var parameters = new ParameterCollection();
-            var bpSheet = Sheet.Collection.GetSheet<BaseParam>();
+            ParameterCollection parameters = new ParameterCollection();
+            IXivSheet<BaseParam> bpSheet = Sheet.Collection.GetSheet<BaseParam>();
 
             if (Maximum > 0)
                 parameters.AddParameterValue(bpSheet[MpBaseParamKey],

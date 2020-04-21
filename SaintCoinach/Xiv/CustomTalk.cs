@@ -37,10 +37,10 @@ namespace SaintCoinach.Xiv {
         private ScriptCommand[] BuildScriptCommands() {
             const int Count = 30;
 
-            var commands = new List<ScriptCommand>();
+            List<ScriptCommand> commands = new List<ScriptCommand>();
 
-            for(var i = 0; i < Count; ++i) {
-                var instr = AsString("Script{Instruction}", i).ToString();
+            for(int i = 0; i < Count; ++i) {
+                string instr = AsString("Script{Instruction}", i).ToString();
                 if (string.IsNullOrWhiteSpace(instr))
                     continue;
                 commands.Add(new ScriptCommand {

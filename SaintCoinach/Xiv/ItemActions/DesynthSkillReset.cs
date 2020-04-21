@@ -16,7 +16,7 @@ namespace SaintCoinach.Xiv.ItemActions {
 
         public ClassJob ClassJob {
             get {
-                var key = GetData(ClassJobKey);
+                int key = GetData(ClassJobKey);
                 return Sheet.Collection.GetSheet<ClassJob>()[key];
             }
         }

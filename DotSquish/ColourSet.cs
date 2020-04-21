@@ -25,8 +25,8 @@ namespace DotSquish {
         #region Constructor
         public ColourSet(byte[] rgba, int mask, SquishOptions flags) {
             // Check the compression mode.
-            var isDxt1 = flags.HasFlag(SquishOptions.DXT1);
-            var weightByAlpha = flags.HasFlag(SquishOptions.WeightColourByAlpha);
+            bool isDxt1 = flags.HasFlag(SquishOptions.DXT1);
+            bool weightByAlpha = flags.HasFlag(SquishOptions.WeightColourByAlpha);
 
             // Create he minimal set.
             for (int i = 0; i < 16; ++i) {
@@ -48,12 +48,12 @@ namespace DotSquish {
                     // Allocate a new point.
                     if (j == i) {
                         // Normalise coordinates to [0,1].
-                        var x = rgba[4 * i] / 255f;
-                        var y = rgba[4 * i + 1] / 255f;
-                        var z = rgba[4 * i + 2] / 255f;
+                        float x = rgba[4 * i] / 255f;
+                        float y = rgba[4 * i + 1] / 255f;
+                        float z = rgba[4 * i + 2] / 255f;
 
                         // Ensure there is always a non-zero weight even for zero alpha.
-                        var w = (rgba[4 * i + 3] + 1) / 256f;
+                        float w = (rgba[4 * i + 3] + 1) / 256f;
 
                         // Add the point.
                         this._Points[this._Count] = new Vector3(x, y, z);
@@ -67,17 +67,17 @@ namespace DotSquish {
 
                     // Check for a match.
                     int oldBit = 1 << j;
-                    var match = ((mask & oldBit) != 0)
+                    bool match = ((mask & oldBit) != 0)
                         && (rgba[4 * i] == rgba[4 * j])
                         && (rgba[4 * i + 1] == rgba[4 * j + 1])
                         && (rgba[4 * i + 3] == rgba[4 * j + 2])
                         && (rgba[4 * j + 3] >= 128 || !isDxt1);
                     if (match) {
                         // Get index of the match.
-                        var index = this._Remap[j];
+                        int index = this._Remap[j];
 
                         // Ensure there is always a non-zero weight even for zero alpha.
-                        var w = (rgba[4 * i + 3] + 1) / 256f;
+                        float w = (rgba[4 * i + 3] + 1) / 256f;
 
                         // Map this point and increase the weight.
                         this._Weights[index] += (weightByAlpha ? w : 1f);
@@ -96,7 +96,7 @@ namespace DotSquish {
         #region Methods
         public void RemapIndices(byte[] source, byte[] target, int targetOffset) {
             for (int i = 0; i < 16; ++i) {
-                var j = this._Remap[i];
+                int j = this._Remap[i];
                 if (j == -1)
                     target[i + targetOffset] = 3;
                 else

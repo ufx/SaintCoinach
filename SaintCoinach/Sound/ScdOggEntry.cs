@@ -65,24 +65,24 @@ namespace SaintCoinach.Sound {
             const int SeekTableSizeOffset = 0x10;
             const int VorbisHeaderSizeOffset = 0x14;
 
-            var cryptType = (ScdOggCryptType)File.ReadInt16(dataOffset + CryptTypeOffset);
+            ScdOggCryptType cryptType = (ScdOggCryptType)File.ReadInt16(dataOffset + CryptTypeOffset);
 
             if (cryptType != ScdOggCryptType.None && cryptType != ScdOggCryptType.FullXorUsingTable && cryptType != ScdOggCryptType.VorbisHeaderXor)
                 throw new NotSupportedException();
 
-            var seekTableSize = File.ReadInt32(dataOffset + SeekTableSizeOffset);
-            var vorbisHeaderSize = File.ReadInt32(dataOffset + VorbisHeaderSizeOffset);
+            int seekTableSize = File.ReadInt32(dataOffset + SeekTableSizeOffset);
+            int vorbisHeaderSize = File.ReadInt32(dataOffset + VorbisHeaderSizeOffset);
 
-            var vorbisHeaderOffset = dataOffset + 0x20 + seekTableSize;
-            var soundDataOffset = vorbisHeaderOffset + vorbisHeaderSize;
+            int vorbisHeaderOffset = dataOffset + 0x20 + seekTableSize;
+            int soundDataOffset = vorbisHeaderOffset + vorbisHeaderSize;
 
-            var vorbisHeader = new byte[vorbisHeaderSize];
+            byte[] vorbisHeader = new byte[vorbisHeaderSize];
             Array.Copy(File._InputBuffer, vorbisHeaderOffset, vorbisHeader, 0, vorbisHeaderSize);
 
             if (cryptType == ScdOggCryptType.VorbisHeaderXor) {
-                var xorVal = File._InputBuffer[dataOffset + XorValueOffset];
+                byte xorVal = File._InputBuffer[dataOffset + XorValueOffset];
                 if (xorVal != 0) {
-                    for (var i = 0; i < vorbisHeader.Length; ++i)
+                    for (int i = 0; i < vorbisHeader.Length; ++i)
                         vorbisHeader[i] ^= xorVal;
                 }
             }
@@ -95,9 +95,9 @@ namespace SaintCoinach.Sound {
                 XorUsingTable();
         }
         private void XorUsingTable() {
-            var staticXor = (byte)(Header.DataSize & 0x7F);
-            var tableOffset = (byte)(Header.DataSize & 0x3F);
-            for (var i = 0; i < _Decoded.Length; ++i) {
+            byte staticXor = (byte)(Header.DataSize & 0x7F);
+            byte tableOffset = (byte)(Header.DataSize & 0x3F);
+            for (int i = 0; i < _Decoded.Length; ++i) {
                 _Decoded[i] ^= XorTable[(tableOffset + i) & 0xFF];
                 _Decoded[i] ^= staticXor;
             }

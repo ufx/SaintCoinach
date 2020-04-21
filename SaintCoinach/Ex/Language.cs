@@ -48,8 +48,8 @@ namespace SaintCoinach.Ex {
             LangToCode = new Dictionary<Language, string>();
             CodeToLang = new Dictionary<string, Language>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (var lang in Languages) {
-                var code = GetCode(lang);
+            foreach (Language lang in Languages) {
+                string code = GetCode(lang);
                 LangToCode.Add(lang, code);
                 CodeToLang.Add(code, lang);
             }
@@ -60,17 +60,17 @@ namespace SaintCoinach.Ex {
         public static string GetCode(this Language self) {
             if (LangToCode.ContainsKey(self))
                 return LangToCode[self];
-            var type = typeof(Language);
-            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static);
-            var fi = fields.First(_ => (Language)_.GetValue(null) == self);
-            var attr =
+            Type type = typeof(Language);
+            FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Static);
+            FieldInfo fi = fields.First(_ => (Language)_.GetValue(null) == self);
+            DescriptionAttribute attr =
                 fi.GetCustomAttributes(typeof(DescriptionAttribute), false).FirstOrDefault() as DescriptionAttribute;
 
             return attr == null ? self.ToString() : attr.Description;
         }
 
         public static string GetSuffix(this Language self) {
-            var code = self.GetCode();
+            string code = self.GetCode();
             if (code.Length > 0)
                 return "_" + code;
             return string.Empty;

@@ -76,14 +76,14 @@ namespace SaintCoinach.Xiv {
                 const int TomestoneBKey = 8;    // Verity
                 const int CurrencyCount = 5;
 
-                var tomestones = Sheet.Collection.GetSheet<TomestonesItem>();
+                IXivSheet<TomestonesItem> tomestones = Sheet.Collection.GetSheet<TomestonesItem>();
 
-                var tomeA = tomestones[TomestoneAKey].Item;
-                var tomeB = tomestones[TomestoneBKey].Item;
+                Item tomeA = tomestones[TomestoneAKey].Item;
+                Item tomeB = tomestones[TomestoneBKey].Item;
 
-                var sumA = 0;
-                var sumB = 0;
-                for (var i = 0; i < CurrencyCount; ++i) {
+                int sumA = 0;
+                int sumB = 0;
+                for (int i = 0; i < CurrencyCount; ++i) {
                     sumA += AsInt32("BossCurrencyA", i);
                     sumB += AsInt32("BossCurrencyB", i);
                 }
@@ -121,24 +121,24 @@ namespace SaintCoinach.Xiv {
                 if (_ItemSourceItems != null)
                     return _ItemSourceItems;
 
-                var items = new List<Item>();
+                List<Item> items = new List<Item>();
 
                 if (FixedRewards != null) {
-                    foreach (var item in FixedRewards) items.Add(item.Item);
+                    foreach (IContentReward item in FixedRewards) items.Add(item.Item);
                 }
 
                 if (Data.MidBosses != null) {
-                    foreach (var boss in Data.MidBosses) {
+                    foreach (InstanceContentData.Fight boss in Data.MidBosses) {
                         if (boss.RewardItems != null)
-                            foreach (var item in boss.RewardItems) items.Add(item.Item);
+                            foreach (InstanceContentData.RewardItem item in boss.RewardItems) items.Add(item.Item);
                     }
                 }
                 if (Data.Boss != null && Data.Boss.RewardItems != null) {
-                    foreach (var item in Data.Boss.RewardItems) items.Add(item.Item);
+                    foreach (InstanceContentData.RewardItem item in Data.Boss.RewardItems) items.Add(item.Item);
                 }
                 if (Data.MapTreasures != null) {
-                    foreach (var coffer in Data.MapTreasures)
-                        foreach (var item in coffer.Items) items.Add(item);
+                    foreach (InstanceContentData.Treasure coffer in Data.MapTreasures)
+                        foreach (Item item in coffer.Items) items.Add(item);
                 }
 
                 return _ItemSourceItems = items.ToArray();

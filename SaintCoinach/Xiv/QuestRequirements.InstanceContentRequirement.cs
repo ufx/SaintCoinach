@@ -18,9 +18,9 @@ namespace SaintCoinach.Xiv {
 
                 this.Type = (PrerequisiteQuestsRequirementType)quest.AsInt32("InstanceContentJoin");
 
-                var contents = new List<InstanceContent>();
-                for (var i = 0; i < QuestCount; ++i) {
-                    var c = quest.As<InstanceContent>("InstanceContent", i);
+                List<InstanceContent> contents = new List<InstanceContent>();
+                for (int i = 0; i < QuestCount; ++i) {
+                    InstanceContent c = quest.As<InstanceContent>("InstanceContent", i);
 
                     if (c.Key != 0)
                         contents.Add(c);

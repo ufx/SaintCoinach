@@ -24,10 +24,10 @@ namespace SaintCoinach.Graphics.ShPk {
             DataOffset = BitConverter.ToInt32(buffer, offset + 0x00);
             DataLength = BitConverter.ToInt32(buffer, offset + 0x04);
 
-            var cScalar = BitConverter.ToInt16(buffer, offset + 0x08);
-            var cResource = BitConverter.ToInt16(buffer, offset + 0x0A);
+            short cScalar = BitConverter.ToInt16(buffer, offset + 0x08);
+            short cResource = BitConverter.ToInt16(buffer, offset + 0x0A);
 
-            var paramRef = new List<ShaderParameterReference>();
+            List<ShaderParameterReference> paramRef = new List<ShaderParameterReference>();
             while (cScalar-- > 0) {
                 paramRef.Add(new ShaderParameterReference(ParameterType.Scalar, buffer, offset + Size));
                 Size += ShaderParameterReference.Size;

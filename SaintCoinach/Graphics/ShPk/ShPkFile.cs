@@ -30,14 +30,14 @@ namespace SaintCoinach.Graphics.ShPk {
         #region Build
 
         private void Build() {
-            var buffer = SourceFile.GetData();
+            byte[] buffer = SourceFile.GetData();
 
             Header = new ShPkHeader(buffer);
 
             // TODO: All the other things
 
-            var para = new List<Parameter>();
-            foreach (var paraHeader in Header.ParameterHeaders)
+            List<Parameter> para = new List<Parameter>();
+            foreach (ParameterHeader paraHeader in Header.ParameterHeaders)
                 para.Add(new Parameter(this, paraHeader, buffer));
             Parameters = new ReadOnlyCollection<Parameter>(para);
         }

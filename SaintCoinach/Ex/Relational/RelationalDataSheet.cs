@@ -41,8 +41,8 @@ namespace SaintCoinach.Ex.Relational {
             if (key == 0)
                 return null;
 
-            var index = _indexes.GetOrAdd(indexName, i => {
-                var column = Header.FindColumn(indexName);
+            RelationalDataIndex<T> index = _indexes.GetOrAdd(indexName, i => {
+                RelationalColumn column = Header.FindColumn(indexName);
                 if (column == null)
                     throw new KeyNotFoundException();
 

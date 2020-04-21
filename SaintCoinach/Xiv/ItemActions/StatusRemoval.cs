@@ -42,11 +42,11 @@ namespace SaintCoinach.Xiv.ItemActions {
         #region Build
 
         private FriendlyEffect[] BuildStatuses(bool hq) {
-            var statuses = new List<FriendlyEffect>();
-            var statusSheet = Sheet.Collection.GetSheet<FriendlyEffect>();
+            List<FriendlyEffect> statuses = new List<FriendlyEffect>();
+            IXivSheet<FriendlyEffect> statusSheet = Sheet.Collection.GetSheet<FriendlyEffect>();
 
-            for (var i = 0; i < StatusCount; ++i) {
-                var statusKey = hq ? GetHqData(StatusOffset + i) : GetData(StatusOffset + i);
+            for (int i = 0; i < StatusCount; ++i) {
+                int statusKey = hq ? GetHqData(StatusOffset + i) : GetData(StatusOffset + i);
 
                 if (statusKey == 0 || statuses.Any(_ => _.Key == statusKey))
                     continue;

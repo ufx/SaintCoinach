@@ -44,10 +44,10 @@ namespace SaintCoinach.Xiv {
         private ClassJobRequirement[] BuildClassJobs() {
             const int Count = 2;
 
-            var cjr = new List<ClassJobRequirement>();
-            for (var i = 0; i < Count; ++i) {
-                var cjc = Quest.As<ClassJobCategory>(i);
-                var lv = Quest.AsInt32("ClassJobLevel", i);
+            List<ClassJobRequirement> cjr = new List<ClassJobRequirement>();
+            for (int i = 0; i < Count; ++i) {
+                ClassJobCategory cjc = Quest.As<ClassJobCategory>(i);
+                int lv = Quest.AsInt32("ClassJobLevel", i);
 
                 if (cjc.Key != 0 && lv > 0)
                     cjr.Add(new ClassJobRequirement(cjc, lv));
@@ -58,9 +58,9 @@ namespace SaintCoinach.Xiv {
         private Quest[] BuildQuestExclusion() {
             const int Count = 2;
 
-            var quests = new List<Quest>();
-            for (var i = 0; i < Count; ++i) {
-                var q = Quest.As<Quest>("QuestLock", i);
+            List<Quest> quests = new List<Quest>();
+            for (int i = 0; i < Count; ++i) {
+                Quest q = Quest.As<Quest>("QuestLock", i);
                 if (q != null && q.Key != 0)
                     quests.Add(q);
             }

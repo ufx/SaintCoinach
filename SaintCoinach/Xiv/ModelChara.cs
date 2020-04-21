@@ -74,18 +74,18 @@ namespace SaintCoinach.Xiv {
             const string ImcPathFormat = "chara/monster/m{0:D4}/obj/body/b{1:D4}/b{1:D4}.imc";
             const string ModelPathFormat = "chara/monster/m{0:D4}/obj/body/b{1:D4}/model/m{0:D4}b{1:D4}.mdl";
 
-            var imcPath = string.Format(ImcPathFormat, ModelKey, BaseKey);
-            var mdlPath = string.Format(ModelPathFormat, ModelKey, BaseKey);
+            string imcPath = string.Format(ImcPathFormat, ModelKey, BaseKey);
+            string mdlPath = string.Format(ModelPathFormat, ModelKey, BaseKey);
 
-            var packs = this.Sheet.Collection.PackCollection;
+            IO.PackCollection packs = this.Sheet.Collection.PackCollection;
 
-            if (!packs.TryGetFile(imcPath, out var imcFileBase) || !packs.TryGetFile(mdlPath, out var mdlFileBase) || !(mdlFileBase is ModelFile))
+            if (!packs.TryGetFile(imcPath, out IO.File imcFileBase) || !packs.TryGetFile(mdlPath, out IO.File mdlFileBase) || !(mdlFileBase is ModelFile))
                 throw new InvalidOperationException($"Unable to find files for {this}.");
 
             try {
-                var model = ((ModelFile)mdlFileBase).GetModelDefinition();
-                var imcFile = new ImcFile(imcFileBase);
-                var variant = imcFile.GetVariant(Variant);
+                ModelDefinition model = ((ModelFile)mdlFileBase).GetModelDefinition();
+                ImcFile imcFile = new ImcFile(imcFileBase);
+                ImcVariant variant = imcFile.GetVariant(Variant);
 
                 return Tuple.Create(model, variant);
             } catch (Exception ex) {

@@ -35,7 +35,7 @@ namespace SaintCoinach.Text {
             string v;
             if (_StringCache != null && _StringCache.TryGetTarget(out v))
                 return v;
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             v = sb.ToString();
             if (_StringCache == null)
@@ -45,7 +45,7 @@ namespace SaintCoinach.Text {
             return v;
         }
         public void ToString(StringBuilder builder) {
-            foreach (var part in Children)
+            foreach (INode part in Children)
                 part.ToString(builder);
         }
 
@@ -64,8 +64,8 @@ namespace SaintCoinach.Text {
             return false;
         }
         public static bool operator ==(XivString left, XivString right) {
-            var lNull = object.ReferenceEquals(null, left);
-            var rNull = object.ReferenceEquals(null, right);
+            bool lNull = object.ReferenceEquals(null, left);
+            bool rNull = object.ReferenceEquals(null, right);
             if (lNull && rNull)
                 return true;
             if (lNull != rNull)
@@ -73,8 +73,8 @@ namespace SaintCoinach.Text {
             return (left.ToString() == right.ToString());
         }
         public static bool operator !=(XivString left, XivString right) {
-            var lNull = object.ReferenceEquals(null, left);
-            var rNull = object.ReferenceEquals(null, right);
+            bool lNull = object.ReferenceEquals(null, left);
+            bool rNull = object.ReferenceEquals(null, right);
             if (lNull && rNull)
                 return false;
             if (lNull != rNull)
@@ -82,8 +82,8 @@ namespace SaintCoinach.Text {
             return (left.ToString() != right.ToString());
         }
         public static bool operator ==(XivString left, string right) {
-            var lNull = object.ReferenceEquals(null, left);
-            var rNull = object.ReferenceEquals(null, right);
+            bool lNull = object.ReferenceEquals(null, left);
+            bool rNull = object.ReferenceEquals(null, right);
             if (lNull && rNull)
                 return true;
             if (lNull != rNull)
@@ -91,8 +91,8 @@ namespace SaintCoinach.Text {
             return (left.ToString() == right);
         }
         public static bool operator !=(XivString left, string right) {
-            var lNull = object.ReferenceEquals(null, left);
-            var rNull = object.ReferenceEquals(null, right);
+            bool lNull = object.ReferenceEquals(null, left);
+            bool rNull = object.ReferenceEquals(null, right);
             if (lNull && rNull)
                 return false;
             if (lNull != rNull)

@@ -27,14 +27,14 @@ namespace SaintCoinach.Xiv.ItemActions {
 
         public ItemFood ItemFood {
             get {
-                var key = GetData(ItemFoodKey);
+                int key = GetData(ItemFoodKey);
                 return Sheet.Collection.GetSheet<ItemFood>()[key];
             }
         }
 
         public ItemFood ItemFoodHq {
             get {
-                var key = GetHqData(ItemFoodKey);
+                int key = GetHqData(ItemFoodKey);
                 return Sheet.Collection.GetSheet<ItemFood>()[key];
             }
         }
@@ -59,19 +59,19 @@ namespace SaintCoinach.Xiv.ItemActions {
         #region Build
 
         private ParameterCollection BuildParameters() {
-            var parameters = new ParameterCollection();
+            ParameterCollection parameters = new ParameterCollection();
 
-            var f = ItemFood;
-            var fHq = ItemFoodHq;
+            ItemFood f = ItemFood;
+            ItemFood fHq = ItemFoodHq;
             if (f == fHq)
                 parameters.AddRange(f.Parameters);
             else {
-                foreach (var p in f.Parameters) {
-                    foreach (var v in p.Where(_ => _.Type != ParameterType.Hq))
+                foreach (Parameter p in f.Parameters) {
+                    foreach (ParameterValue v in p.Where(_ => _.Type != ParameterType.Hq))
                         parameters.AddParameterValue(p.BaseParam, v);
                 }
-                foreach (var p in fHq.Parameters) {
-                    foreach (var v in p.Where(_ => _.Type == ParameterType.Hq))
+                foreach (Parameter p in fHq.Parameters) {
+                    foreach (ParameterValue v in p.Where(_ => _.Type == ParameterType.Hq))
                         parameters.AddParameterValue(p.BaseParam, v);
                 }
             }

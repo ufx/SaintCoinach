@@ -18,7 +18,7 @@ namespace SaintCoinach.Xiv.ItemActions
 
         public TripleTriadCard TripleTriadCard {
             get {
-                var key = GetData(CardKey);
+                int key = GetData(CardKey);
                 return Sheet.Collection.GetSheet<TripleTriadCard>()[key];
             }
         }

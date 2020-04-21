@@ -90,9 +90,9 @@ namespace SaintCoinach.Xiv {
         private SpecialShopListing[] BuildShopItems() {
             const int Count = 60;
 
-            var items = new List<SpecialShopListing>();
-            for (var i = 0; i < Count; ++i) {
-                var item = new SpecialShopListing(this, i);
+            List<SpecialShopListing> items = new List<SpecialShopListing>();
+            for (int i = 0; i < Count; ++i) {
+                SpecialShopListing item = new SpecialShopListing(this, i);
                 if (item.Rewards.Any())
                     items.Add(item);
             }

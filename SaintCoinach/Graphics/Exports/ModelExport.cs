@@ -18,14 +18,14 @@ namespace SaintCoinach.Graphics.Exports {
         private ModelExport() { }
 
         public static ModelExport AsObj(Model model, ImcVariant variant) {
-            var export = new ModelExport();
+            ModelExport export = new ModelExport();
             export.Model = model;
             export.Variant = variant;
 
             export.Meshes = new List<MeshExport>();
-            foreach (var mesh in model.Meshes) {
-                var bytes = Obj.GetBytes(mesh);
-                var material = mesh.Material.Get(variant);
+            foreach (Mesh mesh in model.Meshes) {
+                byte[] bytes = Obj.GetBytes(mesh);
+                Material material = mesh.Material.Get(variant);
                 export.Meshes.Add(new MeshExport(bytes, material));
             }
             return export;
@@ -50,10 +50,10 @@ namespace SaintCoinach.Graphics.Exports {
         }
 
         private void ExportTextures(Material material) {
-            var errors = new List<string>();
+            List<string> errors = new List<string>();
 
-            foreach (var param in material.TextureParameters) {
-                var tex = material.TexturesFiles[param.TextureIndex];
+            foreach (MaterialTextureParameter param in material.TextureParameters) {
+                ImageFile tex = material.TexturesFiles[param.TextureIndex];
 
                 switch (param.ParameterId) {
                     case 0x0C5EC1F1:

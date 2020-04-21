@@ -91,7 +91,7 @@ namespace SaintCoinach.Ex {
             const int VariantOffset = 0x10;
             const int DataOffset = 0x20;
 
-            var buffer = File.GetData();
+            byte[] buffer = File.GetData();
 
             if (buffer.Length < MinimumLength)
                 throw new InvalidDataException("EXH file is too short");
@@ -104,7 +104,7 @@ namespace SaintCoinach.Ex {
             if (Variant != 1 && Variant != 2)
                 throw new NotSupportedException();
 
-            var currentPosition = DataOffset;
+            int currentPosition = DataOffset;
             ReadColumns(buffer, ref currentPosition);
             ReadPartialFiles(buffer, ref currentPosition);
             ReadSuffixes(buffer, ref currentPosition);
@@ -114,9 +114,9 @@ namespace SaintCoinach.Ex {
             const int CountOffset = 0x08;
             const int Length = 0x04;
 
-            var count = OrderedBitConverter.ToUInt16(buffer, CountOffset, true);
+            ushort count = OrderedBitConverter.ToUInt16(buffer, CountOffset, true);
             _Columns = new Column[count];
-            for (var i = 0; i < count; ++i) {
+            for (int i = 0; i < count; ++i) {
                 _Columns[i] = CreateColumn(i, buffer, position);
                 position += Length;
             }
@@ -126,11 +126,11 @@ namespace SaintCoinach.Ex {
             const int CountOffset = 0x0A;
             const int Length = 0x08;
 
-            var count = OrderedBitConverter.ToUInt16(buffer, CountOffset, true);
+            ushort count = OrderedBitConverter.ToUInt16(buffer, CountOffset, true);
             _DataFileRanges = new Range[count];
-            for (var i = 0; i < count; ++i) {
-                var min = OrderedBitConverter.ToInt32(buffer, position + 0x00, true);
-                var len = OrderedBitConverter.ToInt32(buffer, position + 0x04, true);
+            for (int i = 0; i < count; ++i) {
+                int min = OrderedBitConverter.ToInt32(buffer, position + 0x00, true);
+                int len = OrderedBitConverter.ToInt32(buffer, position + 0x04, true);
 
                 _DataFileRanges[i] = new Range(min, len);
 
@@ -147,9 +147,9 @@ namespace SaintCoinach.Ex {
             // is a flag to use a global list of available languages in this
             // buffer?
 
-            var count = OrderedBitConverter.ToUInt16(buffer, CountOffset, true);
-            var langs = new List<Language>();
-            for (var i = 0; i < count; ++i) {
+            ushort count = OrderedBitConverter.ToUInt16(buffer, CountOffset, true);
+            List<Language> langs = new List<Language>();
+            for (int i = 0; i < count; ++i) {
                 langs.Add(LanguageMap[buffer[position]]);
                 position += Length;
             }

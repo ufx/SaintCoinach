@@ -46,10 +46,10 @@ namespace SaintCoinach.Xiv {
         #region Helper
 
         public int GetMpCost(int level) {
-            var paramGrowSheet = Sheet.Collection.GetSheet<ParamGrow>();
+            IXivSheet<ParamGrow> paramGrowSheet = Sheet.Collection.GetSheet<ParamGrow>();
             if (!paramGrowSheet.ContainsRow(level))
                 return 0;
-            var paramGrow = paramGrowSheet[level];
+            ParamGrow paramGrow = paramGrowSheet[level];
 
             return (int)(paramGrow.MpModifier * Cost);
         }

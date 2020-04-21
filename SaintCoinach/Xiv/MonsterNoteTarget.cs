@@ -39,13 +39,13 @@ namespace SaintCoinach.Xiv {
 
             const int Count = 3;
 
-            var locations = new List<ILocation>();
+            List<ILocation> locations = new List<ILocation>();
 
-            var maps = Sheet.Collection.GetSheet<Map>();
+            IXivSheet<Map> maps = Sheet.Collection.GetSheet<Map>();
 
-            for (var i = 0; i < Count; ++i) {
-                var zone = As<PlaceName>("PlaceName{Zone}", i);
-                var location = As<PlaceName>("PlaceName{Location}", i);
+            for (int i = 0; i < Count; ++i) {
+                PlaceName zone = As<PlaceName>("PlaceName{Zone}", i);
+                PlaceName location = As<PlaceName>("PlaceName{Location}", i);
 
                 if (zone.Key != 0)
                     locations.Add(new Location(zone, location));

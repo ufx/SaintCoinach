@@ -37,8 +37,8 @@ namespace SaintCoinach.Xiv {
         #region IComparer<InventoryItem> Members
 
         public int Compare(SaintCoinach.Xiv.ItemBase x, SaintCoinach.Xiv.ItemBase y) {
-            var ix = x as Item;
-            var iy = y as Item;
+            Item ix = x as Item;
+            Item iy = y as Item;
             if (x == y)
                 return 0;
             if (x == null)
@@ -49,7 +49,7 @@ namespace SaintCoinach.Xiv {
             if (iy == null)
                 return 1;
             if (ix != null && iy != null) {
-                var comp = CompareCategoryMajor(ix, iy);
+                int comp = CompareCategoryMajor(ix, iy);
                 if (comp != 0)
                     return comp;
 
@@ -78,8 +78,8 @@ namespace SaintCoinach.Xiv {
         }
 
         public int CompareEquipLevel(SaintCoinach.Xiv.Item x, SaintCoinach.Xiv.Item y) {
-            var ex = 0;
-            var ey = 0;
+            int ex = 0;
+            int ey = 0;
             if (x is SaintCoinach.Xiv.Items.Equipment)
                 ex = ((SaintCoinach.Xiv.Items.Equipment)x).EquipmentLevel;
             if (y is SaintCoinach.Xiv.Items.Equipment)

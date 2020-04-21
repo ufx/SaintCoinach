@@ -66,8 +66,8 @@ namespace SaintCoinach.Text {
             return (eval ?? DefaultGenericTagEvaluator)(parameters, element);
         }
         protected virtual IExpression EvaluateDefaultGenericElement(EvaluationParameters parameters, GenericElement element) {
-            var items = new List<IExpression>();
-            var hasArgs = element.Arguments.Any();
+            List<IExpression> items = new List<IExpression>();
+            bool hasArgs = element.Arguments.Any();
             items.Add(new GenericExpression(StringTokens.TagOpen + element.Tag.ToString()));
             if (hasArgs)
                 items.Add(new SurroundedExpression(StringTokens.ArgumentsOpen, new ExpressionCollection(element.Arguments.Select(_ => _.TryEvaluate(parameters))) { Separator = StringTokens.ArgumentsSeperator }, StringTokens.ArgumentsClose));
@@ -83,15 +83,15 @@ namespace SaintCoinach.Text {
             return new ExpressionCollection(items);
         }
         protected virtual IExpression EvaluateTwoDigitValue(EvaluationParameters parameters, Nodes.GenericElement element) {
-            var eval = element.Content.TryEvaluate(parameters);
-            var intVal = ToInteger(eval);
+            IExpression eval = element.Content.TryEvaluate(parameters);
+            int intVal = ToInteger(eval);
             return new GenericExpression(intVal.ToString("D2"));
         }
         protected virtual IExpression EvaluateZeroPaddedValue(EvaluationParameters parameters, Nodes.GenericElement element) {
-            var lenEval = element.Arguments.First().TryEvaluate(parameters);
-            var len = ToInteger(lenEval);
-            var eval = element.Content.TryEvaluate(parameters);
-            var intVal = ToInteger(eval);
+            IExpression lenEval = element.Arguments.First().TryEvaluate(parameters);
+            int len = ToInteger(lenEval);
+            IExpression eval = element.Content.TryEvaluate(parameters);
+            int intVal = ToInteger(eval);
 
             return new GenericExpression(intVal.ToString("D" + len.ToString()));
         }
@@ -105,11 +105,11 @@ namespace SaintCoinach.Text {
              * - 217 / D9h  Minute
              */
 
-            var argEval = element.Arguments.First().TryEvaluate(parameters);
-            var argInt = ToInteger(argEval);
+            IExpression argEval = element.Arguments.First().TryEvaluate(parameters);
+            int argInt = ToInteger(argEval);
 
-            var utcTime = EorzeaDateTime.Zero.AddSeconds(argInt);
-            var localTime = utcTime.ToLocalTime();
+            DateTime utcTime = EorzeaDateTime.Zero.AddSeconds(argInt);
+            DateTime localTime = utcTime.ToLocalTime();
 
             parameters.TopLevelParameters[0xDE] = localTime.Year;
             parameters.TopLevelParameters[0xDD] = localTime.Month;
@@ -122,21 +122,21 @@ namespace SaintCoinach.Text {
         }
 
         protected virtual IExpression EvaluateSheet(EvaluationParameters parameters, Nodes.GenericElement element) {
-            var evalArgs = element.Arguments.Select(_ => _.TryEvaluate(parameters)).ToArray();
+            IExpression[] evalArgs = element.Arguments.Select(_ => _.TryEvaluate(parameters)).ToArray();
             if (evalArgs.Length < 2)
                 throw new InvalidOperationException();
-            var sheetName = evalArgs[0].ToString();
-            var rowKey = ToInteger(evalArgs[1]);
-            var colKey = 0;
+            string sheetName = evalArgs[0].ToString();
+            int rowKey = ToInteger(evalArgs[1]);
+            int colKey = 0;
             if (evalArgs.Length > 2)
                 colKey = ToInteger(evalArgs[2]);
 
-            var row = Data.GetSheet(sheetName)[rowKey];
-            var value = row[colKey];
+            XivRow row = Data.GetSheet(sheetName)[rowKey];
+            object value = row[colKey];
             if (value is INode) {
-                var innerParams = new EvaluationParameters(parameters);
+                EvaluationParameters innerParams = new EvaluationParameters(parameters);
                 innerParams.InputParameters.Clear();
-                for (var i = 3; i < evalArgs.Length; ++i)
+                for (int i = 3; i < evalArgs.Length; ++i)
                     innerParams.InputParameters[i - 2] = evalArgs[i];
 
 
@@ -160,41 +160,41 @@ namespace SaintCoinach.Text {
             { TagType.SheetFr, Ex.Language.French },
         };
         protected virtual IExpression EvaluateSheetWithAttributive(EvaluationParameters parameters, Nodes.GenericElement element) {
-            var evalArgs = element.Arguments.Select(_ => _.TryEvaluate(parameters)).ToArray();
+            IExpression[] evalArgs = element.Arguments.Select(_ => _.TryEvaluate(parameters)).ToArray();
             if (evalArgs.Length < 3)
                 throw new InvalidOperationException();
 
-            var lang = TagToLanguageMap[element.Tag];
+            Ex.Language lang = TagToLanguageMap[element.Tag];
 
-            var sheetName = evalArgs[0].ToString();
-            var attributiveRowKey = ToInteger(evalArgs[1]);
-            var rowKey = ToInteger(evalArgs[2]);
+            string sheetName = evalArgs[0].ToString();
+            int attributiveRowKey = ToInteger(evalArgs[1]);
+            int rowKey = ToInteger(evalArgs[2]);
 
-            var columnKey = 0;
+            int columnKey = 0;
             if (evalArgs.Length > 3)
                 columnKey = ToInteger(evalArgs[3]);
 
-            var attributiveColumnKey = AttributiveColumnOffsets[element.Tag];
+            int attributiveColumnKey = AttributiveColumnOffsets[element.Tag];
             if (evalArgs.Length > 4)
                 attributiveColumnKey += ToInteger(evalArgs[4]);
 
-            var row = Data.GetSheet(sheetName)[rowKey];
+            XivRow row = Data.GetSheet(sheetName)[rowKey];
             object value;
             if (row is Ex.IMultiRow)
                 value = ((Ex.IMultiRow)row)[columnKey, lang];
             else
                 value = row[columnKey];
 
-            var attributiveRow = Data.GetSheet(AttributiveSheetName)[attributiveRowKey];
+            XivRow attributiveRow = Data.GetSheet(AttributiveSheetName)[attributiveRowKey];
             object attributiveValue;
             if (attributiveRow is Ex.IMultiRow)
                 attributiveValue = ((Ex.IMultiRow)attributiveRow)[attributiveColumnKey, lang];
             else
                 attributiveValue = attributiveRow[attributiveColumnKey];
 
-            var innerParams = new EvaluationParameters(parameters);
+            EvaluationParameters innerParams = new EvaluationParameters(parameters);
             innerParams.InputParameters.Clear();
-            for (var i = 5; i < evalArgs.Length; ++i)
+            for (int i = 5; i < evalArgs.Length; ++i)
                 innerParams.InputParameters[i - 2] = evalArgs[i];
 
             if (value is INode)
@@ -209,28 +209,28 @@ namespace SaintCoinach.Text {
 
         #region Compare
         public bool Compare(EvaluationParameters parameters, DecodeExpressionType comparisonType, INode left, INode right) {
-            var evalLeft = left.TryEvaluate(parameters);
-            var evalRight = right.TryEvaluate(parameters);
+            IExpression evalLeft = left.TryEvaluate(parameters);
+            IExpression evalRight = right.TryEvaluate(parameters);
 
             switch (comparisonType) {
                 case DecodeExpressionType.GreaterThanOrEqualTo: {
-                        var iLeft = ToInteger(evalLeft);
-                        var iRight = ToInteger(evalRight);
+                    int iLeft = ToInteger(evalLeft);
+                    int iRight = ToInteger(evalRight);
                         return iLeft >= iRight;
                     }
                 case DecodeExpressionType.GreaterThan: {
-                        var iLeft = ToInteger(evalLeft);
-                        var iRight = ToInteger(evalRight);
+                    int iLeft = ToInteger(evalLeft);
+                    int iRight = ToInteger(evalRight);
                         return iLeft > iRight;
                     }
                 case DecodeExpressionType.LessThanOrEqualTo: {
-                        var iLeft = ToInteger(evalLeft);
-                        var iRight = ToInteger(evalRight);
+                    int iLeft = ToInteger(evalLeft);
+                    int iRight = ToInteger(evalRight);
                         return iLeft <= iRight;
                     }
                 case DecodeExpressionType.LessThan: {
-                        var iLeft = ToInteger(evalLeft);
-                        var iRight = ToInteger(evalRight);
+                    int iLeft = ToInteger(evalLeft);
+                    int iRight = ToInteger(evalRight);
                         return iLeft < iRight;
                     }
                 case DecodeExpressionType.Equal:
@@ -243,8 +243,8 @@ namespace SaintCoinach.Text {
         }
 
         protected bool ExpressionsEqual(IExpression left, IExpression right) {
-            var checkLeft = GetFinalObect(left);
-            var checkRight = GetFinalObect(right);
+            object checkLeft = GetFinalObect(left);
+            object checkRight = GetFinalObect(right);
             return EqualsEx(checkLeft, checkRight);
         }
 
@@ -275,8 +275,8 @@ namespace SaintCoinach.Text {
                 return true;
 
             if (left is Ex.IRow && right is Ex.IRow) {
-                var lRow = left as Ex.IRow;
-                var rRow = right as Ex.IRow;
+                Ex.IRow lRow = left as Ex.IRow;
+                Ex.IRow rRow = right as Ex.IRow;
 
                 return lRow.Key == rRow.Key && lRow.Sheet.Name == rRow.Sheet.Name;
             }
@@ -287,8 +287,8 @@ namespace SaintCoinach.Text {
 
             if (!(left is string) && !(left is string))
                 return false;
-            var sLeft = left.ToString();
-            var sRight = right.ToString();
+            string sLeft = left.ToString();
+            string sRight = right.ToString();
 
             return string.Equals(sLeft, sRight);
         }
@@ -300,14 +300,14 @@ namespace SaintCoinach.Text {
         public bool ToBoolean(IExpression value) {
             if (value == null)
                 return false;
-            var asValue = value as IValueExpression;
+            IValueExpression asValue = value as IValueExpression;
             if (asValue != null) {
                 bool boolVal;
                 if (TryConvert(asValue.Value, out boolVal))
                     return boolVal;
             }
 
-            var str = value.ToString().Trim();
+            string str = value.ToString().Trim();
 
             bool b;
             if (bool.TryParse(str, out b))
@@ -331,7 +331,7 @@ namespace SaintCoinach.Text {
                 result = 0;
                 return true;
             }
-            var asValue = value as IValueExpression;
+            IValueExpression asValue = value as IValueExpression;
             if (asValue != null) {
                 int intVal;
                 if (TryConvert(asValue.Value, out intVal)) {
@@ -340,7 +340,7 @@ namespace SaintCoinach.Text {
                 }
             }
 
-            var str = value.ToString().Trim();
+            string str = value.ToString().Trim();
 
             bool b;
             if (bool.TryParse(str, out b)) {

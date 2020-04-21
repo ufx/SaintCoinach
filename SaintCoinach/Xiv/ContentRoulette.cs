@@ -50,12 +50,12 @@ namespace SaintCoinach.Xiv {
                 const int SoldieryItemKey = 26;
                 const int PoeticsItemKey = 28;
 
-                var sold = AsInt32("Reward{Soldiery}");
-                var poe = AsInt32("Reward{Poetics}");
+                int sold = AsInt32("Reward{Soldiery}");
+                int poe = AsInt32("Reward{Poetics}");
                 if (sold == 0 && poe == 0)
                     yield break;
 
-                var items = Sheet.Collection.GetSheet<Item>();
+                IXivSheet<Item> items = Sheet.Collection.GetSheet<Item>();
                 if (sold != 0)
                     yield return new ContentReward(items[SoldieryItemKey], sold);
                 if (poe != 0)

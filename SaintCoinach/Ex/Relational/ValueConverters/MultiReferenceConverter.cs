@@ -23,10 +23,10 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
             if (Targets == null)
                 return null;
 
-            var key = System.Convert.ToInt32(rawValue);
+            int key = System.Convert.ToInt32(rawValue);
 
-            foreach (var target in Targets) {
-                var sheet = row.Sheet.Collection.GetSheet(target);
+            foreach (string target in Targets) {
+                ISheet sheet = row.Sheet.Collection.GetSheet(target);
                 if (!sheet.Header.DataFileRanges.Any(r => r.Contains(key)))
                     continue;
 

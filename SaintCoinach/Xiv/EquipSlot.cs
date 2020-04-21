@@ -242,26 +242,26 @@ namespace SaintCoinach.Xiv {
         public ModelDefinition GetModel(Quad key, int characterType, out Graphics.ImcVariant variant) {
             variant = Graphics.ImcVariant.Default;
 
-            if (!ModelHelpers.TryGetValue(Key, out var helper))
+            if (!ModelHelpers.TryGetValue(Key, out ModelHelper helper))
                 return null;
             if (helper == null)
                 return null;
 
-            var packs = Collection.Collection.PackCollection;
+            PackCollection packs = Collection.Collection.PackCollection;
 
-            var variantIndex = (int)((key.ToInt64() >> (helper.VariantIndexWord * 16)) & 0xFFFF);
+            int variantIndex = (int)((key.ToInt64() >> (helper.VariantIndexWord * 16)) & 0xFFFF);
 
-            var imcPath = string.Format(helper.ImcFileFormat, key.Value1, key.Value2, key.Value3, key.Value4, characterType);
-            if (!packs.TryGetFile(imcPath, out var imcBase))
+            string imcPath = string.Format(helper.ImcFileFormat, key.Value1, key.Value2, key.Value3, key.Value4, characterType);
+            if (!packs.TryGetFile(imcPath, out File imcBase))
                 return null;
 
-            var imc = new Graphics.ImcFile(imcBase);
+            ImcFile imc = new Graphics.ImcFile(imcBase);
             variant = imc.GetVariant(helper.ImcPartKey, variantIndex);
 
             IO.File modelBase = null;
             while (!packs.TryGetFile(string.Format(helper.ModelFileFormat, key.Value1, key.Value2, key.Value3, key.Value4, characterType), out modelBase) && CharacterTypeFallback.TryGetValue(characterType, out characterType)) { }
 
-            var asModel = modelBase as Graphics.ModelFile;
+            ModelFile asModel = modelBase as Graphics.ModelFile;
             if (asModel == null)
                 return null;
             return asModel.GetModelDefinition();
@@ -269,7 +269,7 @@ namespace SaintCoinach.Xiv {
 
 
         public string GetModelKey(Quad key, int characterType) {
-            if (!ModelHelpers.TryGetValue(Key, out var helper))
+            if (!ModelHelpers.TryGetValue(Key, out ModelHelper helper))
                 return null;
             if (helper == null)
                 return null;

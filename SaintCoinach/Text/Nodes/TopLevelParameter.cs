@@ -29,7 +29,7 @@ namespace SaintCoinach.Text.Nodes {
         NodeFlags INode.Flags { get { return NodeFlags.IsExpression; } }
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }

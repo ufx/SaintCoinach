@@ -40,13 +40,13 @@ namespace SaintCoinach.IO {
             const int BlockInfoOffset = 0x18;
             const int BlockInfoLength = 0x08;
 
-            var sourceStream = GetSourceStream();
-            var blockCount = BitConverter.ToInt16(CommonHeader._Buffer, BlockCountOffset);
+            Stream sourceStream = GetSourceStream();
+            short blockCount = BitConverter.ToInt16(CommonHeader._Buffer, BlockCountOffset);
 
             byte[] data;
-            using (var dataStream = new MemoryStream((int)CommonHeader.Length)) {
-                for (var i = 0; i < blockCount; ++i) {
-                    var blockOffset = BitConverter.ToInt32(CommonHeader._Buffer, BlockInfoOffset + i * BlockInfoLength);
+            using (MemoryStream dataStream = new MemoryStream((int)CommonHeader.Length)) {
+                for (int i = 0; i < blockCount; ++i) {
+                    int blockOffset = BitConverter.ToInt32(CommonHeader._Buffer, BlockInfoOffset + i * BlockInfoLength);
                     sourceStream.Position = CommonHeader.EndOfHeader + blockOffset;
                     ReadBlock(sourceStream, dataStream);
                 }

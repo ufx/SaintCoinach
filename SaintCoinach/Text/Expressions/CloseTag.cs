@@ -17,7 +17,7 @@ namespace SaintCoinach.Text.Expressions {
         #region IExpression Members
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }

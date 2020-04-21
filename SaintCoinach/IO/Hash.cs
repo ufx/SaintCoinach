@@ -56,10 +56,10 @@ namespace SaintCoinach.IO {
             if (buffer == null)
                 throw new ArgumentNullException("buffer");
 
-            var crc = seed;
-            for (var i = start; i < start + size; i++)
+            uint crc = seed;
+            for (int i = start; i < start + size; i++)
                 unchecked {
-                    var b = buffer[i];
+                    byte b = buffer[i];
                     if (b >= 0x41 && b <= 0x5A)
                         b = (byte)(((uint)b) + 0x20);
                     crc = (crc >> 8) ^ table[(byte)(b ^ crc)];
@@ -76,7 +76,7 @@ namespace SaintCoinach.IO {
         public static uint Compute(string value) {
             if (value == null)
                 throw new ArgumentNullException("value");
-            var b = Encoding.ASCII.GetBytes(value);
+            byte[] b = Encoding.ASCII.GetBytes(value);
             return Compute(CrcInitialSeed, b, 0, b.Length);
         }
 
@@ -127,8 +127,8 @@ namespace SaintCoinach.IO {
             _ => _.Key);
 
         public static bool TryGetSqPackKey(string path, out byte key) {
-            var search = path;
-            var i = search.IndexOf('/');
+            string search = path;
+            int i = search.IndexOf('/');
             if (i >= 0)
                 search = search.Substring(0, i);
             return RootToSqMap.TryGetValue(search, out key);

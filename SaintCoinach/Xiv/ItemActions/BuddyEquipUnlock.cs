@@ -12,7 +12,7 @@ namespace SaintCoinach.Xiv.ItemActions {
 
         public BuddyEquip BuddyEquip {
             get {
-                var key = GetData(BuddyEquipIndex);
+                int key = GetData(BuddyEquipIndex);
                 return Sheet.Collection.GetSheet<BuddyEquip>()[key];
             }
         }

@@ -58,14 +58,14 @@ namespace SaintCoinach.Ex.Relational.Update {
         #region Update
 
         public IEnumerable<IChange> Update(bool detectDataChanges) {
-            var changes = new ConcurrentBag<IChange>();
+            ConcurrentBag<IChange> changes = new ConcurrentBag<IChange>();
 
-            var progress = new UpdateProgress {
+            UpdateProgress progress = new UpdateProgress {
                 CurrentOperation = "Structure",
                 TotalSteps = (detectDataChanges ? 2 : 1) * Previous.SheetDefinitions.Count
             };
 
-            var sheetLock = new object();
+            object sheetLock = new object();
 
             Parallel.ForEach(Previous.SheetDefinitions, prevSheetDef =>
             {
@@ -87,9 +87,9 @@ namespace SaintCoinach.Ex.Relational.Update {
                     updatedSheetDef = Updated.GetOrCreateSheet(prevSheetDef.Name);
                 }
 
-                var sheetUpdater = new SheetUpdater(prevSheet, prevSheetDef, updatedSheet, updatedSheetDef);
-                var sheetUpdates = MemoryGuard(() => sheetUpdater.Update().ToArray());
-                foreach (var change in sheetUpdates)
+                SheetUpdater sheetUpdater = new SheetUpdater(prevSheet, prevSheetDef, updatedSheet, updatedSheetDef);
+                IChange[] sheetUpdates = MemoryGuard(() => sheetUpdater.Update().ToArray());
+                foreach (IChange change in sheetUpdates)
                     changes.Add(change);
 
                 progress.IncrementStep();
@@ -117,9 +117,9 @@ namespace SaintCoinach.Ex.Relational.Update {
                         updatedSheetDef = Updated.GetOrCreateSheet(prevSheetDef.Name);
                     }
 
-                    var sheetComparer = new SheetComparer(prevSheet, prevSheetDef, updatedSheet, updatedSheetDef);
-                    var sheetChanges = MemoryGuard(() => sheetComparer.Compare().ToArray());
-                    foreach (var change in sheetChanges)
+                    SheetComparer sheetComparer = new SheetComparer(prevSheet, prevSheetDef, updatedSheet, updatedSheetDef);
+                    IChange[] sheetChanges = MemoryGuard(() => sheetComparer.Compare().ToArray());
+                    foreach (IChange change in sheetChanges)
                         changes.Add(change);
 
                     progress.IncrementStep();
@@ -134,7 +134,7 @@ namespace SaintCoinach.Ex.Relational.Update {
         }
 
         private static T MemoryGuard<T>(Func<T> func) {
-            for (var i = 0; i < 5; i++) {
+            for (int i = 0; i < 5; i++) {
                 try {
                     return func();
                 }

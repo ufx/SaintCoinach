@@ -30,17 +30,17 @@ namespace SaintCoinach.Ex.Relational {
         private void BuildIndex() {
             _IndexedRows = new Dictionary<int, T>();
 
-            var index = IndexColumn.Index;
+            int index = IndexColumn.Index;
 
-            foreach (var row in SourceSheet) {
-                var value = row.GetRaw(index);
+            foreach (T row in SourceSheet) {
+                object value = row.GetRaw(index);
                 _IndexedRows[Convert.ToInt32(value)] = row;
             }
         }
 
         public T this[int key] {
             get {
-                return _IndexedRows.TryGetValue(key, out var row) ? row : default(T);
+                return _IndexedRows.TryGetValue(key, out T row) ? row : default(T);
             }
         }
     }

@@ -17,12 +17,12 @@ namespace SaintCoinach.Text.Nodes {
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }
         public void ToString(StringBuilder builder) {
-            for (var i = 0; i < Value.Length; ++i)
+            for (int i = 0; i < Value.Length; ++i)
                 builder.Append(Value[i].ToString("X2"));
         }
 

@@ -76,7 +76,7 @@ namespace SaintCoinach.Xiv {
                 if (WeatherGroups == null)
                     WeatherGroups = BuildWeatherGroups();
 
-                var rateKey = AsInt32("WeatherRate");
+                int rateKey = AsInt32("WeatherRate");
                 if (!WeatherGroups.TryGetValue(rateKey, out _WeatherRate))
                     _WeatherRate = Sheet.Collection.GetSheet<WeatherRate>()[rateKey];
                 return _WeatherRate;
@@ -100,7 +100,7 @@ namespace SaintCoinach.Xiv {
             if (_MapsByIndex == null)
                 _MapsByIndex = BuildMapIndex();
 
-            if (_MapsByIndex.TryGetValue(index, out var map))
+            if (_MapsByIndex.TryGetValue(index, out Map map))
                 return map;
 
             // Fallback to the default map.  This may not be accurate.
@@ -108,8 +108,8 @@ namespace SaintCoinach.Xiv {
         }
 
         private Dictionary<int, WeatherRate> BuildWeatherGroups() {
-            var map = new Dictionary<int, WeatherRate>();
-            foreach (var weatherGroup in Sheet.Collection.GetSheet2("WeatherGroup")) {
+            Dictionary<int, WeatherRate> map = new Dictionary<int, WeatherRate>();
+            foreach (XivSubRow weatherGroup in Sheet.Collection.GetSheet2("WeatherGroup")) {
                 // Not sure what the other rows are used for.
                 if (weatherGroup.Key != 0)
                     continue;
@@ -120,18 +120,18 @@ namespace SaintCoinach.Xiv {
         }
 
         private Dictionary<uint, Map> BuildMapIndex() {
-            var maps = Sheet.Collection.GetSheet<Map>()
+            IEnumerable<Map> maps = Sheet.Collection.GetSheet<Map>()
                 .Where(m => m.TerritoryType != null && m.TerritoryType.Key == Key);
 
-            var index = new Dictionary<uint, Map>();
+            Dictionary<uint, Map> index = new Dictionary<uint, Map>();
 
-            foreach (var map in maps) {
-                var mapId = map.Id.ToString();
+            foreach (Map map in maps) {
+                string mapId = map.Id.ToString();
                 if (string.IsNullOrEmpty(mapId))
                     continue;
 
-                var mapIndex = mapId.Substring(mapId.IndexOf("/") + 1);
-                var convertedIndex = uint.Parse(mapIndex);
+                string mapIndex = mapId.Substring(mapId.IndexOf("/") + 1);
+                uint convertedIndex = uint.Parse(mapIndex);
                 if (index.ContainsKey(convertedIndex))
                     continue; // Skip it for now.
 

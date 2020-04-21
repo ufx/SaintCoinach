@@ -27,10 +27,10 @@ namespace SaintCoinach.Xiv {
         private CompanyCraftProcess[] BuildCraftProcesses() {
             const int Count = 3;
 
-            var procs = new List<CompanyCraftProcess>();
+            List<CompanyCraftProcess> procs = new List<CompanyCraftProcess>();
 
-            for(var i = 0; i < Count; ++i) {
-                var proc = As<CompanyCraftProcess>(i);
+            for(int i = 0; i < Count; ++i) {
+                CompanyCraftProcess proc = As<CompanyCraftProcess>(i);
                 if (proc == null || proc.Key == 0)
                     continue;
 

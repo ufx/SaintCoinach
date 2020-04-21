@@ -26,7 +26,7 @@ namespace SaintCoinach.IO {
             PackId = packId;
             FileKey = reader.ReadUInt32();
 
-            var baseOffset = reader.ReadInt32();
+            int baseOffset = reader.ReadInt32();
             DatFile = (byte)((baseOffset & 0x7) >> 1);
             Offset = (int)((baseOffset & 0xFFFFFFF8) << 3);
         }

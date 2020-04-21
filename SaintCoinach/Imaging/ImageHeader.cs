@@ -51,7 +51,7 @@ namespace SaintCoinach.Imaging {
         #endregion
 
         public byte[] GetBuffer() {
-            var b = new byte[_Buffer.Length];
+            byte[] b = new byte[_Buffer.Length];
             Array.Copy(_Buffer, b, b.Length);
             return b;
         }

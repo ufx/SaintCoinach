@@ -112,9 +112,9 @@ namespace SaintCoinach.Libra {
         public void Parse() {
             if (_IsParsed) return;
 
-            var json = Encoding.UTF8.GetString(this.data);
-            using (var strReader = new System.IO.StringReader(json)) {
-                using (var r = new JsonTextReader(strReader)) {
+            string json = Encoding.UTF8.GetString(this.data);
+            using (System.IO.StringReader strReader = new System.IO.StringReader(json)) {
+                using (JsonTextReader r = new JsonTextReader(strReader)) {
                     while (r.Read()) {
                         if (r.TokenType == JsonToken.PropertyName) {
                             switch (r.Value.ToString()) {
@@ -235,9 +235,9 @@ namespace SaintCoinach.Libra {
         private System.Drawing.Color ParseColor(JsonReader reader) {
             if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-            var r = reader.ReadInt32();
-            var g = reader.ReadInt32();
-            var b = reader.ReadInt32();
+            int r = reader.ReadInt32();
+            int g = reader.ReadInt32();
+            int b = reader.ReadInt32();
 
             if (!reader.Read() || reader.TokenType != JsonToken.EndArray) throw new InvalidOperationException();
 
@@ -246,7 +246,7 @@ namespace SaintCoinach.Libra {
         private Action[] ParseActions(JsonReader r) {
             if (!r.Read() || r.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-            var values = new List<Action>();
+            List<Action> values = new List<Action>();
             while (r.Read() && r.TokenType != JsonToken.EndArray) {
                 values.Add(ParseAction(r));
             }
@@ -256,13 +256,13 @@ namespace SaintCoinach.Libra {
             if (r.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
             if (!r.Read() || r.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
-            var paramKey = Convert.ToInt32(r.Value);
+            int paramKey = Convert.ToInt32(r.Value);
 
             if (!r.Read()) throw new InvalidOperationException();
 
             Action value;
             if (r.TokenType == JsonToken.StartObject) {
-                var act = new RelativeAction { BaseParam = paramKey };
+                RelativeAction act = new RelativeAction { BaseParam = paramKey };
 
                 while (r.Read() && r.TokenType != JsonToken.EndObject) {
                     if (r.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
@@ -294,7 +294,7 @@ namespace SaintCoinach.Libra {
         private Bonus[] ParseBonuses(JsonReader r) {
             if (!r.Read() || r.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-            var values = new List<Bonus>();
+            List<Bonus> values = new List<Bonus>();
             while (r.Read() && r.TokenType != JsonToken.EndArray) {
                 values.Add(ParseBonus(r));
             }
@@ -304,8 +304,8 @@ namespace SaintCoinach.Libra {
             if (r.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
             if (!r.Read() || r.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
-            var key = Convert.ToInt32(r.Value);
-            var value = r.ReadInt32();
+            int key = Convert.ToInt32(r.Value);
+            int value = r.ReadInt32();
 
             if (!r.Read() || r.TokenType != JsonToken.EndObject) throw new InvalidOperationException();
 
@@ -314,13 +314,13 @@ namespace SaintCoinach.Libra {
         private BasicParam[] ParseBasicParam(JsonReader r) {
             if (!r.Read() || r.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-            var values = new List<BasicParam>();
+            List<BasicParam> values = new List<BasicParam>();
             while (r.Read() && r.TokenType != JsonToken.EndArray) {
                 if (r.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
                 if (!r.Read() || r.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
-                var key = r.Value.ToString();
-                var value = r.ReadSingle();
+                string key = r.Value.ToString();
+                float value = r.ReadSingle();
 
                 values.Add(new BasicParam { Param = key, Value = value });
 
@@ -331,7 +331,7 @@ namespace SaintCoinach.Libra {
         private SeriesBonus ParseSeriesBonuses(JsonReader r) {
             if (!r.Read() || r.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
 
-            var bonus = new SeriesBonus();
+            SeriesBonus bonus = new SeriesBonus();
             while (r.Read() && r.TokenType != JsonToken.EndObject) {
                 if (r.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
@@ -360,13 +360,13 @@ namespace SaintCoinach.Libra {
 
                 if (!r.Read() || r.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
-                var bonusKey = r.Value.ToString();
+                string bonusKey = r.Value.ToString();
 
                 if (!r.Read() || r.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
                 if (!r.Read() || r.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
-                var paramKey = Convert.ToInt32(r.Value);
-                var value = r.ReadInt32();
+                int paramKey = Convert.ToInt32(r.Value);
+                int value = r.ReadInt32();
 
                 bonus.Bonuses.Add(new KeyValuePair<string, Bonus>(bonusKey, new Bonus { BaseParam = paramKey, Value = value }));
 

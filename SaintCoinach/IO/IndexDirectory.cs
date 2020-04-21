@@ -24,7 +24,7 @@ namespace SaintCoinach.IO {
             PackId = packId;
 
             ReadMeta(reader);
-            var pos = reader.BaseStream.Position;
+            long pos = reader.BaseStream.Position;
             ReadFiles(reader);
             reader.BaseStream.Position = pos;
         }
@@ -36,7 +36,7 @@ namespace SaintCoinach.IO {
         private void ReadMeta(BinaryReader reader) {
             Key = reader.ReadUInt32();
             Offset = reader.ReadInt32();
-            var len = reader.ReadInt32();
+            int len = reader.ReadInt32();
             Count = len / 0x10;
 
             reader.ReadInt32(); // Zero
@@ -45,8 +45,8 @@ namespace SaintCoinach.IO {
         private void ReadFiles(BinaryReader reader) {
             reader.BaseStream.Position = Offset;
 
-            var rem = Count;
-            var files = new List<IndexFile>();
+            int rem = Count;
+            List<IndexFile> files = new List<IndexFile>();
             while (rem-- > 0)
                 files.Add(new IndexFile(PackId, reader));
 

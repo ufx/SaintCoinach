@@ -41,7 +41,7 @@ namespace SaintCoinach.IO {
                 if (value == _KeepInMemory)
                     return;
 
-                if (_DataStreams.Any(i => i.Value.TryGetTarget(out var t)))
+                if (_DataStreams.Any(i => i.Value.TryGetTarget(out Stream t)))
                     throw new InvalidOperationException();
                 _DataStreams.Clear();
 
@@ -56,20 +56,20 @@ namespace SaintCoinach.IO {
         #region Helpers
 
         public Stream GetDataStream(byte datFile = 0) {
-            var thread = Thread.CurrentThread;
+            Thread thread = Thread.CurrentThread;
 
-            var key = Tuple.Create(thread, datFile);
+            Tuple<Thread, byte> key = Tuple.Create(thread, datFile);
             WeakReference<Stream> streamRef;
             lock (_DataStreams)
                 _DataStreams.TryGetValue(key, out streamRef);
 
-            if (streamRef == null || !streamRef.TryGetTarget(out var stream))
+            if (streamRef == null || !streamRef.TryGetTarget(out Stream stream))
                 stream = null;
 
             if (stream != null) return stream;
 
-            var baseName = String.Format(DatFileFormat, Id.TypeKey, Id.ExpansionKey, Id.Number, datFile);
-            var fullPath = Path.Combine(DataDirectory.FullName, Id.Expansion, baseName);
+            string baseName = String.Format(DatFileFormat, Id.TypeKey, Id.ExpansionKey, Id.Number, datFile);
+            string fullPath = Path.Combine(DataDirectory.FullName, Id.Expansion, baseName);
 
 
             if (KeepInMemory) {
@@ -115,8 +115,8 @@ namespace SaintCoinach.IO {
             DataDirectory = dataDirectory;
             this.Id = id;
 
-            var indexPath = Path.Combine(DataDirectory.FullName, id.Expansion, string.Format(IndexFileFormat, Id.TypeKey, Id.ExpansionKey, Id.Number));
-            var index2Path = Path.Combine(DataDirectory.FullName, id.Expansion, string.Format(Index2FileFormat, Id.TypeKey, Id.ExpansionKey, Id.Number));
+            string indexPath = Path.Combine(DataDirectory.FullName, id.Expansion, string.Format(IndexFileFormat, Id.TypeKey, Id.ExpansionKey, Id.Number));
+            string index2Path = Path.Combine(DataDirectory.FullName, id.Expansion, string.Format(Index2FileFormat, Id.TypeKey, Id.ExpansionKey, Id.Number));
             if (IOFile.Exists(indexPath))
                 Source = new IndexSource(this, new Index(id, indexPath));
             else if (IOFile.Exists(index2Path))

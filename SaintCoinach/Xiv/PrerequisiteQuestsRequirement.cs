@@ -17,9 +17,9 @@ namespace SaintCoinach.Xiv {
 
             this.Type = (PrerequisiteQuestsRequirementType)quest.AsInt32("PreviousQuestJoin");
 
-            var quests = new List<Quest>();
-            for (var i = 0; i < QuestCount; ++i) {
-                var q = quest.As<Quest>("PreviousQuest", i);
+            List<Quest> quests = new List<Quest>();
+            for (int i = 0; i < QuestCount; ++i) {
+                Quest q = quest.As<Quest>("PreviousQuest", i);
 
                 if (q.Key != 0)
                     quests.Add(q);

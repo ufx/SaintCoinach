@@ -64,7 +64,7 @@ namespace SaintCoinach.IO {
                 _FileNameMap.Add(name, hash = Hash.Compute(name));*/
             hash = Hash.Compute(name);
 
-            var file = GetFile(hash);
+            File file = GetFile(hash);
             if (file == null)
                 throw new System.IO.FileNotFoundException("Pack file not found '" + name + "'");
             file.Path = string.Format("{0}/{1}", this.Path, name);
@@ -72,10 +72,10 @@ namespace SaintCoinach.IO {
         }
 
         public File GetFile(uint key) {
-            if (_Files.TryGetValue(key, out var fileRef) && fileRef.TryGetTarget(out var file))
+            if (_Files.TryGetValue(key, out WeakReference<File> fileRef) && fileRef.TryGetTarget(out File file))
                 return file;
 
-            if (!Index.Files.TryGetValue(key, out var index))
+            if (!Index.Files.TryGetValue(key, out IndexFile index))
                 return null;
 
             file = FileFactory.Get(this.Pack, index);
@@ -94,18 +94,18 @@ namespace SaintCoinach.IO {
                 _FileNameMap.Add(name, hash = Hash.Compute(name));*/
             hash = Hash.Compute(name);
 
-            var result = TryGetFile(hash, out file);
+            bool result = TryGetFile(hash, out file);
             if (result)
                 file.Path = string.Format("{0}/{1}", this.Path, name);
             return result;
         }
 
         public bool TryGetFile(uint key, out File file) {
-            if (_Files.TryGetValue(key, out var fileRef) && fileRef.TryGetTarget(out file))
+            if (_Files.TryGetValue(key, out WeakReference<File> fileRef) && fileRef.TryGetTarget(out file))
                 return true;
 
-            if (Index.Files.TryGetValue(key, out var index)) {
-                var theFile = FileFactory.Get(this.Pack, index);
+            if (Index.Files.TryGetValue(key, out IndexFile index)) {
+                File theFile = FileFactory.Get(this.Pack, index);
                 _Files.AddOrUpdate(key,
                     k => new WeakReference<File>(theFile),
                     (k, r) => {

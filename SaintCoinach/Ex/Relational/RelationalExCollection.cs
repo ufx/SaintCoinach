@@ -34,7 +34,7 @@ namespace SaintCoinach.Ex.Relational {
         }
 
         protected override ISheet CreateSheet(Header header) {
-            var relHeader = (RelationalHeader)header;
+            RelationalHeader relHeader = (RelationalHeader)header;
             if (relHeader.Variant == 2)
                 return CreateSheet<Variant2.RelationalDataRow>(relHeader);
             return CreateSheet<Variant1.RelationalDataRow>(relHeader);
@@ -76,8 +76,8 @@ namespace SaintCoinach.Ex.Relational {
             if (key <= 0)
                 return null;
 
-            foreach (var sheetDef in Definition.SheetDefinitions.Where(d => d.IsGenericReferenceTarget)) {
-                var sheet = GetSheet(sheetDef.Name);
+            foreach (SheetDefinition sheetDef in Definition.SheetDefinitions.Where(d => d.IsGenericReferenceTarget)) {
+                IRelationalSheet sheet = GetSheet(sheetDef.Name);
                 if (!sheet.Header.DataFileRanges.Any(r => r.Contains(key)))
                     continue;
 

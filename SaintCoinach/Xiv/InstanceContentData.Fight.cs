@@ -24,7 +24,7 @@ namespace SaintCoinach.Xiv {
             internal Fight(JsonReader reader, XivCollection collection) {
                 if (reader.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
 
-                var bnpcs = collection.BNpcs;
+                Collections.BNpcCollection bnpcs = collection.BNpcs;
 
                 while (reader.Read() && reader.TokenType != JsonToken.EndObject) {
                     if (reader.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
@@ -63,7 +63,7 @@ namespace SaintCoinach.Xiv {
             private void ReadRewardItems(JsonReader reader, XivCollection collection) {
                 if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-                var values = new List<RewardItem>();
+                List<RewardItem> values = new List<RewardItem>();
                 while (reader.Read() && reader.TokenType != JsonToken.EndArray) {
                     values.Add(new RewardItem(reader, collection));
                 }
@@ -84,11 +84,11 @@ namespace SaintCoinach.Xiv {
             private void ReadSecondaryBNpcs(JsonReader reader, Collections.BNpcCollection bnpcs) {
                 if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-                var values = new List<BNpc>();
+                List<BNpc> values = new List<BNpc>();
                 while (reader.Read() && reader.TokenType != JsonToken.EndArray) {
                     if (reader.TokenType != JsonToken.Integer) throw new InvalidOperationException();
 
-                    var key = Convert.ToInt64(reader.Value);
+                    long key = Convert.ToInt64(reader.Value);
                     values.Add(bnpcs[key]);
                 }
                 this.SecondaryBNpcs = values;
@@ -96,11 +96,11 @@ namespace SaintCoinach.Xiv {
             private void ReadPrimaryBNpcs(JsonReader reader, Collections.BNpcCollection bnpcs) {
                 if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-                var values = new List<BNpc>();
+                List<BNpc> values = new List<BNpc>();
                 while (reader.Read() && reader.TokenType != JsonToken.EndArray) {
                     if (reader.TokenType != JsonToken.Integer) throw new InvalidOperationException();
 
-                    var key = Convert.ToInt64(reader.Value);
+                    long key = Convert.ToInt64(reader.Value);
                     values.Add(bnpcs[key]);
                 }
                 this.PrimaryBNpcs = values;
@@ -108,7 +108,7 @@ namespace SaintCoinach.Xiv {
             private void ReadTreasure(JsonReader reader, XivCollection collection) {
                 if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-                var values = new List<Treasure>();
+                List<Treasure> values = new List<Treasure>();
                 while (reader.Read() && reader.TokenType != JsonToken.EndArray) {
                     values.Add(new Treasure(reader, collection));
                 }

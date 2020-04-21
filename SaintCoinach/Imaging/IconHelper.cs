@@ -14,7 +14,7 @@ namespace SaintCoinach.Imaging {
             return GetIcon(pack, string.Empty, nr);
         }
         public static Imaging.ImageFile GetIcon(IO.PackCollection pack, Language language, int nr) {
-            var type = language.GetCode();
+            string type = language.GetCode();
             if (type.Length > 0)
                 type = type + "/";
             return GetIcon(pack, type, nr);
@@ -24,9 +24,9 @@ namespace SaintCoinach.Imaging {
             if (type.Length > 0 && !type.EndsWith("/"))
                 type = type + "/";
 
-            var filePath = string.Format(IconFileFormat, nr / 1000, type, nr);
+            string filePath = string.Format(IconFileFormat, nr / 1000, type, nr);
 
-            if (!pack.TryGetFile(filePath, out var file) && type.Length > 0) {
+            if (!pack.TryGetFile(filePath, out File file) && type.Length > 0) {
                 // Couldn't get specific type, try for generic version.
                 filePath = string.Format(IconFileFormat, nr / 1000, string.Empty, nr);
                 if (!pack.TryGetFile(filePath, out file)) {

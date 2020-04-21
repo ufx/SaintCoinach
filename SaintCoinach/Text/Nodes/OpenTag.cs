@@ -20,7 +20,7 @@ namespace SaintCoinach.Text.Nodes {
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }

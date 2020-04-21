@@ -74,16 +74,16 @@ namespace SaintCoinach.Ex {
             const int EntryKeyOffset = 0x00;
             const int EntryPositionOffset = 0x04;
 
-            var buffer = File.GetData();
+            byte[] buffer = File.GetData();
 
-            var headerLen = OrderedBitConverter.ToInt32(buffer, HeaderLengthOffset, true);
-            var count = headerLen / EntryLength;
-            var currentPosition = EntriesOffset;
+            int headerLen = OrderedBitConverter.ToInt32(buffer, HeaderLengthOffset, true);
+            int count = headerLen / EntryLength;
+            int currentPosition = EntriesOffset;
 
             _Rows = new ConcurrentDictionary<int, T>();
-            for (var i = 0; i < count; ++i) {
-                var key = OrderedBitConverter.ToInt32(buffer, currentPosition + EntryKeyOffset, true);
-                var off = OrderedBitConverter.ToInt32(buffer, currentPosition + EntryPositionOffset, true);
+            for (int i = 0; i < count; ++i) {
+                int key = OrderedBitConverter.ToInt32(buffer, currentPosition + EntryKeyOffset, true);
+                int off = OrderedBitConverter.ToInt32(buffer, currentPosition + EntryPositionOffset, true);
                 _RowOffsets.Add(key, off);
                 //_Rows.Add(key, CreateRow(key, off));
                 currentPosition += EntryLength;
@@ -109,7 +109,7 @@ namespace SaintCoinach.Ex {
         public T this[int key] {
             get {
                 return _Rows.GetOrAdd(key, k => {
-                    if (_RowOffsets.TryGetValue(key, out var offset))
+                    if (_RowOffsets.TryGetValue(key, out int offset))
                         return CreateRow(k, offset);
                     else
                         return default(T);

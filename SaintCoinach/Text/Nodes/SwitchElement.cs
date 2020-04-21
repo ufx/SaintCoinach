@@ -27,7 +27,7 @@ namespace SaintCoinach.Text.Nodes {
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }
@@ -39,7 +39,7 @@ namespace SaintCoinach.Text.Nodes {
             builder.Append(StringTokens.ArgumentsClose);
             builder.Append(StringTokens.TagClose);
 
-            foreach(var caseValue in Cases){
+            foreach(KeyValuePair<int, INode> caseValue in Cases){
                 builder.Append(StringTokens.TagOpen);
                 builder.Append(StringTokens.CaseTagName);
                 builder.Append(StringTokens.ArgumentsOpen);
@@ -68,8 +68,8 @@ namespace SaintCoinach.Text.Nodes {
         #region IExpressionNode Members
 
         public IExpression Evaluate(EvaluationParameters parameters) {
-            var evalSwitch = CaseSwitch.TryEvaluate(parameters);
-            var asInt = parameters.FunctionProvider.ToInteger(evalSwitch);
+            IExpression evalSwitch = CaseSwitch.TryEvaluate(parameters);
+            int asInt = parameters.FunctionProvider.ToInteger(evalSwitch);
 
             INode caseNode;
             if (!_Cases.TryGetValue(asInt, out caseNode))

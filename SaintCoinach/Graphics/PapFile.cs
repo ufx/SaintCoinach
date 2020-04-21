@@ -39,15 +39,15 @@ namespace SaintCoinach.Graphics {
 
         #region Build
         private void Build() {
-            var buffer = File.GetData();
+            byte[] buffer = File.GetData();
 
-            var offset = 0;
+            int offset = 0;
             Header = buffer.ToStructure<HeaderData>(ref offset);
             if (Header.Magic != 0x20706170)
                 throw new System.IO.InvalidDataException();
 
             Animations = new PapAnimation[Header.AnimationCount];
-            for (var i = 0; i < Header.AnimationCount; ++i)
+            for (int i = 0; i < Header.AnimationCount; ++i)
                 Animations[i] = new PapAnimation(this, buffer, ref offset);
 
             HavokData = new byte[Header.ParametersOffset - Header.HavokDataOffset];

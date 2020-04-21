@@ -14,7 +14,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         #endregion
 
         public PositionedDataDefintion Clone() {
-            var clone = new PositionedDataDefintion {
+            PositionedDataDefintion clone = new PositionedDataDefintion {
                 Index = Index,
                 InnerDefinition = InnerDefinition.Clone()
             };
@@ -26,7 +26,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         #region Things
 
         public object Convert(IDataRow row, object value, int index) {
-            var innerIndex = index - Index;
+            int innerIndex = index - Index;
             if (innerIndex < 0 || innerIndex >= Length)
                 throw new ArgumentOutOfRangeException("index");
 
@@ -34,7 +34,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         }
 
         public string GetName(int index) {
-            var innerIndex = index - Index;
+            int innerIndex = index - Index;
             if (innerIndex < 0 || innerIndex >= Length)
                 throw new ArgumentOutOfRangeException("index");
 
@@ -42,7 +42,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         }
 
         public string GetValueTypeName(int index) {
-            var innerIndex = index - Index;
+            int innerIndex = index - Index;
             if (innerIndex < 0 || innerIndex >= Length)
                 throw new ArgumentOutOfRangeException("index");
 
@@ -50,7 +50,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         }
 
         public Type GetValueType(int index) {
-            var innerIndex = index - Index;
+            int innerIndex = index - Index;
             if (innerIndex < 0 || innerIndex >= Length)
                 throw new ArgumentOutOfRangeException("index");
 
@@ -62,7 +62,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         #region Serialization
 
         public JObject ToJson() {
-            var obj = InnerDefinition.ToJson();
+            JObject obj = InnerDefinition.ToJson();
             if (Index > 0)
                 obj.AddFirst(new JProperty("index", Index));
             return obj;

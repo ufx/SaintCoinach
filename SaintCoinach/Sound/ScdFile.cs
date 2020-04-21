@@ -33,25 +33,25 @@ namespace SaintCoinach.Sound {
 
             Init();
 
-            var fileHeaderSize = ReadInt16(0x0E);
+            short fileHeaderSize = ReadInt16(0x0E);
 
             ReadScdHeader(fileHeaderSize);
-            
-            var entryHeaders = new ScdEntryHeader[ScdHeader.EntryCount];
-            var entryChunkOffsets = new int[ScdHeader.EntryCount];
-            var entryDataOffsets = new int[ScdHeader.EntryCount];
-            for (var i = 0; i < ScdHeader.EntryCount; ++i) {
-                var headerOffset = ReadInt32(ScdHeader.EntryTableOffset + 4 * i);
+
+            ScdEntryHeader[] entryHeaders = new ScdEntryHeader[ScdHeader.EntryCount];
+            int[] entryChunkOffsets = new int[ScdHeader.EntryCount];
+            int[] entryDataOffsets = new int[ScdHeader.EntryCount];
+            for (int i = 0; i < ScdHeader.EntryCount; ++i) {
+                int headerOffset = ReadInt32(ScdHeader.EntryTableOffset + 4 * i);
                 entryHeaders[i] = ReadEntryHeader(headerOffset);
 
                 entryChunkOffsets[i] = headerOffset + System.Runtime.InteropServices.Marshal.SizeOf<ScdEntryHeader>();
                 entryDataOffsets[i] = entryChunkOffsets[i];
-                for (var j = 0; j < entryHeaders[i].AuxChunkCount; ++j)
+                for (int j = 0; j < entryHeaders[i].AuxChunkCount; ++j)
                     entryDataOffsets[i] += ReadInt32(entryDataOffsets[i] + 4);
             }
 
             this.Entries = new ScdEntry[ScdHeader.EntryCount];
-            for (var i = 0; i < ScdHeader.EntryCount; ++i)
+            for (int i = 0; i < ScdHeader.EntryCount; ++i)
                 this.Entries[i] = CreateEntry(entryHeaders[i], entryChunkOffsets[i], entryDataOffsets[i]);
 
             _InputBuffer = null;
@@ -62,8 +62,8 @@ namespace SaintCoinach.Sound {
                 throw new InvalidDataException();
 
             // Check endianness
-            var verBigEndian = ReadInt32(8, false);
-            var verLittleEndian = ReadInt32(8, true);
+            int verBigEndian = ReadInt32(8, false);
+            int verLittleEndian = ReadInt32(8, true);
 
             if (verBigEndian == 2 || verBigEndian == 3) {
                 _UseLittleEndian = false;
@@ -73,7 +73,7 @@ namespace SaintCoinach.Sound {
                 throw new InvalidDataException();
         }
         private void ReadScdHeader(int offset) {
-            var h = new ScdHeader();
+            ScdHeader h = new ScdHeader();
 
             h.Unknown1Count = ReadInt16(offset + 0x00);
             h.Unknown2Count = ReadInt16(offset + 0x02);
@@ -88,7 +88,7 @@ namespace SaintCoinach.Sound {
             this.ScdHeader = h;
         }
         private ScdEntryHeader ReadEntryHeader(int offset) {
-            var h = new ScdEntryHeader();
+            ScdEntryHeader h = new ScdEntryHeader();
 
             h.DataSize = ReadInt32(offset + 0x00);
             h.ChannelCount = ReadInt32(offset + 0x04);
@@ -132,7 +132,7 @@ namespace SaintCoinach.Sound {
         }
 
         internal short ReadInt16(int offset, bool littleEndian) {
-            var buffer = new byte[2];
+            byte[] buffer = new byte[2];
 
             Array.Copy(_InputBuffer, offset, buffer, 0, buffer.Length);
             if (BitConverter.IsLittleEndian != littleEndian)
@@ -142,7 +142,7 @@ namespace SaintCoinach.Sound {
         }
 
         internal int ReadInt32(int offset, bool littleEndian) {
-            var buffer = new byte[4];
+            byte[] buffer = new byte[4];
 
             Array.Copy(_InputBuffer, offset, buffer, 0, buffer.Length);
             if (BitConverter.IsLittleEndian != littleEndian)
@@ -152,7 +152,7 @@ namespace SaintCoinach.Sound {
         }
 
         internal long ReadInt64(int offset, bool littleEndian) {
-            var buffer = new byte[8];
+            byte[] buffer = new byte[8];
 
             Array.Copy(_InputBuffer, offset, buffer, 0, buffer.Length);
             if (BitConverter.IsLittleEndian != littleEndian)

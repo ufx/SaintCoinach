@@ -21,7 +21,7 @@ namespace SaintCoinach.Text.Expressions {
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }

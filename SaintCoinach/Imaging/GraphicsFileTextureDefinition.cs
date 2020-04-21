@@ -22,15 +22,15 @@ namespace SaintCoinach.Imaging {
         public GraphicsFileTextureDefinition(IO.File file) {
             this.File = file;
 
-            var buffer = file.GetData();
+            byte[] buffer = file.GetData();
             if (BitConverter.ToUInt64(buffer, 0) != 0x3030313064746667) // gftd0100
                 throw new ArgumentException();
 
-            var count = BitConverter.ToInt32(buffer, 8);
+            int count = BitConverter.ToInt32(buffer, 8);
 
-            var offset = 0x10;
+            int offset = 0x10;
             while (--count >= 0) {
-                var entry = buffer.ToStructure<GftdEntry>(ref offset);
+                GftdEntry entry = buffer.ToStructure<GftdEntry>(ref offset);
                 _Entries.Add(entry.Id, entry);
             }
         }

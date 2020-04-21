@@ -27,9 +27,9 @@ namespace SaintCoinach.Ex.Relational.Definition {
         public int Length { get { return _Length; } }
 
         public IDataDefinition Clone() {
-            var clone = new GroupDataDefinition();
+            GroupDataDefinition clone = new GroupDataDefinition();
 
-            foreach (var member in Members)
+            foreach (IDataDefinition member in Members)
                 clone.Members.Add(member.Clone());
 
             return clone;
@@ -41,12 +41,12 @@ namespace SaintCoinach.Ex.Relational.Definition {
             if (index < 0 || index >= Length)
                 throw new ArgumentOutOfRangeException("index");
 
-            var convertedValue = value;
-            var pos = 0;
-            foreach (var member in Members) {
-                var newPos = pos + member.Length;
+            object convertedValue = value;
+            int pos = 0;
+            foreach (IDataDefinition member in Members) {
+                int newPos = pos + member.Length;
                 if (newPos > index) {
-                    var innerIndex = index - pos;
+                    int innerIndex = index - pos;
 
                     convertedValue = member.Convert(row, value, innerIndex);
 
@@ -62,11 +62,11 @@ namespace SaintCoinach.Ex.Relational.Definition {
                 throw new ArgumentOutOfRangeException("index");
 
             string value = null;
-            var pos = 0;
-            foreach (var member in Members) {
-                var newPos = pos + member.Length;
+            int pos = 0;
+            foreach (IDataDefinition member in Members) {
+                int newPos = pos + member.Length;
                 if (newPos > index) {
-                    var innerIndex = index - pos;
+                    int innerIndex = index - pos;
                     value = member.GetName(innerIndex);
                     break;
                 }
@@ -80,11 +80,11 @@ namespace SaintCoinach.Ex.Relational.Definition {
                 throw new ArgumentOutOfRangeException("index");
 
             string value = null;
-            var pos = 0;
-            foreach (var member in Members) {
-                var newPos = pos + member.Length;
+            int pos = 0;
+            foreach (IDataDefinition member in Members) {
+                int newPos = pos + member.Length;
                 if (newPos > index) {
-                    var innerIndex = index - pos;
+                    int innerIndex = index - pos;
                     value = member.GetValueTypeName(innerIndex);
                     break;
                 }
@@ -98,11 +98,11 @@ namespace SaintCoinach.Ex.Relational.Definition {
                 throw new ArgumentOutOfRangeException("index");
 
             Type value = null;
-            var pos = 0;
-            foreach (var member in Members) {
-                var newPos = pos + member.Length;
+            int pos = 0;
+            foreach (IDataDefinition member in Members) {
+                int newPos = pos + member.Length;
                 if (newPos > index) {
-                    var innerIndex = index - pos;
+                    int innerIndex = index - pos;
                     value = member.GetValueType(innerIndex);
                     break;
                 }
@@ -129,7 +129,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         }
 
         public void ResolveReferences(SheetDefinition sheetDef) {
-            foreach (var member in _Members)
+            foreach (IDataDefinition member in _Members)
                 member.ResolveReferences(sheetDef);
         }
 

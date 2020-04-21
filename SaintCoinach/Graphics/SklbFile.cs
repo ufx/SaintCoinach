@@ -31,9 +31,9 @@ namespace SaintCoinach.Graphics {
 
         #region Build
         private void Build() {
-            var buffer = File.GetData();
+            byte[] buffer = File.GetData();
 
-            var offset = 0;
+            int offset = 0;
             Header = buffer.ToStructure<HeaderData>(ref offset);
             if (Header.Magic != 0x736B6C62)
                 throw new System.IO.InvalidDataException();

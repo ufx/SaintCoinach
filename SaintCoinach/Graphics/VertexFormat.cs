@@ -13,9 +13,9 @@ namespace SaintCoinach.Graphics {
 
         #region Constructor
         internal VertexFormat(byte[] buffer, ref int offset) {
-            var o = offset;
+            int o = offset;
 
-            var elements = new List<VertexFormatElement>();
+            List<VertexFormatElement> elements = new List<VertexFormatElement>();
             while (buffer[o] != 0xFF)
                 elements.Add(buffer.ToStructure<VertexFormatElement>(ref o));
             this.Elements = elements.ToArray();

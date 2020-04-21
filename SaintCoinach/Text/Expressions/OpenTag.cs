@@ -23,7 +23,7 @@ namespace SaintCoinach.Text.Expressions {
         #region IExpression Members
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }
@@ -33,7 +33,7 @@ namespace SaintCoinach.Text.Expressions {
 
             if (_Arguments.Length > 0) {
                 output.Append(StringTokens.ArgumentsOpen);
-                for (var i = 0; i < _Arguments.Length; ++i) {
+                for (int i = 0; i < _Arguments.Length; ++i) {
                     if (i > 0)
                         output.Append(StringTokens.ArgumentsSeperator);
                     _Arguments[i].ToString(output);

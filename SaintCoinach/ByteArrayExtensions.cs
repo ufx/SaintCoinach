@@ -12,8 +12,8 @@ namespace SaintCoinach {
             return ToStructure<T>(bytes, ref offset);
         }
         public static T ToStructure<T>(this byte[] bytes, ref int offset) where T : struct {
-            var t = typeof(T);
-            var size = Marshal.SizeOf(t);
+            Type t = typeof(T);
+            int size = Marshal.SizeOf(t);
             IntPtr ptr = Marshal.AllocHGlobal(size);
             try {
                 Marshal.Copy(bytes, offset, ptr, size);
@@ -29,7 +29,7 @@ namespace SaintCoinach {
         }
         public static T[] ToStructures<T>(this byte[] bytes, int count, ref int offset) where T : struct {
             T[] values = new T[count];
-            for (var i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
                 values[i] = ToStructure<T>(bytes, ref offset);
             return values;
         }
@@ -38,11 +38,11 @@ namespace SaintCoinach {
             return ReadString(buffer, ref offset);
         }
         public static string ReadString(this byte[] buffer, ref int offset) {
-            var strEnd = offset - 1;
+            int strEnd = offset - 1;
             while (buffer[++strEnd] != 0) { }
-            var size = strEnd - offset;
+            int size = strEnd - offset;
 
-            var value = Encoding.ASCII.GetString(buffer, offset, size);
+            string value = Encoding.ASCII.GetString(buffer, offset, size);
 
             offset = strEnd + 1;
             return value;

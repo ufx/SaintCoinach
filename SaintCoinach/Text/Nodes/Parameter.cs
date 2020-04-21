@@ -22,7 +22,7 @@ namespace SaintCoinach.Text.Nodes {
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }
@@ -40,8 +40,8 @@ namespace SaintCoinach.Text.Nodes {
         #region IExpressionNode Members
 
         public IExpression Evaluate(EvaluationParameters parameters) {
-            var evalIndex = ParameterIndex.TryEvaluate(parameters);
-            var index = parameters.FunctionProvider.ToInteger(evalIndex);
+            IExpression evalIndex = ParameterIndex.TryEvaluate(parameters);
+            int index = parameters.FunctionProvider.ToInteger(evalIndex);
             return new Expressions.GenericExpression(parameters[this.ParameterType, index]);
         }
 

@@ -50,12 +50,12 @@ namespace SaintCoinach.Graphics.Lgb {
             //uint[] Unknown = new uint[100];
             //System.Buffer.BlockCopy(buffer, offset + System.Runtime.InteropServices.Marshal.SizeOf<HeaderData>(), Unknown, 0, 400);
 
-            
-            var entriesOffset = offset + Header.EntriesOffset;
+
+            int entriesOffset = offset + Header.EntriesOffset;
             Entries = new ILgbEntry[Header.EntryCount];
-            for(var i = 0; i < Header.EntryCount; ++i) {
-                var entryOffset = entriesOffset + BitConverter.ToInt32(buffer, entriesOffset + i * 4);
-                var type = (LgbEntryType)BitConverter.ToInt32(buffer, entryOffset);
+            for(int i = 0; i < Header.EntryCount; ++i) {
+                int entryOffset = entriesOffset + BitConverter.ToInt32(buffer, entriesOffset + i * 4);
+                LgbEntryType type = (LgbEntryType)BitConverter.ToInt32(buffer, entryOffset);
 
                 try {
                     switch (type) {

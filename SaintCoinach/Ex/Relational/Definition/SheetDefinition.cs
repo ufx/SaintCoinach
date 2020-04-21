@@ -40,12 +40,12 @@ namespace SaintCoinach.Ex.Relational.Definition {
             _ColumnValueTypeNames = new Dictionary<int, string>();
             _ColumnValueTypes = new Dictionary<int, Type>();
             DataDefinitions = DataDefinitions.OrderBy(d => d.Index).ToList();
-            foreach (var def in DataDefinitions) {
-                for (var i = 0; i < def.Length; ++i) {
-                    var offset = def.Index + i;
+            foreach (PositionedDataDefintion def in DataDefinitions) {
+                for (int i = 0; i < def.Length; ++i) {
+                    int offset = def.Index + i;
                     _ColumnDefinitionMap.Add(offset, def);
 
-                    var name = def.GetName(offset);
+                    string name = def.GetName(offset);
                     _ColumnNameToIndexMap.Add(name, offset);
                     _ColumnIndexToNameMap.Add(offset, name);
                     _ColumnValueTypeNames.Add(offset, def.GetValueTypeName(offset));
@@ -54,7 +54,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
             }
 
             if (!string.IsNullOrWhiteSpace(DefaultColumn)) {
-                if (_ColumnNameToIndexMap.TryGetValue(DefaultColumn, out var defCol))
+                if (_ColumnNameToIndexMap.TryGetValue(DefaultColumn, out int defCol))
                     _DefaultColumnIndex = defCol;
                 else
                     _DefaultColumnIndex = null;
@@ -72,7 +72,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
             if (_IsCompiled)
                 return _ColumnDefinitionMap.TryGetValue(index, out definition);
 
-            var res = DataDefinitions.Where(_ => _.Index <= index && index < (_.Index + _.Length)).ToArray();
+            PositionedDataDefintion[] res = DataDefinitions.Where(_ => _.Index <= index && index < (_.Index + _.Length)).ToArray();
             definition = res.Any() ? res.First() : null;
 
             return definition != null;
@@ -91,9 +91,9 @@ namespace SaintCoinach.Ex.Relational.Definition {
                 return null;
             }
 
-            foreach (var def in DataDefinitions) {
-                for (var i = 0; i < def.Length; ++i) {
-                    var n = def.GetName(def.Index + i);
+            foreach (PositionedDataDefintion def in DataDefinitions) {
+                for (int i = 0; i < def.Length; ++i) {
+                    string n = def.GetName(def.Index + i);
                     if (string.Equals(columnName, n))
                         return def.Index + i;
                 }
@@ -104,13 +104,13 @@ namespace SaintCoinach.Ex.Relational.Definition {
 
         public IEnumerable<string> GetAllColumnNames() {
             if (_IsCompiled) {
-                foreach (var n in _ColumnNameToIndexMap.Keys)
+                foreach (string n in _ColumnNameToIndexMap.Keys)
                     yield return n;
                 yield break;
             }
 
-            foreach (var def in DataDefinitions) {
-                for (var i = 0; i < def.Length; ++i)
+            foreach (PositionedDataDefintion def in DataDefinitions) {
+                for (int i = 0; i < def.Length; ++i)
                     yield return def.GetName(def.Index + i);
             }
         }
@@ -119,25 +119,25 @@ namespace SaintCoinach.Ex.Relational.Definition {
             if (_IsCompiled)
                 return _ColumnIndexToNameMap.ContainsKey(index) ? _ColumnIndexToNameMap[index] : null;
 
-            return TryGetDefinition(index, out var def) ? def.GetName(index) : null;
+            return TryGetDefinition(index, out PositionedDataDefintion def) ? def.GetName(index) : null;
         }
 
         public string GetValueTypeName(int index) {
             if (_IsCompiled)
                 return _ColumnValueTypeNames.ContainsKey(index) ? _ColumnValueTypeNames[index] : null;
 
-            return TryGetDefinition(index, out var def) ? def.GetValueTypeName(index) : null;
+            return TryGetDefinition(index, out PositionedDataDefintion def) ? def.GetValueTypeName(index) : null;
         }
 
         public Type GetValueType(int index) {
             if (_IsCompiled)
                 return _ColumnValueTypes.ContainsKey(index) ? _ColumnValueTypes[index] : null;
 
-            return TryGetDefinition(index, out var def) ? def.GetValueType(index) : null;
+            return TryGetDefinition(index, out PositionedDataDefintion def) ? def.GetValueType(index) : null;
         }
 
         public object Convert(IDataRow row, object value, int index) {
-            return TryGetDefinition(index, out var def) ? def.Convert(row, value, index) : value;
+            return TryGetDefinition(index, out PositionedDataDefintion def) ? def.Convert(row, value, index) : value;
         }
 
         #endregion
@@ -145,7 +145,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         #region Serialization
 
         public JObject ToJson() {
-            var obj = new JObject { ["sheet"] = Name };
+            JObject obj = new JObject { ["sheet"] = Name };
             if (DefaultColumn != null)
                 obj["defaultColumn"] = DefaultColumn;
             if (IsGenericReferenceTarget)
@@ -155,14 +155,14 @@ namespace SaintCoinach.Ex.Relational.Definition {
         }
 
         public static SheetDefinition FromJson(JToken obj) {
-            var sheetDef = new SheetDefinition() {
+            SheetDefinition sheetDef = new SheetDefinition() {
                 Name = (string)obj["sheet"],
                 DefaultColumn = (string)obj["defaultColumn"],
                 IsGenericReferenceTarget = (bool?)obj["isGenericReferenceTarget"] ?? false,
                 DataDefinitions = new List<PositionedDataDefintion>(obj["definitions"].Select(j => PositionedDataDefintion.FromJson(j)))
             };
 
-            foreach (var dataDef in sheetDef.DataDefinitions)
+            foreach (PositionedDataDefintion dataDef in sheetDef.DataDefinitions)
                 dataDef.ResolveReferences(sheetDef);
 
             return sheetDef;

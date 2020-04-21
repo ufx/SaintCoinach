@@ -14,11 +14,11 @@ namespace SaintCoinach.Ex.Variant1 {
         #region Constructors
 
         public DataRow(IDataSheet sheet, int key, int offset) : base(sheet, key, offset + MetadataLength) {
-            var b = sheet.GetBuffer();
+            byte[] b = sheet.GetBuffer();
             if (b.Length < offset + MetadataLength) throw new IndexOutOfRangeException();
 
             Length = OrderedBitConverter.ToInt32(b, offset, true);
-            var c = OrderedBitConverter.ToInt16(b, offset + 4, true);
+            short c = OrderedBitConverter.ToInt16(b, offset + 4, true);
             if (c != 1) throw new InvalidDataException();
         }
 

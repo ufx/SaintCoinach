@@ -167,8 +167,8 @@ namespace DotSquish {
 
         public static Sym3x3 ComputeWeightedCovariance(int n, Vector3[] points, float[] weights) {
             // Compute the centroid.
-            var total = 0f;
-            var centroid = new Vector3(0f);
+            float total = 0f;
+            Vector3 centroid = new Vector3(0f);
             for (int i = 0; i < n; ++i) {
                 total += weights[i];
                 centroid += weights[i] * points[i];
@@ -176,10 +176,10 @@ namespace DotSquish {
             centroid /= total;
 
             // Accumulate the covariance matrix.
-            var covariance = new Sym3x3(0f);
+            Sym3x3 covariance = new Sym3x3(0f);
             for (int i = 0; i < n; ++i) {
-                var a = points[i] - centroid;
-                var b = weights[i] * a;
+                Vector3 a = points[i] - centroid;
+                Vector3 b = weights[i] * a;
 
                 covariance[0] += a.X * b.X;
                 covariance[1] += a.X * b.Y;
@@ -193,7 +193,7 @@ namespace DotSquish {
         }
         private static Vector3 GetMultiplicity1Evector(Sym3x3 matrix, float evalue) {
             // Compute M
-            var m = new Sym3x3();
+            Sym3x3 m = new Sym3x3();
             m[0] = matrix[0] - evalue;
             m[1] = matrix[1];
             m[2] = matrix[2];
@@ -202,7 +202,7 @@ namespace DotSquish {
             m[5] = matrix[5] - evalue;
 
             // Compute U
-            var u = new Sym3x3();
+            Sym3x3 u = new Sym3x3();
             u[0] = (m[3] * m[5]) - (m[4] * m[4]);
             u[1] = (m[2] * m[4]) - (m[1] * m[5]);
             u[2] = (m[1] * m[4]) - (m[2] * m[3]);
@@ -211,10 +211,10 @@ namespace DotSquish {
             u[5] = (m[0] * m[3]) - (m[1] * m[1]);
 
             // Find the largest component.
-            var mc = Math.Abs(u[0]);
-            var mi = 0;
+            float mc = Math.Abs(u[0]);
+            int mi = 0;
             for (int i = 1; i < 6; ++i) {
-                var c = Math.Abs(u[i]);
+                float c = Math.Abs(u[i]);
                 if (c > mc) {
                     mc = c;
                     mi = i;
@@ -234,7 +234,7 @@ namespace DotSquish {
         }
         private static Vector3 GetMultiplicity2Evector(Sym3x3 matrix, float evalue) {
             // Compute M
-            var m = new Sym3x3();
+            Sym3x3 m = new Sym3x3();
             m[0] = matrix[0] - evalue;
             m[1] = matrix[1];
             m[2] = matrix[2];
@@ -243,10 +243,10 @@ namespace DotSquish {
             m[5] = matrix[5] - evalue;
 
             // Find the largest component.
-            var mc = Math.Abs(m[0]);
-            var mi = 0;
+            float mc = Math.Abs(m[0]);
+            int mi = 0;
             for (int i = 1; i < 6; ++i) {
-                var c = Math.Abs(m[i]);
+                float c = Math.Abs(m[i]);
                 if (c > mc) {
                     mc = c;
                     mi = i;
@@ -272,43 +272,43 @@ namespace DotSquish {
         }
         public static Vector3 ComputePrincipledComponent(Sym3x3 matrix) {
             // Compute the cubic coefficients
-            var c0 =
+            float c0 =
                 (matrix[0] * matrix[3] * matrix[5])
                 + (matrix[1] * matrix[2] * matrix[4] * 2f)
                 - (matrix[0] * matrix[4] * matrix[4])
                 - (matrix[3] * matrix[2] * matrix[2])
                 - (matrix[5] * matrix[1] * matrix[1]);
-            var c1 =
+            float c1 =
                 (matrix[0] * matrix[3])
                 + (matrix[0] * matrix[5])
                 + (matrix[3] * matrix[5])
                 - (matrix[1] * matrix[1])
                 - (matrix[2] * matrix[2])
                 - (matrix[4] * matrix[4]);
-            var c2 = matrix[0] + matrix[3] + matrix[5];
+            float c2 = matrix[0] + matrix[3] + matrix[5];
 
             // Compute the quadratic coefficients
-            var a = c1 - ((1f / 3f) * c2 * c2);
-            var b = ((-2f / 27f) * c2 * c2 * c2) + ((1f / 3f) * c1 * c2) - c0;
+            float a = c1 - ((1f / 3f) * c2 * c2);
+            float b = ((-2f / 27f) * c2 * c2 * c2) + ((1f / 3f) * c1 * c2) - c0;
 
             // Compute the root count check;
-            var Q = (.25f * b * b) + ((1f / 27f) * a * a * a);
+            float Q = (.25f * b * b) + ((1f / 27f) * a * a * a);
 
             // Test the multiplicity.
             if (float.Epsilon < Q)
                 return new Vector3(1f); // Only one root, which implies we have a multiple of the identity.
             else if (Q < -float.Epsilon) {
                 // Three distinct roots
-                var theta = Math.Atan2(Math.Sqrt(Q), -.5f * b);
-                var rho = Math.Sqrt((.25f * b * b) - Q);
+                double theta = Math.Atan2(Math.Sqrt(Q), -.5f * b);
+                double rho = Math.Sqrt((.25f * b * b) - Q);
 
-                var rt = Math.Pow(rho, 1f / 3f);
-                var ct = Math.Cos(theta / 3f);
-                var st = Math.Sin(theta / 3f);
+                double rt = Math.Pow(rho, 1f / 3f);
+                double ct = Math.Cos(theta / 3f);
+                double st = Math.Sin(theta / 3f);
 
-                var l1 = ((1f / 3f) * c2) + (2f * rt * ct);
-                var l2 = ((1f / 3f) * c2) - (rt * (ct + (Math.Sqrt(3f) * st)));
-                var l3 = ((1f / 3f) * c2) - (rt * (ct - (Math.Sqrt(3f) * st)));
+                double l1 = ((1f / 3f) * c2) + (2f * rt * ct);
+                double l2 = ((1f / 3f) * c2) - (rt * (ct + (Math.Sqrt(3f) * st)));
+                double l3 = ((1f / 3f) * c2) - (rt * (ct - (Math.Sqrt(3f) * st)));
 
                 // Pick the larger.
                 if (Math.Abs(l2) > Math.Abs(l1))
@@ -326,8 +326,8 @@ namespace DotSquish {
                 else
                     rt = Math.Pow(.5f * b, 1f / 3f);
 
-                var l1 = ((1f / 3f) * c2) + rt;
-                var l2 = ((1f / 3f) * c2) - (2f * rt);
+                double l1 = ((1f / 3f) * c2) + rt;
+                double l2 = ((1f / 3f) * c2) - (2f * rt);
 
                 // Get the eigenvector
                 if (Math.Abs(l1) > Math.Abs(l2))

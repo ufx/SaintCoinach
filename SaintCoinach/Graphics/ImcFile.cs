@@ -21,20 +21,20 @@ namespace SaintCoinach.Graphics {
         public ImcFile(IO.File sourceFile) {
             this.SourceFile = sourceFile;
 
-            var buffer = SourceFile.GetData();
+            byte[] buffer = SourceFile.GetData();
             this.Count = BitConverter.ToInt16(buffer, 0);
             this.PartsMask  = BitConverter.ToInt16(buffer, 2);
 
-            var offset = 4;
+            int offset = 4;
             for (byte bit = 0; bit < 8; ++bit) {
-                var match = 1 << bit;
+                int match = 1 << bit;
                 if ((PartsMask & match) == match)
                     _Parts.Add(bit, new ImcPart(buffer, bit, ref offset));
             }
 
-            var rem = Count;
+            short rem = Count;
             while (--rem >= 0) {
-                foreach (var part in _Parts.Values)
+                foreach (ImcPart part in _Parts.Values)
                     part._Variants.Add(buffer.ToStructure<ImcVariant>(ref offset));
             }
         }

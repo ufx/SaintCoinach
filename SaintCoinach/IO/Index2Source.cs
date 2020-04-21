@@ -50,17 +50,17 @@ namespace SaintCoinach.IO {
             if (!_FilePathMap.TryGetValue(path, out hash))
                 _FilePathMap.Add(path, hash = Hash.Compute(path));*/
             hash = Hash.Compute(path);
-            var result = TryGetFile(hash, out value);
+            bool result = TryGetFile(hash, out value);
             if (result)
                 value.Path = path;
             return result;
         }
 
         public bool TryGetFile(uint hash, out File value) {
-            if (_Files.TryGetValue(hash, out var fileRef) && fileRef.TryGetTarget(out value))
+            if (_Files.TryGetValue(hash, out WeakReference<File> fileRef) && fileRef.TryGetTarget(out value))
                 return true;
 
-            if (Index.Files.TryGetValue(hash, out var index)) {
+            if (Index.Files.TryGetValue(hash, out Index2File index)) {
                 value = FileFactory.Get(this.Pack, index);
                 if (_Files.ContainsKey(hash))
                     _Files[hash].SetTarget(value);
@@ -78,16 +78,16 @@ namespace SaintCoinach.IO {
             if (!_FilePathMap.TryGetValue(path, out hash))
                 _FilePathMap.Add(path, hash = Hash.Compute(path));*/
             hash = Hash.Compute(path);
-            var f = GetFile(hash);
+            File f = GetFile(hash);
             f.Path = path;
             return f;
         }
 
         public File GetFile(uint hash) {
-            if (_Files.TryGetValue(hash, out var fileRef) && fileRef.TryGetTarget(out var file))
+            if (_Files.TryGetValue(hash, out WeakReference<File> fileRef) && fileRef.TryGetTarget(out File file))
                 return file;
 
-            var index = Index.Files[hash];
+            Index2File index = Index.Files[hash];
             file = FileFactory.Get(this.Pack, index);
             if (_Files.ContainsKey(hash))
                 _Files[hash].SetTarget(file);

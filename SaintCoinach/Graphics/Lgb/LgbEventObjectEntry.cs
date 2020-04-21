@@ -43,10 +43,10 @@ namespace SaintCoinach.Graphics.Lgb {
             }
             foreach (Ex.IDataRow row in EventObjectSheet) {
                 if (row.Key == this.Header.EventObjectId) {
-                    var sg = row.GetRaw(11);
+                    object sg = row.GetRaw(11);
                     foreach (Ex.IDataRow row2 in ExportedSgSheet) {
                         if (row2.Key == (ushort)sg) {
-                            var path = ((SaintCoinach.Text.XivString)row2.GetRaw(0)).ToString();
+                            string path = ((SaintCoinach.Text.XivString)row2.GetRaw(0)).ToString();
                             if (!string.IsNullOrEmpty(path)) {
                                 SaintCoinach.IO.File file;
                                 if (packs.TryGetFile(path, out file))

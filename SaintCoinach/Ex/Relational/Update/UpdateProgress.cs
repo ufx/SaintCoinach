@@ -21,7 +21,7 @@ namespace SaintCoinach.Ex.Relational.Update {
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("{0,4:P0} ({1} / {2}): {3}", Percentage, CurrentStep, TotalSteps, CurrentOperation);
             if (!string.IsNullOrWhiteSpace(CurrentFile))

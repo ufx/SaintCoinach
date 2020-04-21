@@ -77,8 +77,8 @@ namespace SaintCoinach {
         /// <value>The current time in the Eorzean calendar.</value>
         public static EorzeaDateTime Now {
             get {
-                var nt = DateTime.UtcNow.Ticks;
-                var d = nt - _LastNowUpdate;
+                long nt = DateTime.UtcNow.Ticks;
+                long d = nt - _LastNowUpdate;
                 if (d <= NowUpdateInterval) return _Now;
 
                 _Now = new EorzeaDateTime();
@@ -285,12 +285,12 @@ namespace SaintCoinach {
         /// </summary>
         /// <returns>Returns the Unix timestamp.</returns>
         public long GetUnixTime() {
-            var years = Year;
-            var moons = (years * 12.0) + Moon - 1;
-            var suns = (moons * 32.0) + Sun - 1;
-            var bells = (suns * 24.0) + Bell;
-            var minutes = (bells * 60.0) + Minute;
-            var seconds = minutes * 60.0;
+            int years = Year;
+            double moons = (years * 12.0) + Moon - 1;
+            double suns = (moons * 32.0) + Sun - 1;
+            double bells = (suns * 24.0) + Bell;
+            double minutes = (bells * 60.0) + Minute;
+            double seconds = minutes * 60.0;
 
             return (long)(seconds / RealToEorzeanFactor);
         }
@@ -301,7 +301,7 @@ namespace SaintCoinach {
         /// <param name="time">Unix timestamp to use.</param>
         /// <returns>Returns self.</returns>
         public EorzeaDateTime SetUnixTime(long time) {
-            var eorzeaSeconds = time * RealToEorzeanFactor;
+            double eorzeaSeconds = time * RealToEorzeanFactor;
 
             SetEorzeaTime(eorzeaSeconds);
 
@@ -313,11 +313,11 @@ namespace SaintCoinach {
         /// </summary>
         /// <param name="eorzeaSeconds">Elapsed seconds since zero.</param>
         private void SetEorzeaTime(double eorzeaSeconds) {
-            var minutes = eorzeaSeconds / 60;
-            var bells = minutes / 60;
-            var suns = bells / 24;
-            var moons = suns / 32;
-            var years = moons / 12;
+            double minutes = eorzeaSeconds / 60;
+            double bells = minutes / 60;
+            double suns = bells / 24;
+            double moons = suns / 32;
+            double years = moons / 12;
 
             Minute = (int)(minutes % 60);
             Bell = (int)(bells % 24);
@@ -340,8 +340,8 @@ namespace SaintCoinach {
         /// <param name="time"><see cref="DateTime" /> to convert.</param>
         /// <returns>Returns self.</returns>
         public EorzeaDateTime SetRealTime(DateTime time) {
-            var utc = time.ToUniversalTime();
-            var fromZero = utc - Zero;
+            DateTime utc = time.ToUniversalTime();
+            TimeSpan fromZero = utc - Zero;
             return SetUnixTime((long)fromZero.TotalSeconds);
         }
 
@@ -352,7 +352,7 @@ namespace SaintCoinach {
         /// <param name="rh"><see cref="TimeSpan" /> to add to the <see cref="EorzeaDateTime" />.</param>
         /// <returns>Returns a new <see cref="EorzeaDateTime" /> object with the resulting time and date.</returns>
         public static EorzeaDateTime operator+(EorzeaDateTime lh, TimeSpan rh) {
-            var copy = lh.Clone();
+            EorzeaDateTime copy = lh.Clone();
             copy.Minute += (int)rh.TotalMinutes;
             return copy;
         }
@@ -364,7 +364,7 @@ namespace SaintCoinach {
         /// <param name="rh"><see cref="TimeSpan" /> to subtract to the <see cref="EorzeaDateTime" />.</param>
         /// <returns>Returns a new <see cref="EorzeaDateTime" /> object with the resulting time and date.</returns>
         public static EorzeaDateTime operator-(EorzeaDateTime lh, TimeSpan rh) {
-            var copy = lh.Clone();
+            EorzeaDateTime copy = lh.Clone();
             copy.Minute -= (int)rh.TotalMinutes;
             return copy;
         }

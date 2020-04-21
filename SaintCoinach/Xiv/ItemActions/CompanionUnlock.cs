@@ -12,7 +12,7 @@ namespace SaintCoinach.Xiv.ItemActions {
 
         public Companion Companion {
             get {
-                var key = GetData(CompanionKey);
+                int key = GetData(CompanionKey);
                 return Sheet.Collection.GetSheet<Companion>()[key];
             }
         }

@@ -20,7 +20,7 @@ namespace SaintCoinach.Xiv {
             internal Treasure(JsonReader reader, XivCollection collection) {
                 if (reader.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
 
-                var allItems = collection.GetSheet<Item>();
+                IXivSheet<Item> allItems = collection.GetSheet<Item>();
 
                 while (reader.Read() && reader.TokenType != JsonToken.EndObject) {
                     if (reader.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
@@ -54,27 +54,27 @@ namespace SaintCoinach.Xiv {
             private void ReadItems(JsonReader reader, IXivSheet<Item> allItems) {
                 if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-                var items = new List<Item>();
+                List<Item> items = new List<Item>();
                 while (reader.Read() && reader.TokenType != JsonToken.EndArray) {
                     if (reader.TokenType != JsonToken.Integer) throw new InvalidOperationException();
 
-                    var key = Convert.ToInt32(reader.Value);
+                    int key = Convert.ToInt32(reader.Value);
                     items.Add(allItems[key]);
                 }
                 this.Items = items;
             }
             private void ReadWeeklyRestriction(JsonReader reader) {
                 if (!reader.Read() || reader.TokenType != JsonToken.Integer) throw new InvalidOperationException();
-                var r = Convert.ToInt32(reader.Value);
+                int r = Convert.ToInt32(reader.Value);
                 this.HasWeeklyRestriction = (r >= 0);
             }
             private void ReadCoordinates(JsonReader reader) {
                 if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
                 if (!reader.Read() || reader.TokenType != JsonToken.String) throw new InvalidOperationException();
-                var x = float.Parse((string)reader.Value, CultureInfo.InvariantCulture);
+                float x = float.Parse((string)reader.Value, CultureInfo.InvariantCulture);
                 if (!reader.Read() || reader.TokenType != JsonToken.String) throw new InvalidOperationException();
-                var y = float.Parse((string)reader.Value, CultureInfo.InvariantCulture);
+                float y = float.Parse((string)reader.Value, CultureInfo.InvariantCulture);
 
                 if (x == 0 && y == 0)
                     this.Coordinates = null;

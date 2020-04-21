@@ -44,9 +44,9 @@ namespace SaintCoinach.Xiv {
         }
 
         private ILocation[] BuildLocations() {
-            var levelLocations = BuildLevels();
+            Level[] levelLocations = BuildLevels();
 
-            var coll = Collection.Collection;
+            XivCollection coll = Collection.Collection;
             if (!coll.IsLibraAvailable)
                 return levelLocations.Cast<ILocation>().ToArray();
 
@@ -54,15 +54,15 @@ namespace SaintCoinach.Xiv {
             if (libraENpc == null)
                 return levelLocations.ToArray();
 
-            var locations = new List<ILocation>();
+            List<ILocation> locations = new List<ILocation>();
             locations.AddRange(levelLocations.Cast<ILocation>());
 
-            var placeNames = coll.GetSheet<PlaceName>();
-            var maps = coll.GetSheet<Map>();
+            IXivSheet<PlaceName> placeNames = coll.GetSheet<PlaceName>();
+            IXivSheet<Map> maps = coll.GetSheet<Map>();
 
             if (libraENpc.Coordinates != null) {
                 foreach (var coord in libraENpc.Coordinates) {
-                    var placeName = placeNames.First(i => i.Key == coord.Item1);
+                    PlaceName placeName = placeNames.First(i => i.Key == coord.Item1);
 
                     foreach (var c in coord.Item2) {
                         // Only add if no Level exists in the same area.

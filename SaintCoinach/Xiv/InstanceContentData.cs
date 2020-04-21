@@ -23,7 +23,7 @@ namespace SaintCoinach.Xiv {
         public InstanceContentData(InstanceContent instanceContent) {
             this.InstanceContent = instanceContent ?? throw new ArgumentNullException("instanceContent");
 
-            var coll = instanceContent.Sheet.Collection;
+            XivCollection coll = instanceContent.Sheet.Collection;
             if (!coll.IsLibraAvailable) return;
 
             var libraRow = coll.Libra.InstanceContents.FirstOrDefault(i => i.Key == instanceContent.Key);
@@ -34,9 +34,9 @@ namespace SaintCoinach.Xiv {
 
         #region Parse
         private void Parse(Libra.InstanceContent libraRow) {
-            var json = Encoding.UTF8.GetString(libraRow.data);
-            using (var strReader = new System.IO.StringReader(json)) {
-                using (var r = new JsonTextReader(strReader)) {
+            string json = Encoding.UTF8.GetString(libraRow.data);
+            using (System.IO.StringReader strReader = new System.IO.StringReader(json)) {
+                using (JsonTextReader r = new JsonTextReader(strReader)) {
                     if (!r.Read() || r.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
 
                     while (r.Read() && r.TokenType != JsonToken.EndObject) {
@@ -59,7 +59,7 @@ namespace SaintCoinach.Xiv {
                     }
                 }
             }
-            var allBosses = new List<Fight>();
+            List<Fight> allBosses = new List<Fight>();
             if (MidBosses != null)
                 allBosses.AddRange(MidBosses);
             if (Boss != null)
@@ -75,7 +75,7 @@ namespace SaintCoinach.Xiv {
         private void ReadMidBosses(JsonReader reader) {
             if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-            var values = new List<Fight>();
+            List<Fight> values = new List<Fight>();
             while (reader.Read() && reader.TokenType != JsonToken.EndArray) {
                 if (reader.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
 
@@ -86,7 +86,7 @@ namespace SaintCoinach.Xiv {
         private void ReadMapTreasures(JsonReader reader) {
             if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-            var values = new List<Treasure>();
+            List<Treasure> values = new List<Treasure>();
             while (reader.Read() && reader.TokenType != JsonToken.EndArray) {
                 if (reader.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
 

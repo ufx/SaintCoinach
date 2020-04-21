@@ -11,7 +11,7 @@ namespace SaintCoinach.Ex.Variant2 {
         public new IRelationalDataSheet Sheet { get { return (IRelationalDataSheet)base.Sheet; } }
 
         public override string ToString() {
-            var defCol = Sheet.Header.DefaultColumn;
+            RelationalColumn defCol = Sheet.Header.DefaultColumn;
             return defCol == null
                        ? string.Format("{0}#{1}", Sheet.Header.Name, Key)
                        : string.Format("{0}", GetSubRow(defCol.Index).DefaultValue);
@@ -29,14 +29,14 @@ namespace SaintCoinach.Ex.Variant2 {
 
         public object DefaultValue {
             get {
-                var defCol = Sheet.Header.DefaultColumn;
+                RelationalColumn defCol = Sheet.Header.DefaultColumn;
                 return defCol == null ? null : this[defCol.Index];
             }
         }
 
         public object this[string columnName] {
             get {
-                var col = Sheet.Header.FindColumn(columnName);
+                RelationalColumn col = Sheet.Header.FindColumn(columnName);
                 if (col == null)
                     throw new KeyNotFoundException();
                 return this[col.Index];
@@ -44,7 +44,7 @@ namespace SaintCoinach.Ex.Variant2 {
         }
 
         object IRelationalRow.GetRaw(string columnName) {
-            var column = Sheet.Header.FindColumn(columnName);
+            RelationalColumn column = Sheet.Header.FindColumn(columnName);
             if (column == null)
                 throw new KeyNotFoundException();
             return this.GetRaw(column.Index);

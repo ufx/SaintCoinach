@@ -53,7 +53,7 @@ namespace SaintCoinach.Graphics {
         #region Get
         public Model GetModel(int quality) { return GetModel((ModelQuality)quality); }
         public Model GetModel(ModelQuality quality) {
-            var v = (int)quality;
+            int v = (int)quality;
             if (_Models[v] == null)
                 _Models[v] = new Model(this, quality);
             return _Models[v];
@@ -68,10 +68,10 @@ namespace SaintCoinach.Graphics {
             // These models contain an extra 120 bytes after model headers
             bool isOsg = File.Path.Contains("/osg_");
 
-            var buffer = File.GetPart(DefinitionPart);
-            var stringsSize = BitConverter.ToInt32(buffer, StringsSizeOffset);
+            byte[] buffer = File.GetPart(DefinitionPart);
+            int stringsSize = BitConverter.ToInt32(buffer, StringsSizeOffset);
 
-            var offset = StringsOffset + stringsSize;    // Skipping those, they'll be read further along the road
+            int offset = StringsOffset + stringsSize;    // Skipping those, they'll be read further along the road
 
             this.Header = buffer.ToStructure<ModelDefinitionHeader>(ref offset);
             this.UnknownStructs1 = buffer.ToStructures<Unknowns.ModelStruct1>(Header.UnknownStruct1Count, ref offset);
@@ -81,8 +81,8 @@ namespace SaintCoinach.Graphics {
             if (isOsg)
                 offset += 120;
 
-            var availableQualities = new List<ModelQuality>();
-            for (var i = 0; i < this.ModelHeaders.Length; ++i) {
+            List<ModelQuality> availableQualities = new List<ModelQuality>();
+            for (int i = 0; i < this.ModelHeaders.Length; ++i) {
                 if (this.ModelHeaders[i].MeshCount > 0)
                     availableQualities.Add((ModelQuality)i);
             }
@@ -92,7 +92,7 @@ namespace SaintCoinach.Graphics {
 
             this.AttributeNames = ReadStrings(buffer, Header.AttributeCount, ref offset);
             this.Attributes = new ModelAttribute[Header.AttributeCount];
-            for (var i = 0; i < Header.AttributeCount; ++i)
+            for (int i = 0; i < Header.AttributeCount; ++i)
                 this.Attributes[i] = new ModelAttribute(this, i);
 
             this.UnknownStructs2 = buffer.ToStructures<Unknowns.ModelStruct2>(Header.UnknownStruct2Count, ref offset);
@@ -101,7 +101,7 @@ namespace SaintCoinach.Graphics {
 
             this.MaterialNames = ReadStrings(buffer, Header.MaterialCount, ref offset);
             this.Materials = new MaterialDefinition[Header.MaterialCount];
-            for (var i = 0; i < Header.MaterialCount; ++i)
+            for (int i = 0; i < Header.MaterialCount; ++i)
                 this.Materials[i] = new MaterialDefinition(this, i);
 
 
@@ -117,7 +117,7 @@ namespace SaintCoinach.Graphics {
             this.BoundingBoxes = buffer.ToStructure<ModelBoundingBoxes>(ref offset);
 
             this.Bones = new Bone[Header.BoneCount];
-            for (var i = 0; i < Header.BoneCount; ++i)
+            for (int i = 0; i < Header.BoneCount; ++i)
                 this.Bones[i] = new Bone(this, i, buffer, ref offset);
 
             if (offset != buffer.Length) {
@@ -129,17 +129,17 @@ namespace SaintCoinach.Graphics {
         private void BuildVertexFormats() {
             const int FormatPart = 0;
 
-            var buffer = File.GetPart(FormatPart);
+            byte[] buffer = File.GetPart(FormatPart);
 
             this.VertexFormats = new VertexFormat[Header.MeshCount];
-            var offset = 0;
-            for (var i = 0; i < Header.MeshCount; ++i)
+            int offset = 0;
+            for (int i = 0; i < Header.MeshCount; ++i)
                 this.VertexFormats[i] = new VertexFormat(buffer, ref offset);
         }
         private static string[] ReadStrings(byte[] buffer, int count, ref int offset) {
-            var values = new string[count];
-            for (var i = 0; i < count; ++i) {
-                var stringOffset = BitConverter.ToInt32(buffer, offset);
+            string[] values = new string[count];
+            for (int i = 0; i < count; ++i) {
+                int stringOffset = BitConverter.ToInt32(buffer, offset);
                 values[i] = buffer.ReadString(StringsOffset + stringOffset);
                 offset += 4;
             }

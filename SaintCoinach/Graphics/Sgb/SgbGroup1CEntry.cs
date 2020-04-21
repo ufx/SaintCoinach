@@ -28,7 +28,7 @@ namespace SaintCoinach.Graphics.Sgb {
             this.Header = buffer.ToStructure<HeaderData>(offset);
             this.Name = buffer.ReadString(offset + Header.NameOffset + 9);
 
-            var mdlFilePath = buffer.ReadString(offset + Header.ModelFileOffset + 9);
+            string mdlFilePath = buffer.ReadString(offset + Header.ModelFileOffset + 9);
             if (!string.IsNullOrWhiteSpace(mdlFilePath)) {
                 SaintCoinach.IO.File file;
                 if (mdlFilePath.Contains(".mdl")) {

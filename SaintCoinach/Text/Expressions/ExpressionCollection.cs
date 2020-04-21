@@ -20,13 +20,13 @@ namespace SaintCoinach.Text.Expressions {
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }
         public void ToString(StringBuilder output) {
-            var addSeparator = false;
-            foreach (var c in Children) {
+            bool addSeparator = false;
+            foreach (IExpression c in Children) {
                 if (addSeparator)
                     output.Append(Separator);
                 else

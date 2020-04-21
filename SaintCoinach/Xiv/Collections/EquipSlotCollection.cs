@@ -30,7 +30,7 @@ namespace SaintCoinach.Xiv.Collections {
 
             Collection = collection;
             _EquipSlots = new EquipSlot[SlotCount];
-            for (var i = 0; i < SlotCount; ++i)
+            for (int i = 0; i < SlotCount; ++i)
                 _EquipSlots[i] = new EquipSlot(this, i);
         }
 

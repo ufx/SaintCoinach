@@ -11,7 +11,7 @@ namespace SaintCoinach.Xiv {
         #endregion
 
         public override Graphics.Sgb.SgbFile GetScene() {
-            var sgbPath = string.Format(SgbPathFormat, ModelKey);
+            string sgbPath = string.Format(SgbPathFormat, ModelKey);
 
             IO.File baseFile;
             if (!Sheet.Collection.PackCollection.TryGetFile(sgbPath, out baseFile))

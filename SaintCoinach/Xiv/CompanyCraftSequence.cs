@@ -31,10 +31,10 @@ namespace SaintCoinach.Xiv {
         private CompanyCraftPart[] BuildCraftParts() {
             const int Count = 8;
 
-            var parts = new List<CompanyCraftPart>();
+            List<CompanyCraftPart> parts = new List<CompanyCraftPart>();
 
-            for(var i = 0; i < Count; ++i) {
-                var part = As<CompanyCraftPart>(i);
+            for(int i = 0; i < Count; ++i) {
+                CompanyCraftPart part = As<CompanyCraftPart>(i);
                 if (part == null || part.Key == 0)
                     continue;
 

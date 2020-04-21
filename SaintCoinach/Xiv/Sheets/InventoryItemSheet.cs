@@ -206,11 +206,11 @@ namespace SaintCoinach.Xiv.Sheets {
         #region Factory
 
         protected override Item CreateRow(IRelationalRow sourceRow) {
-            var uiCategory = (ItemUICategory)sourceRow["ItemUICategory"];
+            ItemUICategory uiCategory = (ItemUICategory)sourceRow["ItemUICategory"];
 
             if (!ItemTypes.TryGetValue(uiCategory.Key, out Type type))
                 type = DefaultItemType;
-            var args = new object[] {
+            object[] args = new object[] {
                 this, sourceRow
             };
 

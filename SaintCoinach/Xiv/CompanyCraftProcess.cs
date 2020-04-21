@@ -25,12 +25,12 @@ namespace SaintCoinach.Xiv {
         private Request[] BuildRequests() {
             const int Count = 12;
 
-            var reqs = new List<Request>();
+            List<Request> reqs = new List<Request>();
 
-            for(var i = 0; i < Count; ++i) {
-                var supplyItem = As<CompanyCraftSupplyItem>("SupplyItem", i);
-                var perSet = AsInt32("SetQuantity", i);
-                var setCount = AsInt32("SetsRequired", i);
+            for(int i = 0; i < Count; ++i) {
+                CompanyCraftSupplyItem supplyItem = As<CompanyCraftSupplyItem>("SupplyItem", i);
+                int perSet = AsInt32("SetQuantity", i);
+                int setCount = AsInt32("SetsRequired", i);
 
                 if (supplyItem == null || supplyItem.Key == 0 || perSet == 0 || setCount == 0)
                     continue;

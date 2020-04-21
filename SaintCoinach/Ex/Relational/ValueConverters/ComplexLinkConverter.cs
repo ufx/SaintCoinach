@@ -18,17 +18,17 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
         public Type TargetType => typeof(IRelationalRow);
 
         public object Convert(IDataRow row, object rawValue) {
-            var key = System.Convert.ToInt32(rawValue);
+            int key = System.Convert.ToInt32(rawValue);
             if (key == 0)
                 return null;
 
-            var coll = row.Sheet.Collection;
+            ExCollection coll = row.Sheet.Collection;
 
-            foreach (var link in _Links) {
+            foreach (SheetLinkData link in _Links) {
                 if (link.When != null && !link.When.Match(row))
                     continue;
 
-                var result = link.GetRow(key, coll);
+                IRow result = link.GetRow(key, coll);
                 if (result == null)
                     continue;
 
@@ -92,7 +92,7 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
             public string ProjectedColumnName;
 
             public object Project(IRow row) {
-                var relationalRow = (IRelationalRow)row;
+                IRelationalRow relationalRow = (IRelationalRow)row;
                 return relationalRow[ProjectedColumnName];
             }
         }
@@ -104,7 +104,7 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
             bool _ValueTypeChanged;
 
             public bool Match(IDataRow row) {
-                var rowValue = row[KeyColumnIndex];
+                object rowValue = row[KeyColumnIndex];
                 if (!_ValueTypeChanged && rowValue != null) {
                     Value = System.Convert.ChangeType(Value, rowValue.GetType());
                     _ValueTypeChanged = true;
@@ -125,7 +125,7 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
             public abstract IRow GetRow(int key, ExCollection collection);
 
             public virtual JObject ToJson() {
-                var obj = new JObject();
+                JObject obj = new JObject();
                 if (ProjectedColumnName != null)
                     obj["project"] = ProjectedColumnName;
                 if (KeyColumnName != null)
@@ -167,9 +167,9 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
                     data.RowProducer = new IndexedRowProducer() { KeyColumnName = data.KeyColumnName };
                 }
 
-                var when = obj["when"];
+                JToken when = obj["when"];
                 if (when != null) {
-                    var condition = new LinkCondition();
+                    LinkCondition condition = new LinkCondition();
                     condition.KeyColumnName = (string)when["key"];
                     condition.Value = when["value"].ToObject<object>();
                     data.When = condition;
@@ -183,13 +183,13 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
             public string SheetName;
 
             public override JObject ToJson() {
-                var obj = base.ToJson();
+                JObject obj = base.ToJson();
                 obj["sheet"] = SheetName;
                 return obj;
             }
 
             public override IRow GetRow(int key, ExCollection collection) {
-                var sheet = (IRelationalSheet)collection.GetSheet(SheetName);
+                IRelationalSheet sheet = (IRelationalSheet)collection.GetSheet(SheetName);
                 return RowProducer.GetRow(sheet, key);
             }
         }
@@ -198,18 +198,18 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
             public string[] SheetNames;
 
             public override JObject ToJson() {
-                var obj = base.ToJson();
+                JObject obj = base.ToJson();
                 obj["sheets"] = new JArray(SheetNames);
                 return obj;
             }
 
             public override IRow GetRow(int key, ExCollection collection) {
-                foreach (var sheetName in SheetNames) {
-                    var sheet = (IRelationalSheet)collection.GetSheet(sheetName);
+                foreach (string sheetName in SheetNames) {
+                    IRelationalSheet sheet = (IRelationalSheet)collection.GetSheet(sheetName);
                     if (!sheet.Header.DataFileRanges.Any(r => r.Contains(key)))
                         continue;
 
-                    var row = RowProducer.GetRow(sheet, key);
+                    IRow row = RowProducer.GetRow(sheet, key);
                     if (row != null)
                         return row;
                 }
@@ -218,9 +218,9 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
         }
 
         public void ResolveReferences(SheetDefinition sheetDef) {
-            foreach (var link in _Links) {
+            foreach (SheetLinkData link in _Links) {
                 if (link.When != null) {
-                    var keyDefinition = sheetDef.DataDefinitions
+                    PositionedDataDefintion keyDefinition = sheetDef.DataDefinitions
                         .FirstOrDefault(d => d.InnerDefinition.GetName(0) == link.When.KeyColumnName);
                     if (keyDefinition == null)
                         throw new InvalidOperationException($"Can't find conditional key column '{link.When.KeyColumnName}' in sheet '{sheetDef.Name}'");

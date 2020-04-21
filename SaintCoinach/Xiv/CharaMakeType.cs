@@ -18,10 +18,10 @@ namespace SaintCoinach.Xiv {
         private CharaMakeFeatureIcon[] BuildItems() {
             const int Count = 56;
 
-            var items = new List<CharaMakeFeatureIcon>();
+            List<CharaMakeFeatureIcon> items = new List<CharaMakeFeatureIcon>();
 
-            for (var i = 0; i < Count; ++i) {
-                var item = AsImage("FacialFeatureIcon", i);
+            for (int i = 0; i < Count; ++i) {
+                ImageFile item = AsImage("FacialFeatureIcon", i);
                 if (item == null) continue;
                 items.Add(new CharaMakeFeatureIcon(item, i));
             }

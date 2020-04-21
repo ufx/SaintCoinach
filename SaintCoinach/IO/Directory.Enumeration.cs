@@ -44,7 +44,7 @@ namespace SaintCoinach.IO {
             object IEnumerator.Current { get { return Current; } }
 
             public bool MoveNext() {
-                var res = _InnerEnumerator.MoveNext();
+                bool res = _InnerEnumerator.MoveNext();
                 if (res)
                     _Directory.TryGetFile(_InnerEnumerator.Current.FileKey, out _Current);
                 else

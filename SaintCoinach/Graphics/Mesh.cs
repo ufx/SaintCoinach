@@ -29,7 +29,7 @@ namespace SaintCoinach.Graphics {
             this.Index = index;
 
             this.Parts = new MeshPart[Header.PartCount];
-            for (var i = 0; i < Header.PartCount; ++i)
+            for (int i = 0; i < Header.PartCount; ++i)
                 this.Parts[i] = new MeshPart(this, Model.Definition.MeshPartHeaders[Header.PartOffset + i], indexBuffer);
 
             ReadVertices(vertexBuffer);
@@ -39,26 +39,26 @@ namespace SaintCoinach.Graphics {
 
         #region Build
         private void ReadIndices(byte[] buffer) {
-            var position = Header.IndexBufferOffset * BytesPerIndex;
+            int position = Header.IndexBufferOffset * BytesPerIndex;
             this.Indices = new ushort[Header.IndexCount];
-            for (var i = 0; i < Header.IndexCount; ++i) {
+            for (int i = 0; i < Header.IndexCount; ++i) {
                 this.Indices[i] = BitConverter.ToUInt16(buffer, position);
                 position += BytesPerIndex;
             }
         }
         private void ReadVertices(byte[] buffer) {
-            var header = Header;
-            var format = VertexFormat;
+            MeshHeader header = Header;
+            VertexFormat format = VertexFormat;
 
-            var offsets = new int[header.VertexBufferCount];
-            for (var oi = 0; oi < offsets.Length; ++oi)
+            int[] offsets = new int[header.VertexBufferCount];
+            for (int oi = 0; oi < offsets.Length; ++oi)
                 offsets[oi] = header.VertexOffsets[oi];
 
             Vertices = new Vertex[Header.VertexCount];
-            for (var i = 0; i < header.VertexCount; ++i) {
+            for (int i = 0; i < header.VertexCount; ++i) {
                 Vertices[i] = VertexReader.Read(buffer, format, offsets);
                 
-                for (var oi = 0; oi < offsets.Length; ++oi)
+                for (int oi = 0; oi < offsets.Length; ++oi)
                     offsets[oi] += header.BytesPerVertexPerBuffer[oi];
             }
         }

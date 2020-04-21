@@ -27,12 +27,12 @@ namespace SaintCoinach.Graphics {
             const int VertexPartOffset = 2;
             const int IndexPartOffset = 8;
 
-            var vertexBuffer = Definition.File.GetPart(VertexPartOffset + (int)Quality);
-            var indexBuffer = Definition.File.GetPart(IndexPartOffset + (int)Quality);
+            byte[] vertexBuffer = Definition.File.GetPart(VertexPartOffset + (int)Quality);
+            byte[] indexBuffer = Definition.File.GetPart(IndexPartOffset + (int)Quality);
 
             this.Meshes = new Mesh[Header.MeshCount];
-            for (var i = 0; i < Header.MeshCount; ++i) {
-                var mesh = new Mesh(this, Header.MeshOffset + i, vertexBuffer, indexBuffer);
+            for (int i = 0; i < Header.MeshCount; ++i) {
+                Mesh mesh = new Mesh(this, Header.MeshOffset + i, vertexBuffer, indexBuffer);
 
                 Meshes[i] = mesh;
             }

@@ -15,8 +15,8 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
         public Type TargetType { get { return typeof(IRelationalRow); } }
 
         public object Convert(IDataRow row, object rawValue) {
-            var coll = (RelationalExCollection)row.Sheet.Collection;
-            var key = System.Convert.ToInt32(rawValue);
+            RelationalExCollection coll = (RelationalExCollection)row.Sheet.Collection;
+            int key = System.Convert.ToInt32(rawValue);
             return coll.FindReference(key);
         }
 

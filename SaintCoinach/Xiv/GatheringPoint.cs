@@ -34,9 +34,9 @@ namespace SaintCoinach.Xiv {
         public GatheringPointBonus[] BuildGatheringPointBonus() {
             const int Count = 2;
 
-            var bonuses = new List<GatheringPointBonus>();
-            for (var i = 0; i < Count; ++i) {
-                var bonus = As<GatheringPointBonus>(i);
+            List<GatheringPointBonus> bonuses = new List<GatheringPointBonus>();
+            for (int i = 0; i < Count; ++i) {
+                GatheringPointBonus bonus = As<GatheringPointBonus>(i);
                 if (bonus.Key != 0)
                     bonuses.Add(bonus);
             }

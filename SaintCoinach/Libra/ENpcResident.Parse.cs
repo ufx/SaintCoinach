@@ -31,9 +31,9 @@ namespace SaintCoinach.Libra {
             if (_IsParsed)
                 return;
 
-            var json = Encoding.UTF8.GetString(this.data);
-            using (var strReader = new System.IO.StringReader(json)) {
-                using (var r = new JsonTextReader(strReader)) {
+            string json = Encoding.UTF8.GetString(this.data);
+            using (System.IO.StringReader strReader = new System.IO.StringReader(json)) {
+                using (JsonTextReader r = new JsonTextReader(strReader)) {
                     while (r.Read()) {
                         if (r.TokenType == JsonToken.PropertyName) {
                             switch (r.Value.ToString()) {
@@ -65,23 +65,23 @@ namespace SaintCoinach.Libra {
             if (!reader.Read() || reader.TokenType != JsonToken.StartObject)
                 throw new InvalidOperationException();
 
-            var allCoord = new List<Tuple<int, System.Drawing.PointF[]>>();
+            List<Tuple<int, System.Drawing.PointF[]>> allCoord = new List<Tuple<int, System.Drawing.PointF[]>>();
             while (reader.Read() && reader.TokenType != JsonToken.EndObject) {
                 if (reader.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
-                var key = Convert.ToInt32(reader.Value);
+                int key = Convert.ToInt32(reader.Value);
 
                 if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-                var coordinates = new List<System.Drawing.PointF>();
+                List<System.Drawing.PointF> coordinates = new List<System.Drawing.PointF>();
                 while (reader.Read() && reader.TokenType != JsonToken.EndArray) {
                     if (reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
                     if (!reader.Read() || reader.TokenType != JsonToken.String) throw new InvalidOperationException();
-                    var x = float.Parse((string)reader.Value, CultureInfo.InvariantCulture);
+                    float x = float.Parse((string)reader.Value, CultureInfo.InvariantCulture);
 
                     if (!reader.Read() || reader.TokenType != JsonToken.String) throw new InvalidOperationException();
-                    var y = float.Parse((string)reader.Value, CultureInfo.InvariantCulture);
+                    float y = float.Parse((string)reader.Value, CultureInfo.InvariantCulture);
 
                     if (!reader.Read() || reader.TokenType != JsonToken.EndArray) throw new InvalidOperationException();
 
@@ -96,20 +96,20 @@ namespace SaintCoinach.Libra {
         private void ParseShops(JsonTextReader reader) {
             if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-            var shops = new List<Tuple<int, int[]>>();
+            List<Tuple<int, int[]>> shops = new List<Tuple<int, int[]>>();
             while (reader.Read() && reader.TokenType != JsonToken.EndArray) {
                 if (reader.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
                 if (!reader.Read() || reader.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
-                var key = Convert.ToInt32(reader.Value);
+                int key = Convert.ToInt32(reader.Value);
 
-                var items = new List<int>();
+                List<int> items = new List<int>();
                 if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
                 while (reader.Read() && reader.TokenType != JsonToken.EndArray) {
                     if (reader.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
                     if (!reader.Read() || reader.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
-                    var itemKey = Convert.ToInt32(reader.Value);
+                    int itemKey = Convert.ToInt32(reader.Value);
 
                     if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
                     while (reader.Read() && reader.TokenType != JsonToken.EndArray) { }

@@ -36,23 +36,23 @@ namespace SaintCoinach.Ex.Relational.Update {
         }
 
         public void MatchRow(object[] previousRowData, object[] updatedRowData, ColumnComparer[] comparers) {
-            var defLength = DataDefinition.Length;
-            for (var updatedI = 0; updatedI <= updatedRowData.Length - defLength; ++updatedI) {
-                var matches = 0;
+            int defLength = DataDefinition.Length;
+            for (int updatedI = 0; updatedI <= updatedRowData.Length - defLength; ++updatedI) {
+                int matches = 0;
 
-                for (var i = 0; i < defLength; ++i) {
-                    var prevColumn = i + DataDefinition.Index;
-                    var upColumn = updatedI + i;
+                for (int i = 0; i < defLength; ++i) {
+                    int prevColumn = i + DataDefinition.Index;
+                    int upColumn = updatedI + i;
 
                     if (prevColumn >= comparers.Length)
                         continue; // Not compatible, index out of bounds.
 
-                    var comparer = comparers[prevColumn];
+                    ColumnComparer comparer = comparers[prevColumn];
                     if (comparer == null || !comparer.IsCompatibleIndex(upColumn))
                         continue; // Not compatible.
 
-                    var prevVal = previousRowData[prevColumn];
-                    var upVal = updatedRowData[upColumn];
+                    object prevVal = previousRowData[prevColumn];
+                    object upVal = updatedRowData[upColumn];
 
                     if (comparer.Compare(prevVal, upVal))
                         ++matches;
@@ -60,7 +60,7 @@ namespace SaintCoinach.Ex.Relational.Update {
 
                 if (matches <= 0) continue;
 
-                var c = matches / (double)defLength;
+                double c = matches / (double)defLength;
                 if (!_IndexMatchConfidence.ContainsKey(updatedI))
                     _IndexMatchConfidence.Add(updatedI, new List<double>());
                 _IndexMatchConfidence[updatedI].Add(c);
@@ -97,7 +97,7 @@ namespace SaintCoinach.Ex.Relational.Update {
         //}
 
         public PositionedDataDefintion GetDefinition(int index) {
-            var newDef = DataDefinition.Clone();
+            PositionedDataDefintion newDef = DataDefinition.Clone();
             newDef.Index = index;
             return newDef;
         }

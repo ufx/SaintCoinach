@@ -42,19 +42,19 @@ namespace SaintCoinach.Xiv {
         private ParameterCollection BuildParameters() {
             const int Count = 3;
 
-            var parameters = new ParameterCollection();
-            for (var i = 0; i < Count; ++i) {
-                var param = As<BaseParam>(i);
+            ParameterCollection parameters = new ParameterCollection();
+            for (int i = 0; i < Count; ++i) {
+                BaseParam param = As<BaseParam>(i);
                 if (param.Key == 0)
                     continue;
 
-                var isRel = AsBoolean("IsRelative", i);
-                var val = AsInt32("Value", i);
-                var valHq = AsInt32("Value{HQ}", i);
+                bool isRel = AsBoolean("IsRelative", i);
+                int val = AsInt32("Value", i);
+                int valHq = AsInt32("Value{HQ}", i);
 
                 if (isRel) {
-                    var max = AsInt32("Max", i);
-                    var maxHq = AsInt32("Max{HQ}", i);
+                    int max = AsInt32("Max", i);
+                    int maxHq = AsInt32("Max{HQ}", i);
 
                     parameters.AddParameterValue(param,
                         max == 0

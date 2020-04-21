@@ -53,7 +53,7 @@ namespace SaintCoinach.IO {
 
         protected static byte[] ReadBlock(Stream stream) {
             byte[] block;
-            using (var msOut = new MemoryStream()) {
+            using (MemoryStream msOut = new MemoryStream()) {
                 ReadBlock(stream, msOut);
                 block = msOut.ToArray();
             }
@@ -85,20 +85,20 @@ namespace SaintCoinach.IO {
              * -> If size in source >= 7D00h then data is uncompressed
              */
 
-            var header = new byte[HeaderLength];
+            byte[] header = new byte[HeaderLength];
             if (inStream.Read(header, 0, HeaderLength) != HeaderLength)
                 throw new EndOfStreamException();
 
-            var magicCheck = BitConverter.ToInt32(header, MagicOffset);
-            var sourceSize = BitConverter.ToInt32(header, SourceSizeOffset);
-            var rawSize = BitConverter.ToInt32(header, RawSizeOffset);
+            int magicCheck = BitConverter.ToInt32(header, MagicOffset);
+            int sourceSize = BitConverter.ToInt32(header, SourceSizeOffset);
+            int rawSize = BitConverter.ToInt32(header, RawSizeOffset);
 
             if (magicCheck != Magic)
                 throw new NotSupportedException("Magic number not present (-> don't know how to continue).");
 
-            var isCompressed = sourceSize < CompressionThreshold;
+            bool isCompressed = sourceSize < CompressionThreshold;
 
-            var blockSize = isCompressed ? sourceSize : rawSize;
+            int blockSize = isCompressed ? sourceSize : rawSize;
 
             // An uncompressed block in an ScdOggFile was corrupted due to this
             // extra padding injecting extra 0s into the output stream.  I'm
@@ -108,14 +108,14 @@ namespace SaintCoinach.IO {
             if (isCompressed && (blockSize + HeaderLength) % BlockPadding != 0)
                 blockSize += BlockPadding - ((blockSize + HeaderLength) % BlockPadding); // Add padding if necessary
 
-            var buffer = new byte[blockSize];
+            byte[] buffer = new byte[blockSize];
             if (inStream.Read(buffer, 0, blockSize) != blockSize)
                 throw new EndOfStreamException();
 
             if (isCompressed) {
-                var currentPosition = outStream.Position;
+                long currentPosition = outStream.Position;
                 Inflate(buffer, outStream);
-                var dLen = outStream.Position - currentPosition;
+                long dLen = outStream.Position - currentPosition;
                 if (dLen != rawSize)
                     throw new InvalidDataException("Inflated block does not match indicated size.");
             } else {
@@ -124,7 +124,7 @@ namespace SaintCoinach.IO {
         }
 
         private static void Inflate(byte[] buffer, Stream outStream) {
-            var unc = Ionic.Zlib.DeflateStream.UncompressBuffer(buffer);
+            byte[] unc = Ionic.Zlib.DeflateStream.UncompressBuffer(buffer);
             outStream.Write(unc, 0, unc.Length);
         }
 

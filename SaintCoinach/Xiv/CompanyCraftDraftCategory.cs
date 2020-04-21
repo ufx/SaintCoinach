@@ -29,9 +29,9 @@ namespace SaintCoinach.Xiv {
         private CompanyCraftType[] BuildCompanyCraftTypes() {
             const int Count = 10;
 
-            var craftTypes = new List<CompanyCraftType>();
-            for (var i = 0; i < Count; ++i) {
-                var type = As<CompanyCraftType>(i);
+            List<CompanyCraftType> craftTypes = new List<CompanyCraftType>();
+            for (int i = 0; i < Count; ++i) {
+                CompanyCraftType type = As<CompanyCraftType>(i);
                 if (type != null && type.Key != 0)
                     craftTypes.Add(type);
             }

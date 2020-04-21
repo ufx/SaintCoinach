@@ -90,10 +90,10 @@ namespace SaintCoinach.Xiv.Items {
             if (_IsBuilt)
                 return;
 
-            var found = false;
-            var materiaSheet = Sheet.Collection.GetSheet<Materia>();
-            foreach (var materia in materiaSheet) {
-                var entry = materia.Items.FirstOrDefault(e => e.Item == this);
+            bool found = false;
+            IXivSheet<Materia> materiaSheet = Sheet.Collection.GetSheet<Materia>();
+            foreach (Materia materia in materiaSheet) {
+                Materia.ItemValue entry = materia.Items.FirstOrDefault(e => e.Item == this);
                 if (entry == null) continue;
 
                 _BaseParam = materia.BaseParam;

@@ -27,7 +27,7 @@ namespace SaintCoinach.Text.Nodes {
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }
@@ -60,7 +60,7 @@ namespace SaintCoinach.Text.Nodes {
         #region IExpressionNode Members
 
         public IExpression Evaluate(EvaluationParameters parameters) {
-            var evalCond = Condition.TryEvaluate(parameters);
+            IExpression evalCond = Condition.TryEvaluate(parameters);
             if (parameters.FunctionProvider.ToBoolean(evalCond))
                 return TrueValue.TryEvaluate(parameters);
             return FalseValue.TryEvaluate(parameters);

@@ -104,16 +104,16 @@ namespace SaintCoinach {
         /// <param name="ranges">The <see cref="Range" />s to optimize.</param>
         /// <returns>An array of the optimized ranges.</returns>
         public static Range[] Combine(IEnumerable<Range> ranges) {
-            var arr = ranges.ToArray();
+            Range[] arr = ranges.ToArray();
             if (!arr.Any())
                 return new Range[0];
 
-            var combined = new List<Range>();
+            List<Range> combined = new List<Range>();
 
-            var ordered = arr.OrderBy(_ => _._Start);
-            var currentStart = ordered.First()._Start;
-            var currentEnd = currentStart;
-            foreach (var range in ordered) {
+            IOrderedEnumerable<Range> ordered = arr.OrderBy(_ => _._Start);
+            int currentStart = ordered.First()._Start;
+            int currentEnd = currentStart;
+            foreach (Range range in ordered) {
                 if (range._Start > currentEnd) {
                     if (currentEnd > currentStart)
                         combined.Add(new Range(currentStart, currentEnd - currentStart));

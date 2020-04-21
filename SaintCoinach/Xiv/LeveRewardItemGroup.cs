@@ -50,17 +50,17 @@ namespace SaintCoinach.Xiv {
         private Entry[] BuildItems() {
             const int Count = 9;
 
-            var items = new List<Entry>();
-            for (var i = 0; i < Count; ++i) {
-                var count = AsInt32("Count", i);
+            List<Entry> items = new List<Entry>();
+            for (int i = 0; i < Count; ++i) {
+                int count = AsInt32("Count", i);
                 if (count == 0)
                     continue;
 
-                var item = As<Item>("Item", i);
+                Item item = As<Item>("Item", i);
                 if (item.Key == 0)
                     continue;
 
-                var hq = AsBoolean("HQ", i);
+                bool hq = AsBoolean("HQ", i);
 
                 items.Add(new Entry(item, count, hq));
             }

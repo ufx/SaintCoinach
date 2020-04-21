@@ -55,7 +55,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         #region Serialization
 
         public JObject ToJson() {
-            var obj = new JObject() {
+            JObject obj = new JObject() {
                 ["name"] = Name
             };
             if (Converter != null)
@@ -64,10 +64,10 @@ namespace SaintCoinach.Ex.Relational.Definition {
         }
 
         public static SingleDataDefinition FromJson(JToken obj) {
-            var converterObj = (JObject)obj["converter"];
+            JObject converterObj = (JObject)obj["converter"];
             IValueConverter converter = null;
             if (converterObj != null) {
-                var type = (string)converterObj["type"];
+                string type = (string)converterObj["type"];
                 if (type == "color")
                     converter = ColorConverter.FromJson(converterObj);
                 else if (type == "generic")

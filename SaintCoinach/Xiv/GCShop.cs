@@ -93,14 +93,14 @@ namespace SaintCoinach.Xiv {
         /// </remarks>
         /// <returns>An array of <see cref="GCScripShopItem" />s offered by this shop.</returns>
         private GCScripShopItem[] BuildItems() {
-            var items = new List<GCScripShopItem>();
+            List<GCScripShopItem> items = new List<GCScripShopItem>();
 
-            var gcShopCategoryKeys = Sheet.Collection.GetSheet<GCScripShopCategory>()
+            Dictionary<int, GCScripShopCategory> gcShopCategoryKeys = Sheet.Collection.GetSheet<GCScripShopCategory>()
                 .Where(c => c.GrandCompany.Key == this.GrandCompany.Key)
                 .ToDictionary(c => c.Key);
 
-            var gcItems = Sheet.Collection.GetSheet2<GCScripShopItem>();
-            foreach (var gcItem in gcItems) {
+            XivSheet2<GCScripShopItem> gcItems = Sheet.Collection.GetSheet2<GCScripShopItem>();
+            foreach (GCScripShopItem gcItem in gcItems) {
                 if (gcItem.Item.Key != 0 && gcShopCategoryKeys.ContainsKey(gcItem.ParentKey))
                     items.Add(gcItem);
             }

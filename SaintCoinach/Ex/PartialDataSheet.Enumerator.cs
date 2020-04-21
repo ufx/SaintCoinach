@@ -23,7 +23,7 @@ namespace SaintCoinach.Ex {
 
             public T Current {
                 get {
-                    var inner = _InnerEnumerator.Current;
+                    KeyValuePair<int, int> inner = _InnerEnumerator.Current;
                     return _Sheet._Rows.GetOrAdd(inner.Key, k => _Sheet.CreateRow(k, inner.Value));
                 }
             }

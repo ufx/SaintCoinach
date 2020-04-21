@@ -24,9 +24,9 @@ namespace SaintCoinach.Xiv {
 
         public ImageFile Icon {
             get {
-                var nr = IconOffset + Key;
-                var path = string.Format(IconFormat, nr / 1000, nr);
-                if (Sheet.Collection.PackCollection.TryGetFile(path, out var file))
+                int nr = IconOffset + Key;
+                string path = string.Format(IconFormat, nr / 1000, nr);
+                if (Sheet.Collection.PackCollection.TryGetFile(path, out File file))
                     return file as ImageFile;
                 return null;
             }
@@ -34,9 +34,9 @@ namespace SaintCoinach.Xiv {
 
         public ImageFile FramedIcon {
             get {
-                var nr = FramedIconOffset + Key;
-                var path = string.Format(IconFormat, nr / 1000, nr);
-                if (Sheet.Collection.PackCollection.TryGetFile(path, out var file))
+                int nr = FramedIconOffset + Key;
+                string path = string.Format(IconFormat, nr / 1000, nr);
+                if (Sheet.Collection.PackCollection.TryGetFile(path, out File file))
                     return file as ImageFile;
                 return null;
             }

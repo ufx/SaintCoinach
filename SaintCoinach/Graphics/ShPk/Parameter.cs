@@ -17,7 +17,7 @@ namespace SaintCoinach.Graphics.ShPk {
 
         public Parameter(ShPkFile file, ParameterHeader header, byte[] buffer) {
             Header = header;
-            var off = file.Header.ParameterListOffset + header.NameOffset;
+            int off = file.Header.ParameterListOffset + header.NameOffset;
             Name = Encoding.ASCII.GetString(buffer, off, header.NameLength);
         }
 

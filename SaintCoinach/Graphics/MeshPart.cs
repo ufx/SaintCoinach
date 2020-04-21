@@ -20,9 +20,9 @@ namespace SaintCoinach.Graphics {
             this.Mesh = mesh;
             this.Header = header;
 
-            var attr = new List<ModelAttribute>();
+            List<ModelAttribute> attr = new List<ModelAttribute>();
 
-            for (var i = 0; i < Mesh.Model.Definition.Attributes.Length; ++i) {
+            for (int i = 0; i < Mesh.Model.Definition.Attributes.Length; ++i) {
                 if(((Header.AttributesMask >> i) & 1) == 1)
                     attr.Add(Mesh.Model.Definition.Attributes[i]);
             }

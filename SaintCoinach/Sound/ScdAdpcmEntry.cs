@@ -25,11 +25,11 @@ namespace SaintCoinach.Sound {
         private void Decode(int chunksOffset, int dataOffset) {
             const int WaveHeaderSize = 0x10;
 
-            var wavHeaderOffset = dataOffset;
-            var finalDataOffset = chunksOffset + Header.SamplesOffset;
+            int wavHeaderOffset = dataOffset;
+            int finalDataOffset = chunksOffset + Header.SamplesOffset;
 
             _Decoded = new byte[0x1C + WaveHeaderSize + Header.DataSize];
-            var o = 0;
+            int o = 0;
             _Decoded[o++] = (byte)'R';
             _Decoded[o++] = (byte)'I';
             _Decoded[o++] = (byte)'F';

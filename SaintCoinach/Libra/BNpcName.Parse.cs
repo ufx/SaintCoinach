@@ -32,9 +32,9 @@ namespace SaintCoinach.Libra {
         public void Parse() {
             if (_IsParsed) return;
 
-            var json = Encoding.UTF8.GetString(this.data);
-            using (var strReader = new System.IO.StringReader(json)) {
-                using (var r = new JsonTextReader(strReader)) {
+            string json = Encoding.UTF8.GetString(this.data);
+            using (System.IO.StringReader strReader = new System.IO.StringReader(json)) {
+                using (JsonTextReader r = new JsonTextReader(strReader)) {
                     while (r.Read()) {
                         if (r.TokenType == JsonToken.PropertyName) {
                             switch (r.Value.ToString()) {
@@ -65,23 +65,23 @@ namespace SaintCoinach.Libra {
         private void ParseRegions(JsonTextReader reader) {
             if (!reader.Read() || reader.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
 
-            var values = new List<Tuple<int, Tuple<int, int[]>[]>>();
+            List<Tuple<int, Tuple<int, int[]>[]>> values = new List<Tuple<int, Tuple<int, int[]>[]>>();
             while (reader.Read() && reader.TokenType != JsonToken.EndObject) {
                 if (reader.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
-                var region = Convert.ToInt32(reader.Value);
+                int region = Convert.ToInt32(reader.Value);
 
                 if (!reader.Read() || reader.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
 
-                var zones = new List<Tuple<int, int[]>>();
+                List<Tuple<int, int[]>> zones = new List<Tuple<int, int[]>>();
                 while (reader.Read() && reader.TokenType != JsonToken.EndObject) {
                     if (reader.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
-                    var zone = Convert.ToInt32(reader.Value);
+                    int zone = Convert.ToInt32(reader.Value);
 
                     if (!reader.Read() || reader.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-                    var levels = new List<int>();
+                    List<int> levels = new List<int>();
                     while (reader.Read() && reader.TokenType != JsonToken.EndArray) {
                         if (!"??".Equals(reader.Value.ToString()))
                             levels.Add(Convert.ToInt32(reader.Value));

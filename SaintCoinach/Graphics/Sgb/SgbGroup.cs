@@ -69,7 +69,7 @@ namespace SaintCoinach.Graphics.Sgb {
         public SgbGroup(SgbFile parent, byte[] buffer, int offset, bool isOffset1C = false) {
             this.Parent = parent;
 
-            var entriesOffset = offset;
+            int entriesOffset = offset;
             int count = 0;
             if (isOffset1C) {
                 this.Header = buffer.ToStructure<HeaderData>(entriesOffset);
@@ -82,9 +82,9 @@ namespace SaintCoinach.Graphics.Sgb {
                 count = Offset1CHeader.EntryCount;
                 Entries = new ISgbGroupEntry[count];
 
-                for (var i = 0; i < count; ++i) {
+                for (int i = 0; i < count; ++i) {
                     try {
-                        var entryOffset = entriesOffset + (i * 24);
+                        int entryOffset = entriesOffset + (i * 24);
                         Entries[i] = new SgbGroup1CEntry(parent.File.Pack.Collection, buffer, entryOffset);
                         break;
                     }
@@ -99,12 +99,12 @@ namespace SaintCoinach.Graphics.Sgb {
                 count = Header.EntryCount;
                 Entries = new ISgbGroupEntry[count];
 
-                for (var i = 0; i < count; ++i) {
+                for (int i = 0; i < count; ++i) {
                     try {
-                        var entryOffset = entriesOffset + BitConverter.ToInt32(buffer, entriesOffset + i * 4);
+                        int entryOffset = entriesOffset + BitConverter.ToInt32(buffer, entriesOffset + i * 4);
 
-                        var type = (SgbGroupEntryType)BitConverter.ToInt32(buffer, entryOffset);
-                        var typeStr = ((Lgb.LgbEntryType)type).ToString();
+                        SgbGroupEntryType type = (SgbGroupEntryType)BitConverter.ToInt32(buffer, entryOffset);
+                        string typeStr = ((Lgb.LgbEntryType)type).ToString();
                         switch (type) {
                             case SgbGroupEntryType.Model:
                                 Entries[i] = new SgbModelEntry(Parent.File.Pack.Collection, buffer, entryOffset);

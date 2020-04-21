@@ -9,7 +9,7 @@ namespace DotSquish {
         #region DXT3
         private static int FloatToInt(float a, int limit) {
             // Use ANSI round-to-zero behaviour to get round-to-nearest.
-            var i = (int)(a + .5f);
+            int i = (int)(a + .5f);
 
             if (i < 0)
                 i = 0;
@@ -22,14 +22,14 @@ namespace DotSquish {
             // Quantise and pack alpha values pairwise.
             for (int i = 0; i < 8; ++i) {
                 // Qnatise down to 4 bits.
-                var alpha1 = rgba[8 * i + 3] * (15f / 255f);
-                var alpha2 = rgba[8 * i + 7] * (15f / 255f);
-                var quant1 = FloatToInt(alpha1, 15);
-                var quant2 = FloatToInt(alpha2, 15);
+                float alpha1 = rgba[8 * i + 3] * (15f / 255f);
+                float alpha2 = rgba[8 * i + 7] * (15f / 255f);
+                int quant1 = FloatToInt(alpha1, 15);
+                int quant2 = FloatToInt(alpha2, 15);
 
                 // Set alpha to zero where masked.
-                var bit1 = 1 << (2 * i);
-                var bit2 = 1 << (2 * i + 1);
+                int bit1 = 1 << (2 * i);
+                int bit2 = 1 << (2 * i + 1);
                 if ((mask & bit1) == 0)
                     quant1 = 0;
                 if ((mask & bit2) == 0)
@@ -43,11 +43,11 @@ namespace DotSquish {
             // Unpack the alpha values pairwise.
             for (int i = 0; i < 8; ++i) {
                 // Quantise down to 4 bits.
-                var quant = block[blockOffset + i];
+                byte quant = block[blockOffset + i];
 
                 // Unpack the values.
-                var lo = quant & 0x0f;
-                var hi = quant & 0xf0;
+                int lo = quant & 0x0f;
+                int hi = quant & 0xf0;
 
                 // Convert back up to bytes.
                 target[targetOffset + 8 * i + 3] = (byte)(lo | (lo << 4));
@@ -67,10 +67,10 @@ namespace DotSquish {
             indices = new byte[16];
 
             // Fit each alpha value to the codebook.
-            var err = 0;
+            int err = 0;
             for (int i = 0; i < 16; ++i) {
                 // Check this pixel is valid.
-                var bit = 1 << i;
+                int bit = 1 << i;
                 if ((mask & bit) == 0) {
                     // Use the first code.
                     indices[i] = 0;
@@ -78,12 +78,12 @@ namespace DotSquish {
                 }
 
                 // Find the least error and corresponding index.
-                var value = rgba[4 * i + 3];
-                var least = int.MaxValue;
-                var index = 0;
+                byte value = rgba[4 * i + 3];
+                int least = int.MaxValue;
+                int index = 0;
                 for (int j = 0; j < 8; ++j) {
                     // Get the squared error from this code.
-                    var dist = ((int)value) - ((int)codes[j]);
+                    int dist = ((int)value) - ((int)codes[j]);
                     dist *= dist;
 
                     // Compare with the best so far.
@@ -106,19 +106,19 @@ namespace DotSquish {
             target[targetOffset + 0] = (byte)alpha0;
             target[targetOffset + 1] = (byte)alpha1;
 
-            var indOff = 0;
-            var retOff = 2;
+            int indOff = 0;
+            int retOff = 2;
             for (int i = 0; i < 2; ++i) {
                 // Pack 8 3-bit values.
-                var value = 0;
+                int value = 0;
                 for (int j = 0; j < 8; ++j) {
-                    var index = indices[indOff++];
+                    byte index = indices[indOff++];
                     value |= (index << 3 * j);
                 }
 
                 // Store in 3 bytes
                 for (int j = 0; j < 3; ++j) {
-                    var b = (value >> (8 * j)) & 0xFF;
+                    int b = (value >> (8 * j)) & 0xFF;
                     target[targetOffset + retOff++] = (byte)b;
                 }
             }
@@ -126,9 +126,9 @@ namespace DotSquish {
         private static void WriteAlphaBlock5(int alpha0, int alpha1, byte[] indices, byte[] target, int targetOffset) {
             // Check the relative values of the endpoints.
             if (alpha0 > alpha1) {
-                var swapped = new byte[16];
+                byte[] swapped = new byte[16];
                 for (int i = 0; i < 16; ++i) {
-                    var index = indices[i];
+                    byte index = indices[i];
                     if (index == 0)
                         swapped[i] = 1;
                     else if (index == 1)
@@ -149,9 +149,9 @@ namespace DotSquish {
         private static void WriteAlphaBlock7(int alpha0, int alpha1, byte[] indices, byte[] target, int targetOffset) {
             // Check the relative values of the endpoints.
             if (alpha0 > alpha1) {
-                var swapped = new byte[16];
+                byte[] swapped = new byte[16];
                 for (int i = 0; i < 16; ++i) {
-                    var index = indices[i];
+                    byte index = indices[i];
                     if (index == 0)
                         swapped[i] = 1;
                     else if (index == 1)
@@ -173,7 +173,7 @@ namespace DotSquish {
             int min7 = 255, max7 = 0;
             for (int i = 0; i < 16; ++i) {
                 // Check this pixel is valid.
-                var bit = 1 << i;
+                int bit = 1 << i;
                 if ((mask & bit) == 0)
                     continue;
 
@@ -200,7 +200,7 @@ namespace DotSquish {
             FixRange(ref min7, ref max7, 7);
 
             // Set up the 5-alpha code book.
-            var codes5 = new byte[8];
+            byte[] codes5 = new byte[8];
             codes5[0] = (byte)min5;
             codes5[1] = (byte)max5;
             for (int i = 1; i < 5; ++i)
@@ -209,7 +209,7 @@ namespace DotSquish {
             codes5[7] = 255;
 
             // Set up the 7-alpha code book.
-            var codes7 = new byte[8];
+            byte[] codes7 = new byte[8];
             codes7[0] = (byte)min7;
             codes7[1] = (byte)max7;
             for (int i = 1; i < 7; ++i)
@@ -217,8 +217,8 @@ namespace DotSquish {
 
             // Fit the data to both code books.
             byte[] indices5, indices7;
-            var err5 = FitCodes(rgba, mask, codes5, out indices5);
-            var err7 = FitCodes(rgba, mask, codes7, out indices7);
+            int err5 = FitCodes(rgba, mask, codes5, out indices5);
+            int err7 = FitCodes(rgba, mask, codes7, out indices7);
 
             // Save the block with least error.
             if (err5 <= err7)
@@ -228,11 +228,11 @@ namespace DotSquish {
         }
         public static void DecompressAlphaDxt5(byte[] block, int blockOffset, byte[] target, int targetOffset) {
             // Get the two alpha values.
-            var alpha0 = block[blockOffset + 0];
-            var alpha1 = block[blockOffset + 1];
+            byte alpha0 = block[blockOffset + 0];
+            byte alpha1 = block[blockOffset + 1];
 
             // Compare the values to build the codebook.
-            var codes = new byte[8];
+            byte[] codes = new byte[8];
             codes[0] = alpha0;
             codes[1] = alpha1;
             if (alpha0 <= alpha1) {
@@ -248,20 +248,20 @@ namespace DotSquish {
             }
 
             // Decode the incdices
-            var indices = new byte[16];
-            var blOff = 2;
-            var indOff = 0;
+            byte[] indices = new byte[16];
+            int blOff = 2;
+            int indOff = 0;
             for (int i = 0; i < 2; ++i) {
                 // Grab 3 bytes
                 int value = 0;
                 for (int j = 0; j < 3; ++j) {
-                    var b = block[blockOffset + blOff++];
+                    byte b = block[blockOffset + blOff++];
                     value |= (b << 8 * j);
                 }
 
                 // Unpack 8 3-bit values from it
                 for (int j = 0; j < 8; ++j) {
-                    var index = (value >> 3 * j) & 0x7;
+                    int index = (value >> 3 * j) & 0x7;
                     indices[indOff++] = (byte)index;
                 }
             }

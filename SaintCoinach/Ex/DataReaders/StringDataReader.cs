@@ -38,21 +38,21 @@ namespace SaintCoinach.Ex.DataReaders {
         /// <param name="row"><see cref="IDataRow" /> to read in.</param>
         /// <returns>Returns the value read from the given <c>row</c> and <c>column</c>.</returns>
         public override object Read(byte[] buffer, Column col, IDataRow row) {
-            var fieldOffset = GetFieldOffset(col, row);
-            var endOfFixed = row.Offset + row.Sheet.Header.FixedSizeDataLength;
+            int fieldOffset = GetFieldOffset(col, row);
+            int endOfFixed = row.Offset + row.Sheet.Header.FixedSizeDataLength;
 
-            var start = endOfFixed + OrderedBitConverter.ToInt32(buffer, fieldOffset, true);
+            int start = endOfFixed + OrderedBitConverter.ToInt32(buffer, fieldOffset, true);
             if (start < 0)
                 return null;
 
-            var end = start - 1;
+            int end = start - 1;
             while (++end < buffer.Length && buffer[end] != 0) { }
-            var len = end - start;
+            int len = end - start;
 
             if (len == 0)
                 return Text.XivString.Empty;
 
-            var binaryString = new byte[len];
+            byte[] binaryString = new byte[len];
             Array.Copy(buffer, start, binaryString, 0, len);
 
             return Text.XivStringDecoder.Default.Decode(binaryString);//.ToString();

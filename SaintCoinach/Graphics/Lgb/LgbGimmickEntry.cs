@@ -35,7 +35,7 @@ namespace SaintCoinach.Graphics.Lgb {
             
             this.Name = buffer.ReadString(offset + Header.NameOffset);
 
-            var gimmickFilePath = buffer.ReadString(offset + Header.GimmickFileOffset);
+            string gimmickFilePath = buffer.ReadString(offset + Header.GimmickFileOffset);
             if (!string.IsNullOrWhiteSpace(gimmickFilePath)) {
                 SaintCoinach.IO.File file;
                 if (packs.TryGetFile(gimmickFilePath, out file))

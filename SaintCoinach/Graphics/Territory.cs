@@ -21,7 +21,7 @@ namespace SaintCoinach.Graphics {
         public Territory(IO.PackCollection packs, string name, string levelPath) {
             this.Packs = packs;
             this.Name = name;
-            var i = levelPath.IndexOf("/level/");
+            int i = levelPath.IndexOf("/level/");
             this.BasePath = "bg/" + levelPath.Substring(0, i + 1);
 
             Build();
@@ -30,16 +30,16 @@ namespace SaintCoinach.Graphics {
 
         #region Build
         private void Build() {
-            var terrainPath = BasePath + "bgplate/terrain.tera";
-            if (Packs.TryGetFile(terrainPath, out var terrainFile))
+            string terrainPath = BasePath + "bgplate/terrain.tera";
+            if (Packs.TryGetFile(terrainPath, out IO.File terrainFile))
                 this.Terrain = new TerritoryParts.Terrain(terrainFile);
 
-            var lgbFiles = new List<Lgb.LgbFile>() { TryGetLgb("level/bg.lgb"), TryGetLgb("level/planmap.lgb"), TryGetLgb("level/planevent.lgb") };
+            List<Lgb.LgbFile> lgbFiles = new List<Lgb.LgbFile>() { TryGetLgb("level/bg.lgb"), TryGetLgb("level/planmap.lgb"), TryGetLgb("level/planevent.lgb") };
             this.LgbFiles = lgbFiles.Where(l => l != null).ToArray();
         }
         private Lgb.LgbFile TryGetLgb(string name) {
-            var path = BasePath + name;
-            if (Packs.TryGetFile(path, out var file))
+            string path = BasePath + name;
+            if (Packs.TryGetFile(path, out IO.File file))
                 return new Lgb.LgbFile(file);
             return null;
         }

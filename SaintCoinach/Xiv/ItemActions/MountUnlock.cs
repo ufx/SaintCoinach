@@ -12,7 +12,7 @@ namespace SaintCoinach.Xiv.ItemActions {
 
         public Mount Mount {
             get {
-                var key = GetData(MountKey);
+                int key = GetData(MountKey);
                 return Sheet.Collection.GetSheet<Mount>()[key];
             }
         }

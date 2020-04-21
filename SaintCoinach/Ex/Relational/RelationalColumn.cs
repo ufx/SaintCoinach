@@ -15,7 +15,7 @@ namespace SaintCoinach.Ex.Relational {
                     return _Definition;
 
                 if (Header.SheetDefinition != null) {
-                    if (Header.SheetDefinition.TryGetDefinition(Index, out var definition))
+                    if (Header.SheetDefinition.TryGetDefinition(Index, out PositionedDataDefintion definition))
                         _Definition = definition;
                 }
 
@@ -32,10 +32,10 @@ namespace SaintCoinach.Ex.Relational {
 
         public override string ValueType {
             get {
-                var def = Header.SheetDefinition;
+                SheetDefinition def = Header.SheetDefinition;
                 if (def == null) return base.ValueType;
 
-                var t = def.GetValueTypeName(Index);
+                string t = def.GetValueTypeName(Index);
                 return t ?? base.ValueType;
             }
         }
@@ -56,16 +56,16 @@ namespace SaintCoinach.Ex.Relational {
         #region Read
 
         public override object Read(byte[] buffer, IDataRow row) {
-            var baseVal = base.Read(buffer, row);
+            object baseVal = base.Read(buffer, row);
 
-            var def = Definition;
+            PositionedDataDefintion def = Definition;
             return def != null ? def.Convert(row, baseVal, Index) : baseVal;
         }
 
         public override object Read(byte[] buffer, IDataRow row, int offset) {
-            var baseVal = base.Read(buffer, row, offset);
+            object baseVal = base.Read(buffer, row, offset);
 
-            var def = Definition;
+            PositionedDataDefintion def = Definition;
             return def != null ? def.Convert(row, baseVal, Index) : baseVal;
         }
 

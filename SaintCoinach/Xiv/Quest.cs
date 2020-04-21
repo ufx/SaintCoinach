@@ -23,13 +23,13 @@ namespace SaintCoinach.Xiv {
 
         public ENpc IssuingENpc {
             get {
-                var resident = this["Issuer{Start}"] as ENpcResident;
+                ENpcResident resident = this["Issuer{Start}"] as ENpcResident;
                 return resident == null ? null : Sheet.Collection.ENpcs[resident.Key];
             }
         }
         public ENpc TargetENpc {
             get {
-                var resident = this["Target{End}"] as ENpcResident;
+                ENpcResident resident = this["Target{End}"] as ENpcResident;
                 return resident == null ? null : Sheet.Collection.ENpcs[resident.Key];
             }
         }
@@ -74,9 +74,9 @@ namespace SaintCoinach.Xiv {
 
         #region Build
         private ENpc[] BuildInvolvedENpcs() {
-            var enpcs = new List<ENpc> { IssuingENpc };
+            List<ENpc> enpcs = new List<ENpc> { IssuingENpc };
             if (Sheet.Collection.IsLibraAvailable) {
-                var enpcColl = Sheet.Collection.ENpcs;
+                Collections.ENpcCollection enpcColl = Sheet.Collection.ENpcs;
                 var libraRows = Sheet.Collection.Libra.ENpcResident_Quest.Where(i => i.Quest_Key == this.Key);
                 foreach (var r in libraRows)
                     enpcs.Add(enpcColl[(int)r.ENpcResident_Key]);

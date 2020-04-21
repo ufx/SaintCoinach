@@ -110,9 +110,9 @@ namespace SaintCoinach.Xiv {
         private Item[] BuildItems() {
             const int Count = 10;
 
-            var items = new List<Item>();
-            for (var i = 0; i < Count; ++i) {
-                var item = As<Item>("Item", i);
+            List<Item> items = new List<Item>();
+            for (int i = 0; i < Count; ++i) {
+                Item item = As<Item>("Item", i);
                 if (item.Key != 0)
                     items.Add(item);
             }

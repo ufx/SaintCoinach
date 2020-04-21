@@ -165,7 +165,7 @@ namespace SaintCoinach.Xiv {
         public Item UnlockItem {
             get {
                 if (!_UnlockItemFetched) {
-                    var secretRecipeBook = (IXivRow)this["SecretRecipeBook"];
+                    IXivRow secretRecipeBook = (IXivRow)this["SecretRecipeBook"];
                     if (secretRecipeBook != null && secretRecipeBook.Key != 0)
                         _UnlockItem = (Item)secretRecipeBook["Item"];
                     _UnlockItemFetched = true;
@@ -202,25 +202,25 @@ namespace SaintCoinach.Xiv {
             const int MaterialCount = 10;
             const int CrystalCategory = 59;
 
-            var ingredients = new List<RecipeIngredient>();
+            List<RecipeIngredient> ingredients = new List<RecipeIngredient>();
 
-            for (var i = 0; i < MaterialCount; ++i) {
-                var item = As<Item>("Item{Ingredient}", i);
+            for (int i = 0; i < MaterialCount; ++i) {
+                Item item = As<Item>("Item{Ingredient}", i);
                 if (item == null || item.Key == 0)
                     continue;
 
-                var count = AsInt32("Amount{Ingredient}", i);
+                int count = AsInt32("Amount{Ingredient}", i);
                 if (count == 0)
                     continue;
 
-                var type = item.ItemUICategory.Key == CrystalCategory ? RecipeIngredientType.Crystal : RecipeIngredientType.Material;
+                RecipeIngredientType type = item.ItemUICategory.Key == CrystalCategory ? RecipeIngredientType.Crystal : RecipeIngredientType.Material;
                 ingredients.Add(new RecipeIngredient(type, item, count));
             }
-            var itemLevelSum =
+            int itemLevelSum =
                 ingredients.Where(_ => _.Type == RecipeIngredientType.Material)
                            .Sum(_ => _.Count * _.Item.ItemLevel.Key);
-            var qualityFromMats = RecipeLevel.Quality * ((float)MaterialQualityFactor / 100);
-            foreach (var mat in ingredients.Where(_ => _.Type == RecipeIngredientType.Material))
+            float qualityFromMats = RecipeLevel.Quality * ((float)MaterialQualityFactor / 100);
+            foreach (RecipeIngredient mat in ingredients.Where(_ => _.Type == RecipeIngredientType.Material))
                 mat.QualityPerItem = mat.Item.ItemLevel.Key * qualityFromMats / itemLevelSum;
 
             return ingredients.ToArray();
@@ -229,7 +229,7 @@ namespace SaintCoinach.Xiv {
         #endregion
 
         public int BaseProgress(int craftsmanship, int crafterLevel) {
-            var diff = GetCraftLevelDifference(crafterLevel);
+            CraftLevelDifference diff = GetCraftLevelDifference(crafterLevel);
             if (diff == null)
                 throw new ArgumentException("Invalid crafter level / recipe level difference", "crafterLevel");
 
@@ -240,7 +240,7 @@ namespace SaintCoinach.Xiv {
         }
 
         public int BaseQuality(int control, int crafterLevel) {
-            var diff = GetCraftLevelDifference(crafterLevel);
+            CraftLevelDifference diff = GetCraftLevelDifference(crafterLevel);
             if (diff == null)
                 throw new ArgumentException("Invalid crafter level / recipe level difference", "crafterLevel");
             return (control + 10000)
@@ -250,8 +250,8 @@ namespace SaintCoinach.Xiv {
         }
 
         public CraftLevelDifference GetCraftLevelDifference(int crafterLevel) {
-            var levelDiff = crafterLevel - RecipeLevelTable.Key;
-            var sheet = Sheet.Collection.GetSheet<CraftLevelDifference>();
+            int levelDiff = crafterLevel - RecipeLevelTable.Key;
+            IXivSheet<CraftLevelDifference> sheet = Sheet.Collection.GetSheet<CraftLevelDifference>();
             return sheet.ContainsRow(levelDiff) ? sheet[levelDiff] : null;
         }
 

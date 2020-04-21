@@ -60,7 +60,7 @@ namespace SaintCoinach.Xiv {
         /// </summary>
         /// <returns>A string that represents the current <see cref="ShopListingItem" />.</returns>
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             if (Count > 1)
                 sb.AppendFormat("{0} ", Count);

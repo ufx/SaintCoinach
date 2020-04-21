@@ -35,7 +35,7 @@ namespace SaintCoinach.Graphics.Sgb {
             this.Header = buffer.ToStructure<HeaderData>(offset);
             this.Name = buffer.ReadString(offset + Header.NameOffset);
 
-            var sgbFileName = buffer.ReadString(offset + Header.GimmickFileOffset);
+            string sgbFileName = buffer.ReadString(offset + Header.GimmickFileOffset);
             if (!string.IsNullOrWhiteSpace(sgbFileName)) {
                 SaintCoinach.IO.File file;
                 if (packs.TryGetFile(sgbFileName, out file))

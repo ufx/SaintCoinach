@@ -86,16 +86,16 @@ namespace SaintCoinach.Xiv {
             return As<IRelationalRow>("ENpcData", index);
         }
         public int GetRawData(int index) {
-            var fulCol = BuildColumnName("ENpcData", index);
-            var raw = ((IRelationalRow)this).GetRaw(fulCol);
+            string fulCol = BuildColumnName("ENpcData", index);
+            object raw = ((IRelationalRow)this).GetRaw(fulCol);
             return Convert.ToInt32(raw);
         }
 
         private IRelationalRow[] BuildAssignedData() {
-            var data = new List<IRelationalRow>();
+            List<IRelationalRow> data = new List<IRelationalRow>();
 
-            for (var i = 0; i < ENpcBase.DataCount; ++i) {
-                var val = GetData(i);
+            for (int i = 0; i < ENpcBase.DataCount; ++i) {
+                IRelationalRow val = GetData(i);
                 if (val != null)
                     data.Add(val);
             }

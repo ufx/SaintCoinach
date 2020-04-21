@@ -36,10 +36,10 @@ namespace SaintCoinach.Xiv {
         RequiredItem[] BuildRequiredItems() {
             const int Count = 3;
 
-            var items = new List<RequiredItem>();
-            for (var i = 0; i < Count; ++i) {
-                var item = As<Item>("RequiredItem", i);
-                var count = AsInt32("RequiredItemCount", i);
+            List<RequiredItem> items = new List<RequiredItem>();
+            for (int i = 0; i < Count; ++i) {
+                Item item = As<Item>("RequiredItem", i);
+                int count = AsInt32("RequiredItemCount", i);
                 if (item == null || item.Key == 0 || count == 0)
                     continue;
                 items.Add(new RequiredItem(item, count));

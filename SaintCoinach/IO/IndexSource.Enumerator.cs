@@ -20,7 +20,7 @@ namespace SaintCoinach.IO {
 
             public File Current {
                 get {
-                    var index = _FileEnumerator.Current;
+                    IndexFile index = _FileEnumerator.Current;
                     return _Source.GetFile(index.DirectoryKey, index.FileKey);
                 }
             }

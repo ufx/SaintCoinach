@@ -56,15 +56,15 @@ namespace SaintCoinach.Xiv {
         private IShopListing[] BuildShopListings() {
             const int CostItem = 6559;  // TODO: This is the company chest. Because there's no item for FC credit. :(
 
-            var costItem = Sheet.Collection.GetSheet<Item>()[CostItem];
-            var listings = new List<IShopListing>();
-            for(var i = 0; i < ItemCount; ++i) {
-                var item = As<Item>("Item", i);
+            Item costItem = Sheet.Collection.GetSheet<Item>()[CostItem];
+            List<IShopListing> listings = new List<IShopListing>();
+            for(int i = 0; i < ItemCount; ++i) {
+                Item item = As<Item>("Item", i);
                 if (item == null || item.Key == 0)
                     continue;
 
-                var cost = AsInt32("Cost", i);
-                var requiredRank = As<FCRank>("FCRank{Required}", i);
+                int cost = AsInt32("Cost", i);
+                FCRank requiredRank = As<FCRank>("FCRank{Required}", i);
 
                 listings.Add(new Listing(this, item, costItem, cost, requiredRank));
             }
@@ -72,9 +72,9 @@ namespace SaintCoinach.Xiv {
         }
 
         private Item[] BuildItems() {
-            var items = new List<Item>();
-            for(var i = 0; i < ItemCount; ++i) {
-                var item = As<Item>("Item", i);
+            List<Item> items = new List<Item>();
+            for(int i = 0; i < ItemCount; ++i) {
+                Item item = As<Item>("Item", i);
                 if (item != null && item.Key != 0)
                     items.Add(item);
             }

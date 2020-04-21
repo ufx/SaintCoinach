@@ -94,10 +94,10 @@ namespace SaintCoinach.Xiv {
         private Target[] BuildTargets() {
             const int Count = 10;
 
-            var targets = new Target[Count];
-            for (var i = 0; i < targets.Length; ++i) {
-                var monster = As<MonsterNoteTarget>("MonsterNoteTarget{Common}", i);
-                var count = AsInt32("MonsterCount", i);
+            Target[] targets = new Target[Count];
+            for (int i = 0; i < targets.Length; ++i) {
+                MonsterNoteTarget monster = As<MonsterNoteTarget>("MonsterNoteTarget{Common}", i);
+                int count = AsInt32("MonsterCount", i);
 
                 targets[i] = new Target(monster, count);
             }
@@ -108,8 +108,8 @@ namespace SaintCoinach.Xiv {
         private MonsterNoteTarget[] BuildNotoriousTargets() {
             const int Count = 3;
 
-            var targets = new MonsterNoteTarget[Count];
-            for (var i = 0; i < targets.Length; ++i)
+            MonsterNoteTarget[] targets = new MonsterNoteTarget[Count];
+            for (int i = 0; i < targets.Length; ++i)
                 targets[i] = As<MonsterNoteTarget>("MonsterNoteTarget{NM}", i);
 
             return targets;
@@ -118,10 +118,10 @@ namespace SaintCoinach.Xiv {
         private FateTarget[] BuildFates() {
             const int Count = 3;
 
-            var fates = new FateTarget[Count];
-            for (var i = 0; i < fates.Length; ++i) {
-                var fate = As<Fate>("Fate", i);
-                var place = As<PlaceName>("PlaceName{Fate}", i);
+            FateTarget[] fates = new FateTarget[Count];
+            for (int i = 0; i < fates.Length; ++i) {
+                Fate fate = As<Fate>("Fate", i);
+                PlaceName place = As<PlaceName>("PlaceName{Fate}", i);
 
                 fates[i] = new FateTarget(fate, place);
             }
@@ -132,8 +132,8 @@ namespace SaintCoinach.Xiv {
         private Leve[] BuildLeves() {
             const int Count = 3;
 
-            var leves = new Leve[Count];
-            for (var i = 0; i < leves.Length; ++i)
+            Leve[] leves = new Leve[Count];
+            for (int i = 0; i < leves.Length; ++i)
                 leves[i] = As<Leve>("Leve", i);
             return leves;
         }

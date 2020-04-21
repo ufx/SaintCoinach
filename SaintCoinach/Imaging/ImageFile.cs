@@ -33,7 +33,7 @@ namespace SaintCoinach.Imaging {
 
         public ImageFile(Pack pack, FileCommonHeader commonHeader)
             : base(pack, commonHeader) {
-            var stream = GetSourceStream();
+            Stream stream = GetSourceStream();
             stream.Position = CommonHeader.EndOfHeader;
             ImageHeader = new ImageHeader(stream);
         }
@@ -43,7 +43,7 @@ namespace SaintCoinach.Imaging {
         #region Read
 
         public Image GetImage() {
-            if (_ImageCache != null && _ImageCache.TryGetTarget(out var image)) return image;
+            if (_ImageCache != null && _ImageCache.TryGetTarget(out Image image)) return image;
 
             image = ImageConverter.Convert(this);
 
@@ -56,7 +56,7 @@ namespace SaintCoinach.Imaging {
         }
 
         public override byte[] GetData() {
-            if (_BufferCache != null && _BufferCache.TryGetTarget(out var buffer)) return buffer;
+            if (_BufferCache != null && _BufferCache.TryGetTarget(out byte[] buffer)) return buffer;
 
             buffer = Read();
 
@@ -69,12 +69,12 @@ namespace SaintCoinach.Imaging {
         }
 
         private byte[] Read() {
-            var sourceStream = GetSourceStream();
-            var offsets = GetBlockOffsets();
+            Stream sourceStream = GetSourceStream();
+            IEnumerable<int> offsets = GetBlockOffsets();
 
             byte[] data;
-            using (var dataStream = new MemoryStream((int)CommonHeader.Length)) {
-                foreach (var offset in offsets) {
+            using (MemoryStream dataStream = new MemoryStream((int)CommonHeader.Length)) {
+                foreach (int offset in offsets) {
                     sourceStream.Position = ImageHeader.EndOfHeader + offset;
                     ReadBlock(sourceStream, dataStream);
                 }
@@ -88,12 +88,12 @@ namespace SaintCoinach.Imaging {
             const int EntryLength = 0x14;
             const int BlockInfoOffset = 0x18;
 
-            var count = BitConverter.ToInt16(CommonHeader._Buffer, CountOffset);
-            var currentOffset = 0;
-            var offsets = new List<int>();
+            short count = BitConverter.ToInt16(CommonHeader._Buffer, CountOffset);
+            int currentOffset = 0;
+            List<int> offsets = new List<int>();
 
-            for (var i = BlockInfoOffset + count * EntryLength; i + 2 <= CommonHeader._Buffer.Length; i += 2) {
-                var len = BitConverter.ToUInt16(CommonHeader._Buffer, i);
+            for (int i = BlockInfoOffset + count * EntryLength; i + 2 <= CommonHeader._Buffer.Length; i += 2) {
+                ushort len = BitConverter.ToUInt16(CommonHeader._Buffer, i);
                 if (len == 0)
                     break;
                 offsets.Add(currentOffset);

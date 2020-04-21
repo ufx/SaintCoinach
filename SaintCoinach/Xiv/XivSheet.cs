@@ -28,11 +28,11 @@ namespace SaintCoinach.Xiv {
         }
 
         protected static ConstructorInfo GetRowConstructor(Type type, Type sheetType) {
-            var ctors =
+            ConstructorInfo[] ctors =
                 type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-            foreach (var ctor in ctors) {
-                var param = ctor.GetParameters();
+            foreach (ConstructorInfo ctor in ctors) {
+                ParameterInfo[] param = ctor.GetParameters();
                 if (param.Length != 2) continue;
                 if (!param[0].ParameterType.IsAssignableFrom(sheetType)) continue;
                 if (!param[1].ParameterType.IsAssignableFrom(typeof(IRelationalRow))) continue;

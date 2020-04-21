@@ -26,10 +26,10 @@ namespace SaintCoinach.Xiv {
 
             public T Current {
                 get {
-                    var srcRow = (Ex.Relational.IRelationalRow)_SourceSubEnumerator.Current;
-                    var key = Tuple.Create(_CurrentParent.Key, srcRow.Key);
+                    Ex.Relational.IRelationalRow srcRow = (Ex.Relational.IRelationalRow)_SourceSubEnumerator.Current;
+                    Tuple<int, int> key = Tuple.Create(_CurrentParent.Key, srcRow.Key);
 
-                    if (_Sheet._SubRows.TryGetValue(key, out var row)) return row;
+                    if (_Sheet._SubRows.TryGetValue(key, out T row)) return row;
 
                     row = _Sheet.CreateSubRow(srcRow);
                     _Sheet._SubRows.Add(key, row);

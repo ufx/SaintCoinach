@@ -25,8 +25,8 @@ namespace SaintCoinach.Xiv {
         private CollectableItem[] BuildCollectableItems() {
             const int Count = 8;
 
-            var items = new CollectableItem[Count];
-            for (var i = 0; i < Count; ++i)
+            CollectableItem[] items = new CollectableItem[Count];
+            for (int i = 0; i < Count; ++i)
                 items[i] = new CollectableItem(this, i);
             return items;
         }

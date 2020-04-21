@@ -239,7 +239,7 @@ namespace SaintCoinach.Xiv {
         /// </summary>
         /// <returns>An array of recipes using the current item as material.</returns>
         private Recipe[] BuildRecipesAsMaterial() {
-            var rSheet = Sheet.Collection.GetSheet<Recipe>();
+            IXivSheet<Recipe> rSheet = Sheet.Collection.GetSheet<Recipe>();
 
             return
                 rSheet.Where(
@@ -253,7 +253,7 @@ namespace SaintCoinach.Xiv {
         /// </summary>
         /// <returns>An array of recipes creating the current item.</returns>
         private Recipe[] BuildRecipesAsResult() {
-            var rSheet = Sheet.Collection.GetSheet<Recipe>();
+            IXivSheet<Recipe> rSheet = Sheet.Collection.GetSheet<Recipe>();
 
             return rSheet.Where(recipe => recipe.ResultItem == this).ToArray();
         }
@@ -263,10 +263,10 @@ namespace SaintCoinach.Xiv {
         /// </summary>
         /// <returns>An array of shop listings offering the current item as reward.</returns>
         private IShopListing[] BuildAsShopItems() {
-            var shops = Sheet.Collection.Shops;
+            Collections.ShopCollection shops = Sheet.Collection.Shops;
 
-            var shopItems = new List<IShopListing>();
-            foreach (var shop in shops)
+            List<IShopListing> shopItems = new List<IShopListing>();
+            foreach (IShop shop in shops)
                 shopItems.AddRange(shop.ShopListings.Where(l => l.Rewards.Any(li => li.Item == this)));
             return shopItems.Distinct().ToArray();
         }
@@ -279,11 +279,11 @@ namespace SaintCoinach.Xiv {
             if (Key == 1)
                 return new IShopListingItem[0]; // XXX: DO NOT BUILD THIS FOR GIL, THAT WOULD BE BAD.
 
-            var shops = Sheet.Collection.Shops;
+            Collections.ShopCollection shops = Sheet.Collection.Shops;
 
-            var checkedItems = new List<IShopListing>();
-            var shopItemCosts = new List<IShopListingItem>();
-            foreach (var item in shops.SelectMany(shop => shop.ShopListings.Except(checkedItems).ToArray())) {
+            List<IShopListing> checkedItems = new List<IShopListing>();
+            List<IShopListingItem> shopItemCosts = new List<IShopListingItem>();
+            foreach (IShopListing item in shops.SelectMany(shop => shop.ShopListings.Except(checkedItems).ToArray())) {
                 shopItemCosts.AddRange(item.Costs.Where(_ => _.Item == this));
                 checkedItems.Add(item);
             }
@@ -295,28 +295,28 @@ namespace SaintCoinach.Xiv {
         /// </summary>
         /// <returns>An array of sources from which to obtain the current item.</returns>
         private IItemSource[] BuildSources() {
-            var sources = new List<IItemSource>();
+            List<IItemSource> sources = new List<IItemSource>();
 
             Libra.Item libraRow = null;
             if (Sheet.Collection.IsLibraAvailable)
                 libraRow = Sheet.Collection.Libra.Items.FirstOrDefault(i => i.Key == this.Key);
 
-            var recipes = Sheet.Collection.GetSheet<Recipe>();
-            var quests = Sheet.Collection.GetSheet<Quest>();
-            var achievements = Sheet.Collection.GetSheet<Achievement>();
-            var shops = Sheet.Collection.Shops;
-            var leves = Sheet.Collection.GetSheet<Leve>();
-            var fishingSpots = Sheet.Collection.GetSheet<FishingSpot>();
-            var retainerTasks = Sheet.Collection.GetSheet<RetainerTask>();
-            var companyCraft = Sheet.Collection.GetSheet<CompanyCraftSequence>();
+            IXivSheet<Recipe> recipes = Sheet.Collection.GetSheet<Recipe>();
+            IXivSheet<Quest> quests = Sheet.Collection.GetSheet<Quest>();
+            IXivSheet<Achievement> achievements = Sheet.Collection.GetSheet<Achievement>();
+            Collections.ShopCollection shops = Sheet.Collection.Shops;
+            IXivSheet<Leve> leves = Sheet.Collection.GetSheet<Leve>();
+            IXivSheet<FishingSpot> fishingSpots = Sheet.Collection.GetSheet<FishingSpot>();
+            IXivSheet<RetainerTask> retainerTasks = Sheet.Collection.GetSheet<RetainerTask>();
+            IXivSheet<CompanyCraftSequence> companyCraft = Sheet.Collection.GetSheet<CompanyCraftSequence>();
 
             if (libraRow != null) {
-                var bnpcColl = Sheet.Collection.BNpcs;
-                var instanceContents = Sheet.Collection.GetSheet<InstanceContent>();
+                Collections.BNpcCollection bnpcColl = Sheet.Collection.BNpcs;
+                IXivSheet<InstanceContent> instanceContents = Sheet.Collection.GetSheet<InstanceContent>();
 
-                foreach (var bnpc in libraRow.BNpcs)
+                foreach (long bnpc in libraRow.BNpcs)
                     sources.Add(bnpcColl[bnpc]);
-                foreach (var ic in libraRow.InstanceContents)
+                foreach (int ic in libraRow.InstanceContents)
                     sources.Add(instanceContents[ic]);
             }
 

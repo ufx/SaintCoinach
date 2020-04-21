@@ -30,9 +30,9 @@ namespace SaintCoinach.Xiv {
         private GatheringItemBase[] BuildItems() {
             const int Count = 8;
 
-            var items = new GatheringItemBase[Count];
-            for (var i = 0; i < Count; ++i) {
-                var gib = (GatheringItemBase)this["Item[" + i + "]"];
+            GatheringItemBase[] items = new GatheringItemBase[Count];
+            for (int i = 0; i < Count; ++i) {
+                GatheringItemBase gib = (GatheringItemBase)this["Item[" + i + "]"];
                 if (gib?.Key != null && gib?.Item?.Key != null)
                     items[i] = gib;
             }

@@ -33,10 +33,10 @@ namespace SaintCoinach.Xiv {
         private Target[] BuildTargets() {
             const int Count = 4;
 
-            var targets = new List<Target>();
-            for (var i = 0; i < Count; ++i) {
-                var target = As<MonsterNoteTarget>("MonsterNoteTarget", i);
-                var count = AsInt32("Count", i);
+            List<Target> targets = new List<Target>();
+            for (int i = 0; i < Count; ++i) {
+                MonsterNoteTarget target = As<MonsterNoteTarget>("MonsterNoteTarget", i);
+                int count = AsInt32("Count", i);
                 if (target.Key != 0 && count != 0)
                     targets.Add(new Target(target, count));
             }

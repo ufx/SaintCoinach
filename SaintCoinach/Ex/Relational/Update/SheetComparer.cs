@@ -53,18 +53,18 @@ namespace SaintCoinach.Ex.Relational.Update {
         }
 
         public IEnumerable<IChange> Compare() {
-            var changes = new List<IChange>();
+            List<IChange> changes = new List<IChange>();
 
 
-            var prevKeys = _PreviousSheet.Cast<IRow>().Select(_ => _.Key).ToArray();
-            var updatedKeys = _UpdatedSheet.Cast<IRow>().Select(_ => _.Key).ToArray();
+            int[] prevKeys = _PreviousSheet.Cast<IRow>().Select(_ => _.Key).ToArray();
+            int[] updatedKeys = _UpdatedSheet.Cast<IRow>().Select(_ => _.Key).ToArray();
 
             changes.AddRange(updatedKeys.Except(prevKeys).Select(_ => new RowAdded(_UpdatedDefinition.Name, _)));
             changes.AddRange(prevKeys.Except(updatedKeys).Select(_ => new RowRemoved(_PreviousDefinition.Name, _)));
 
-            var columns = _UpdatedDefinition.GetAllColumnNames().Select(_ => {
-                var previousColumn = _PreviousDefinition.FindColumn(_);
-                var newColumn = _UpdatedDefinition.FindColumn(_);
+            ColumnMap[] columns = _UpdatedDefinition.GetAllColumnNames().Select(_ => {
+                int? previousColumn = _PreviousDefinition.FindColumn(_);
+                int? newColumn = _UpdatedDefinition.FindColumn(_);
 
                 if (!previousColumn.HasValue || !newColumn.HasValue)
                     throw new InvalidDataException();
@@ -76,28 +76,28 @@ namespace SaintCoinach.Ex.Relational.Update {
                 };
             }).ToArray();
 
-            var prevIsMulti = _PreviousSheet is IMultiSheet;
-            var upIsMulti = _UpdatedSheet is IMultiSheet;
+            bool prevIsMulti = _PreviousSheet is IMultiSheet;
+            bool upIsMulti = _UpdatedSheet is IMultiSheet;
             if (prevIsMulti == upIsMulti) {
                 if (prevIsMulti) {
-                    var prevMulti = (IMultiSheet)_PreviousSheet;
-                    var prevLang = _PreviousSheet.Header.AvailableLanguages;
+                    IMultiSheet prevMulti = (IMultiSheet)_PreviousSheet;
+                    IEnumerable<Language> prevLang = _PreviousSheet.Header.AvailableLanguages;
 
-                    var upMulti = (IMultiSheet)_UpdatedSheet;
-                    var upLang = _UpdatedSheet.Header.AvailableLanguages;
+                    IMultiSheet upMulti = (IMultiSheet)_UpdatedSheet;
+                    IEnumerable<Language> upLang = _UpdatedSheet.Header.AvailableLanguages;
 
                     changes.AddRange(upLang.Except(prevLang).Select(_ => new SheetLanguageAdded(_UpdatedSheet.Name, _)));
                     changes.AddRange(
                                      prevLang.Except(upLang)
                                              .Select(_ => new SheetLanguageRemoved(_PreviousDefinition.Name, _)));
 
-                    foreach (var lang in prevLang.Intersect(upLang)) {
+                    foreach (Language lang in prevLang.Intersect(upLang)) {
                         // Do not compare languages marked unavailable elsewhere.
                         if (_unavailableLanguages.ContainsKey(lang))
                             continue;
 
-                        var prevSheet = prevMulti.GetLocalisedSheet(lang);
-                        var upSheet = upMulti.GetLocalisedSheet(lang);
+                        ISheet prevSheet = prevMulti.GetLocalisedSheet(lang);
+                        ISheet upSheet = upMulti.GetLocalisedSheet(lang);
 
                         try {
                             changes.AddRange(Compare(prevSheet, upSheet, lang, columns));
@@ -125,21 +125,21 @@ namespace SaintCoinach.Ex.Relational.Update {
                                                     Language language,
                                                     ColumnMap[] columns) {
             if (previousSheet.Header.Variant == 2) {
-                foreach (var result in CompareVariant2(previousSheet, updatedSheet, language, columns))
+                foreach (IChange result in CompareVariant2(previousSheet, updatedSheet, language, columns))
                     yield return result;
             }
             else {
-                var prevRows = previousSheet.Cast<IRow>().ToArray();
-                var updatedRows = updatedSheet.Cast<IRow>().ToDictionary(_ => _.Key, _ => _);
+                IRow[] prevRows = previousSheet.Cast<IRow>().ToArray();
+                Dictionary<int, IRow> updatedRows = updatedSheet.Cast<IRow>().ToDictionary(_ => _.Key, _ => _);
 
-                foreach (var prevRow in prevRows) {
+                foreach (IRow prevRow in prevRows) {
                     if (!updatedRows.ContainsKey(prevRow.Key)) continue;
 
-                    var updatedRow = updatedRows[prevRow.Key];
+                    IRow updatedRow = updatedRows[prevRow.Key];
 
-                    foreach (var col in columns) {
-                        var prevVal = prevRow[col.PreviousIndex];
-                        var upVal = updatedRow[col.NewIndex];
+                    foreach (ColumnMap col in columns) {
+                        object prevVal = prevRow[col.PreviousIndex];
+                        object upVal = updatedRow[col.NewIndex];
 
                         if (!Comparer.IsMatch(prevVal, upVal))
                             yield return
@@ -154,17 +154,17 @@ namespace SaintCoinach.Ex.Relational.Update {
                                             ISheet updatedSheet,
                                             Language language,
                                             ColumnMap[] columns) {
-            var prevRows = previousSheet.Cast<Variant2.RelationalDataRow>().SelectMany(r => r.SubRows).ToArray();
-            var updatedRows = updatedSheet.Cast<Variant2.RelationalDataRow>().SelectMany(r => r.SubRows).ToArray();
-            var updatedRowIndex = updatedRows.ToDictionary(r => r.FullKey);
+            Variant2.SubRow[] prevRows = previousSheet.Cast<Variant2.RelationalDataRow>().SelectMany(r => r.SubRows).ToArray();
+            Variant2.SubRow[] updatedRows = updatedSheet.Cast<Variant2.RelationalDataRow>().SelectMany(r => r.SubRows).ToArray();
+            Dictionary<string, Variant2.SubRow> updatedRowIndex = updatedRows.ToDictionary(r => r.FullKey);
 
-            foreach (var prevRow in prevRows) {
-                if (!updatedRowIndex.TryGetValue(prevRow.FullKey, out var updatedRow))
+            foreach (Variant2.SubRow prevRow in prevRows) {
+                if (!updatedRowIndex.TryGetValue(prevRow.FullKey, out Variant2.SubRow updatedRow))
                     continue;
 
-                foreach (var col in columns) {
-                    var prevVal = prevRow[col.PreviousIndex];
-                    var upVal = updatedRow[col.NewIndex];
+                foreach (ColumnMap col in columns) {
+                    object prevVal = prevRow[col.PreviousIndex];
+                    object upVal = updatedRow[col.NewIndex];
 
                     if (!Comparer.IsMatch(prevVal, upVal))
                         yield return

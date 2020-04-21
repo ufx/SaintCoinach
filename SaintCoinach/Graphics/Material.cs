@@ -43,19 +43,19 @@ namespace SaintCoinach.Graphics {
 
         #region Build
         private void Build() {
-            var buffer = File.GetData();
+            byte[] buffer = File.GetData();
 
-            var offset = 0;
+            int offset = 0;
 
             this.Header = buffer.ToStructure<MaterialHeader>(ref offset);
 
-            var stringsStart = offset + (4 * (Header.TextureCount + Header.MapCount + Header.DataSetCount));
-            var texFileNames = ReadStrings(buffer, ref offset, stringsStart, Header.TextureCount);
-            var packs = File.Pack.Collection;
+            int stringsStart = offset + (4 * (Header.TextureCount + Header.MapCount + Header.DataSetCount));
+            string[] texFileNames = ReadStrings(buffer, ref offset, stringsStart, Header.TextureCount);
+            IO.PackCollection packs = File.Pack.Collection;
 
             this.TexturesFiles = new Imaging.ImageFile[Header.TextureCount];
-            for (var i = 0; i < Header.TextureCount; ++i) {
-                var path = texFileNames[i];
+            for (int i = 0; i < Header.TextureCount; ++i) {
+                string path = texFileNames[i];
                 if (path == DummyTextureInMaterial)
                     path = DummyTexturePath;
                 this.TexturesFiles[i] = (Imaging.ImageFile)packs.GetFile(path);
@@ -86,9 +86,9 @@ namespace SaintCoinach.Graphics {
             Array.Copy(buffer, offset, this.Data, 0, MetadataHeader.DataSize);
         }
         private static string[] ReadStrings(byte[] buffer, ref int offsetOffset, int stringsOffset, int count) {
-            var values = new string[count];
-            for (var i = 0; i < count; ++i) {
-                var o = BitConverter.ToInt16(buffer, offsetOffset);
+            string[] values = new string[count];
+            for (int i = 0; i < count; ++i) {
+                short o = BitConverter.ToInt16(buffer, offsetOffset);
                 values[i] = buffer.ReadString(stringsOffset + o);
                 offsetOffset += 4;
             }
@@ -102,15 +102,15 @@ namespace SaintCoinach.Graphics {
             const int height = 16;
 
             var bmp = new System.Drawing.Bitmap(width, height);
-            var i = 0;
-            for (var y = 0; y < height; y++) {
-                for (var x = 0; x < width; x++) {
-                    var offset = i++ * 4 * 2;
+            int i = 0;
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    int offset = i++ * 4 * 2;
 
-                    var red = GetColorValue(HalfHelper.Unpack(DataSetData, offset));
-                    var green = GetColorValue(HalfHelper.Unpack(DataSetData, offset + 2));
-                    var blue = GetColorValue(HalfHelper.Unpack(DataSetData, offset + 4));
-                    var alpha = GetColorValue(HalfHelper.Unpack(DataSetData, offset + 6));
+                    byte red = GetColorValue(HalfHelper.Unpack(DataSetData, offset));
+                    byte green = GetColorValue(HalfHelper.Unpack(DataSetData, offset + 2));
+                    byte blue = GetColorValue(HalfHelper.Unpack(DataSetData, offset + 4));
+                    byte alpha = GetColorValue(HalfHelper.Unpack(DataSetData, offset + 6));
                     bmp.SetPixel(x, y, System.Drawing.Color.FromArgb(alpha, red, green, blue));
                 }
             }

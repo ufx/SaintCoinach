@@ -28,7 +28,7 @@ namespace SaintCoinach.Xiv {
             GCScripShopCategory = Sheet.Collection.GetSheet<GCScripShopCategory>()[ParentKey];
             GCShop = Sheet.Collection.GetSheet<GCShop>().FirstOrDefault(_ => _.GrandCompany.Key == GCScripShopCategory.GrandCompany.Key);
 
-            var sealItem = GCShop.GrandCompany.SealItem;
+            Item sealItem = GCShop.GrandCompany.SealItem;
             Cost = new ShopListingItem(this, sealItem, GCSealsCost, false, 0);
         }
 

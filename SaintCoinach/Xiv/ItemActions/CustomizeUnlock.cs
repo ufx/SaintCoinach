@@ -18,8 +18,8 @@ namespace SaintCoinach.Xiv.ItemActions {
 
         public IEnumerable<IXivRow> CustomizeRows {
             get {
-                var data = (UInt16)GetData(CustomizeDataKey);
-                var customize = Sheet.Collection.GetSheet("CharaMakeCustomize");
+                ushort data = (UInt16)GetData(CustomizeDataKey);
+                IXivSheet<XivRow> customize = Sheet.Collection.GetSheet("CharaMakeCustomize");
                 return customize.Cast<IXivRow>().Where(r => (UInt16)r["Data"] == data).ToArray();
             }
         }

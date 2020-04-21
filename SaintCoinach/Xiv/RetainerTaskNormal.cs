@@ -12,7 +12,7 @@ namespace SaintCoinach.Xiv {
         public IEnumerable<int> Quantities {
             get {
                 const int Count = 3;
-                for (var i = 0; i < Count; ++i)
+                for (int i = 0; i < Count; ++i)
                     yield return AsInt32("Quantity", i);
             }
         }

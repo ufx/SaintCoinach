@@ -29,11 +29,11 @@ namespace SaintCoinach.IO {
         public Index2Header(BinaryReader reader) {
             const int FileDataOffset = 0x08;
 
-            var start = reader.BaseStream.Position;
+            long start = reader.BaseStream.Position;
 
             reader.BaseStream.Position = start + FileDataOffset;
             _FilesOffset = reader.ReadInt32();
-            var filesLength = reader.ReadInt32();
+            int filesLength = reader.ReadInt32();
             _FilesCount = filesLength / 0x08;
         }
 

@@ -25,10 +25,10 @@ namespace SaintCoinach.Ex.Relational.Definition {
         public IValueConverter Converter { get; internal set; }
 
         public static ViewColumnDefinition FromJson(JObject obj) {
-            var converterObj = (JObject)obj["converter"];
+            JObject converterObj = (JObject)obj["converter"];
             IValueConverter converter = null;
             if (converterObj != null) {
-                var type = (string)converterObj["type"];
+                string type = (string)converterObj["type"];
                 if (type == "quad")
                     converter = QuadConverter.FromJson(converterObj);
                 else

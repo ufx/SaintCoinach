@@ -113,12 +113,12 @@ namespace SaintCoinach.Imaging {
         }
 
         public static unsafe Image Convert(byte[] src, ImageFormat format, int width, int height) {
-            var argb = GetA8R8G8B8(src, format, width, height);
+            byte[] argb = GetA8R8G8B8(src, format, width, height);
 
             Image image;
             fixed (byte* p = argb) {
-                var ptr = (IntPtr)p;
-                using (var tempImage = new Bitmap(width, height, width * 4, PixelFormat.Format32bppArgb, ptr))
+                IntPtr ptr = (IntPtr)p;
+                using (Bitmap tempImage = new Bitmap(width, height, width * 4, PixelFormat.Format32bppArgb, ptr))
                     image = new Bitmap(tempImage);
             }
             return image;
@@ -129,10 +129,10 @@ namespace SaintCoinach.Imaging {
         }
 
         public static byte[] GetA8R8G8B8(byte[] src, ImageFormat format, int width, int height) {
-            if (!Preprocessors.TryGetValue(format, out var proc))
+            if (!Preprocessors.TryGetValue(format, out Preprocessor proc))
                 throw new NotSupportedException(string.Format("Unsupported image format {0}", format));
 
-            var argb = new byte[width * height * 4];
+            byte[] argb = new byte[width * height * 4];
             proc(src, argb, width, height);
             return argb;
         }
@@ -142,10 +142,10 @@ namespace SaintCoinach.Imaging {
         /// </summary>
 
         public static byte[] GetDDS(ImageFile file) {
-            var bytes2 = file.GetData();
+            byte[] bytes2 = file.GetData();
             //var offset = bytes2[file.ImageHeader.EndOfHeader];
-            var width = file.ImageHeader.Width;
-            var height = file.ImageHeader.Height;
+            int width = file.ImageHeader.Width;
+            int height = file.ImageHeader.Height;
 
             DDS_HEADER header = new DDS_HEADER();
             DDS_PIXELFORMAT format = header.ddspf;
@@ -201,7 +201,7 @@ namespace SaintCoinach.Imaging {
             int size = System.Runtime.InteropServices.Marshal.SizeOf<DDS_HEADER>();
             byte[] headerBytes = new byte[size];
 
-            var ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(size);
+            IntPtr ptr = System.Runtime.InteropServices.Marshal.AllocHGlobal(size);
             System.Runtime.InteropServices.Marshal.StructureToPtr(header, ptr, false);
             System.Runtime.InteropServices.Marshal.Copy(ptr, headerBytes, 0, size);
             System.Runtime.InteropServices.Marshal.FreeHGlobal(ptr);
@@ -219,44 +219,44 @@ namespace SaintCoinach.Imaging {
 
         private static void ProcessA16R16G16B16_Float(byte[] src, byte[] dst, int width, int height) {
             // Clipping can, and will occur since values go outside 0..1
-            for (var i = 0; i < width * height; ++i) {
-                var srcOff = i * 4 * 2;
-                var dstOff = i * 4;
+            for (int i = 0; i < width * height; ++i) {
+                int srcOff = i * 4 * 2;
+                int dstOff = i * 4;
 
-                for (var j = 0; j < 4; ++j)
+                for (int j = 0; j < 4; ++j)
                     dst[dstOff + j] = (byte)(HalfHelper.Unpack(src, srcOff + j * 2) * byte.MaxValue);
             }
         }
 
         private static void ProcessA1R5G5B5(byte[] src, byte[] dst, int width, int height) {
-            for (var i = 0; (i + 2) <= 2 * width * height; i += 2) {
-                var v = BitConverter.ToUInt16(src, i);
+            for (int i = 0; (i + 2) <= 2 * width * height; i += 2) {
+                ushort v = BitConverter.ToUInt16(src, i);
 
-                var a = (uint)(v & 0x8000);
-                var r = (uint)(v & 0x7C00);
-                var g = (uint)(v & 0x03E0);
-                var b = (uint)(v & 0x001F);
+                uint a = (uint)(v & 0x8000);
+                uint r = (uint)(v & 0x7C00);
+                uint g = (uint)(v & 0x03E0);
+                uint b = (uint)(v & 0x001F);
 
-                var rgb = ((r << 9) | (g << 6) | (b << 3));
-                var argbValue = (a * 0x1FE00 | rgb | ((rgb >> 5) & 0x070707));
+                uint rgb = ((r << 9) | (g << 6) | (b << 3));
+                uint argbValue = (a * 0x1FE00 | rgb | ((rgb >> 5) & 0x070707));
 
-                for (var j = 0; j < 4; ++j)
+                for (int j = 0; j < 4; ++j)
                     dst[i * 2 + j] = (byte)(argbValue >> (8 * j));
             }
         }
 
         private static void ProcessA4R4G4B4(byte[] src, byte[] dst, int width, int height) {
-            for (var i = 0; (i + 2) <= 2 * width * height; i += 2) {
-                var v = BitConverter.ToUInt16(src, i);
+            for (int i = 0; (i + 2) <= 2 * width * height; i += 2) {
+                ushort v = BitConverter.ToUInt16(src, i);
 
-                for (var j = 0; j < 4; ++j)
+                for (int j = 0; j < 4; ++j)
                     dst[i * 2 + j] = (byte)(((v >> (4 * j)) & 0x0F) << 4);
             }
         }
 
         private static void ProcessA8R8G8B8(byte[] src, byte[] dst, int width, int height) {
             // Some transparent images have larger dst lengths than their src.
-            var length = Math.Min(src.Length, dst.Length);
+            int length = Math.Min(src.Length, dst.Length);
             Array.Copy(src, dst, length);
         }
 
@@ -276,10 +276,10 @@ namespace SaintCoinach.Imaging {
         }
 
         private static void ProcessR3G3B2(byte[] src, byte[] dst, int width, int height) {
-            for (var i = 0; i < width * height; ++i) {
-                var r = (uint)(src[i] & 0xE0);
-                var g = (uint)(src[i] & 0x1C);
-                var b = (uint)(src[i] & 0x03);
+            for (int i = 0; i < width * height; ++i) {
+                uint r = (uint)(src[i] & 0xE0);
+                uint g = (uint)(src[i] & 0x1C);
+                uint b = (uint)(src[i] & 0x03);
 
                 dst[i * 4 + 0] = (byte)(b | (b << 2) | (b << 4) | (b << 6));
                 dst[i * 4 + 1] = (byte)(g | (g << 3) | (g << 6));

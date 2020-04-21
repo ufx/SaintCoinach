@@ -106,10 +106,10 @@ namespace SaintCoinach.Graphics {
         };
 
         static bool TryExpand(string input, out string path, out string stainedPath, out bool containsVariants) {
-            var i = input.LastIndexOf('/');
-            var search = input.Substring(i);
+            int i = input.LastIndexOf('/');
+            string search = input.Substring(i);
 
-            foreach (var pe in PathExpanders) {
+            foreach (PathExpander pe in PathExpanders) {
                 if (pe.TryExpand(search, out path, out stainedPath)) {
                     containsVariants = pe.ContainsVariant;
                     return true;
@@ -167,11 +167,11 @@ namespace SaintCoinach.Graphics {
             return Get(variantId.ImcVariant);
         }
         public Material Get() {
-            var path = _DefaultPath;
+            string path = _DefaultPath;
             return Create(path, ImcVariant.Default);
         }
         public Material Get(ImcVariant variant) {
-            var path = _DefaultPath;
+            string path = _DefaultPath;
             if (VariantsAvailable)
                 path = string.Format(_PathFormat, variant.Variant & 0xFF);
             return Create(path, variant);
@@ -180,12 +180,12 @@ namespace SaintCoinach.Graphics {
             if (!StainsAvailable)
                 throw new NotSupportedException();
 
-            var path = string.Format(_StainedPathFormat, variant.Variant & 0xFF, stainKey);
+            string path = string.Format(_StainedPathFormat, variant.Variant & 0xFF, stainKey);
             return Create(path, variant);
         }
 
         private Material Create(string path, ImcVariant variant) {
-            var file = _Packs.GetFile(path);
+            IO.File file = _Packs.GetFile(path);
             return new Material(this, file, variant);
         }
         #endregion

@@ -51,16 +51,16 @@ namespace SaintCoinach.IO {
                 _DirectoryPathMap.Add(path, hash = Hash.Compute(path));*/
             hash = Hash.Compute(path);
 
-            var dir = GetDirectory(hash);
+            Directory dir = GetDirectory(hash);
             dir.Path = path;
             return dir;
         }
 
         public Directory GetDirectory(uint key) {
-            if (_Directories.TryGetValue(key, out var directory))
+            if (_Directories.TryGetValue(key, out Directory directory))
                 return directory;
 
-            var index = Index.Directories[key];
+            IndexDirectory index = Index.Directories[key];
             directory = new Directory(this.Pack, index);
             _Directories.Add(key, directory);
             return directory;
@@ -72,7 +72,7 @@ namespace SaintCoinach.IO {
                 _DirectoryPathMap.Add(path, hash = Hash.Compute(path));*/
             hash = Hash.Compute(path);
 
-            var result = TryGetDirectory(hash, out directory);
+            bool result = TryGetDirectory(hash, out directory);
             if (result)
                 directory.Path = path;
             return result;
@@ -82,7 +82,7 @@ namespace SaintCoinach.IO {
             if (_Directories.TryGetValue(key, out directory))
                 return true;
 
-            if (Index.Directories.TryGetValue(key, out var index)) {
+            if (Index.Directories.TryGetValue(key, out IndexDirectory index)) {
                 directory = new Directory(this.Pack, index);
                 _Directories.Add(key, directory);
                 return true;
@@ -93,41 +93,41 @@ namespace SaintCoinach.IO {
         }
 
         public bool FileExists(string path) {
-            var lastSeperator = path.LastIndexOf('/');
+            int lastSeperator = path.LastIndexOf('/');
             if (lastSeperator < 0)
                 throw new ArgumentException();
 
-            var dirPath = path.Substring(0, lastSeperator);
-            var baseName = path.Substring(lastSeperator + 1);
-            return TryGetDirectory(dirPath, out var dir) && dir.FileExists(baseName);
+            string dirPath = path.Substring(0, lastSeperator);
+            string baseName = path.Substring(lastSeperator + 1);
+            return TryGetDirectory(dirPath, out Directory dir) && dir.FileExists(baseName);
         }
 
         public File GetFile(string path) {
-            var lastSeperator = path.LastIndexOf('/');
+            int lastSeperator = path.LastIndexOf('/');
             if (lastSeperator < 0)
                 throw new ArgumentException();
 
-            var dirPath = path.Substring(0, lastSeperator);
-            var baseName = path.Substring(lastSeperator + 1);
-            var dir = GetDirectory(dirPath);
+            string dirPath = path.Substring(0, lastSeperator);
+            string baseName = path.Substring(lastSeperator + 1);
+            Directory dir = GetDirectory(dirPath);
             return dir.GetFile(baseName);
         }
 
         public File GetFile(uint directoryKey, uint fileKey) {
-            var dir = GetDirectory(directoryKey);
+            Directory dir = GetDirectory(directoryKey);
             return dir.GetFile(fileKey);
         }
 
         public bool TryGetFile(string path, out File file) {
-            var lastSeperator = path.LastIndexOf('/');
+            int lastSeperator = path.LastIndexOf('/');
             if (lastSeperator < 0) {
                 file = null;
                 return false;
             }
 
-            var dirPath = path.Substring(0, lastSeperator);
-            var baseName = path.Substring(lastSeperator + 1);
-            if (TryGetDirectory(dirPath, out var dir))
+            string dirPath = path.Substring(0, lastSeperator);
+            string baseName = path.Substring(lastSeperator + 1);
+            if (TryGetDirectory(dirPath, out Directory dir))
                 return dir.TryGetFile(baseName, out file);
 
             file = null;
@@ -135,7 +135,7 @@ namespace SaintCoinach.IO {
         }
 
         public bool TryGetFile(uint directoryKey, uint fileKey, out File file) {
-            if (TryGetDirectory(directoryKey, out var dir))
+            if (TryGetDirectory(directoryKey, out Directory dir))
                 return dir.TryGetFile(fileKey, out file);
 
             file = null;

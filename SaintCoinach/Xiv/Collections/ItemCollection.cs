@@ -92,7 +92,7 @@ namespace SaintCoinach.Xiv.Collections {
             object IEnumerator.Current { get { return Current; } }
 
             public bool MoveNext() {
-                var result = false;
+                bool result = false;
 
                 Current = null;
                 if (_State == 0) {

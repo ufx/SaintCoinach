@@ -52,14 +52,14 @@ namespace SaintCoinach.Xiv {
         private ItemValue[] BuildItems() {
             const int Count = 10;
 
-            var items = new List<ItemValue>();
+            List<ItemValue> items = new List<ItemValue>();
 
-            for (var i = 0; i < Count; ++i) {
-                var item = As<Item>("Item", i);
+            for (int i = 0; i < Count; ++i) {
+                Item item = As<Item>("Item", i);
                 if (item.Key == 0)
                     continue;
 
-                var val = AsInt32("Value", i);
+                int val = AsInt32("Value", i);
                 items.Add(new ItemValue(item, val, i));
             }
 

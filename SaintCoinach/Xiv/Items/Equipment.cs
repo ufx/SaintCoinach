@@ -142,7 +142,7 @@ namespace SaintCoinach.Xiv.Items {
                 // For every item level 200 and below, you receive 5.75 seals.
                 // For every item level after 200, you receive 2 seals.
 
-                var rewards = Sheet.Collection.GetSheet("GCSupplyDutyReward");
+                IXivSheet<XivRow> rewards = Sheet.Collection.GetSheet("GCSupplyDutyReward");
                 if (rewards.ContainsRow(ItemLevel.Key))
                     return (int)(uint)rewards[ItemLevel.Key]["Seals{ExpertDelivery}"];
                 return 0;
@@ -177,7 +177,7 @@ namespace SaintCoinach.Xiv.Items {
         /// <returns>The model for the current item and <c>characterType</c>.</returns>
         public ModelDefinition GetModel(int characterType, out Graphics.ImcVariant variant) {
             variant = Graphics.ImcVariant.Default;
-            var slot = EquipSlotCategory.PossibleSlots.FirstOrDefault();
+            EquipSlot slot = EquipSlotCategory.PossibleSlots.FirstOrDefault();
             return slot == null ? null : GetModel(slot, characterType, out variant);
         }
 
@@ -201,8 +201,8 @@ namespace SaintCoinach.Xiv.Items {
         /// <param name="onHq">A value indicating whether bonuses for a hiqh-quality item should be taken into account.</param>
         /// <returns>The maximum amount of <c>baseParam</c> that can be melded to the current item.</returns>
         public int GetMateriaMeldCap(BaseParam baseParam, bool onHq) {
-            var max = GetMaximumParamValue(baseParam);
-            var present = GetParameterValue(baseParam, onHq);
+            int max = GetMaximumParamValue(baseParam);
+            int present = GetParameterValue(baseParam, onHq);
 
             return Math.Max(0, max - present);
         }
@@ -217,7 +217,7 @@ namespace SaintCoinach.Xiv.Items {
         /// </param>
         /// <returns>Returns the amount of <see cref="BaseParam" /> present on the current item.</returns>
         public int GetParameterValue(BaseParam baseParam, bool includeNonBase) {
-            var present = AllParameters.FirstOrDefault(_ => _.BaseParam == baseParam);
+            Parameter present = AllParameters.FirstOrDefault(_ => _.BaseParam == baseParam);
             // ReSharper disable InvertIf
             if (present == null) return 0;
 
@@ -238,11 +238,11 @@ namespace SaintCoinach.Xiv.Items {
         /// <returns>The maximum amount of <c>baseParam</c> on the current item.</returns>
         public int GetMaximumParamValue(BaseParam baseParam) {
             // Base value for the param based on the item's level
-            var maxBase = ItemLevel.GetMaximum(baseParam);
+            int maxBase = ItemLevel.GetMaximum(baseParam);
             // Factor, in percent, for the param when applied to the item's equip slot
-            var slotFactor = baseParam.GetMaximum(EquipSlotCategory);
+            int slotFactor = baseParam.GetMaximum(EquipSlotCategory);
             // Factor, in percent, for the param when used for the item's role
-            var roleModifier = baseParam.GetModifier(BaseParamModifier);
+            int roleModifier = baseParam.GetModifier(BaseParamModifier);
 
             // TODO: Not confirmed to use Round, could be Ceiling or Floor; or applied at different points
             // Rounding appears to use AwayFromZero.  Tested with:
@@ -286,7 +286,7 @@ namespace SaintCoinach.Xiv.Items {
         /// </summary>
         /// <returns>A <see cref="ParameterCollection" /> for secondary parameters.</returns>
         protected virtual ParameterCollection BuildSecondaryParameters() {
-            var parameters = new ParameterCollection();
+            ParameterCollection parameters = new ParameterCollection();
 
             AddDefaultParameters(parameters);
             AddSpecialParameters(parameters);
@@ -301,9 +301,9 @@ namespace SaintCoinach.Xiv.Items {
         private void AddDefaultParameters(ParameterCollection parameters) {
             const int Count = 6;
 
-            for (var i = 0; i < Count; ++i) {
-                var baseParam = As<BaseParam>("BaseParam", i);
-                var value = AsInt32("BaseParamValue", i);
+            for (int i = 0; i < Count; ++i) {
+                BaseParam baseParam = As<BaseParam>("BaseParam", i);
+                int value = AsInt32("BaseParamValue", i);
 
                 AddParameter(parameters, ParameterType.Base, baseParam, value, i);
             }
@@ -335,9 +335,9 @@ namespace SaintCoinach.Xiv.Items {
                     break;
             }
 
-            for (var i = 0; i < Count; ++i) {
-                var baseParam = As<BaseParam>("BaseParam{Special}", i);
-                var value = AsInt32("BaseParamValue{Special}", i);
+            for (int i = 0; i < Count; ++i) {
+                BaseParam baseParam = As<BaseParam>("BaseParam{Special}", i);
+                int value = AsInt32("BaseParamValue{Special}", i);
 
                 AddParameter(parameters, type, baseParam, value, i);
             }

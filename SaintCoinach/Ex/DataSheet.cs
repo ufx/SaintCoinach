@@ -82,8 +82,8 @@ namespace SaintCoinach.Ex {
         protected File GetPartialFile(Range range) {
             const string PartialFileNameFormat = "exd/{0}_{1}{2}.exd";
 
-            var partialFileName = string.Format(PartialFileNameFormat, Header.Name, range.Start, Language.GetSuffix());
-            var file = Collection.PackCollection.GetFile(partialFileName);
+            string partialFileName = string.Format(PartialFileNameFormat, Header.Name, range.Start, Language.GetSuffix());
+            File file = Collection.PackCollection.GetFile(partialFileName);
 
             return file;
         }
@@ -92,13 +92,13 @@ namespace SaintCoinach.Ex {
             if (_RowToPartialSheetMap.ContainsKey(row))
                 return _RowToPartialSheetMap[row];
 
-            var res = Header.DataFileRanges.Where(_ => _.Contains(row)).ToArray();
+            Range[] res = Header.DataFileRanges.Where(_ => _.Contains(row)).ToArray();
             if (!res.Any())
                 throw new ArgumentOutOfRangeException();
 
             lock (_partialSheetsLock) {
-                var range = res.First();
-                if (!_PartialSheets.TryGetValue(range, out var partial)) {
+                Range range = res.First();
+                if (!_PartialSheets.TryGetValue(range, out ISheet<T> partial)) {
                     partial = CreatePartialSheet(range);
                 }
                 return partial;
@@ -109,7 +109,7 @@ namespace SaintCoinach.Ex {
             lock (_partialSheetsLock) {
                 if (_PartialSheetsCreated)
                     return;
-                foreach (var range in Header.DataFileRanges.Where(range => !_PartialSheets.ContainsKey(range))) {
+                foreach (Range range in Header.DataFileRanges.Where(range => !_PartialSheets.ContainsKey(range))) {
                     CreatePartialSheet(range);
                 }
                 _PartialSheetsCreated = true;
@@ -117,11 +117,11 @@ namespace SaintCoinach.Ex {
         }
 
         private ISheet<T> CreatePartialSheet(Range range) {
-            var file = GetPartialFile(range);
+            File file = GetPartialFile(range);
 
-            var partial = CreatePartialSheet(range, file);
+            ISheet<T> partial = CreatePartialSheet(range, file);
             _PartialSheets.Add(range, partial);
-            foreach (var key in partial.Keys)
+            foreach (int key in partial.Keys)
                 _RowToPartialSheetMap.Add(key, partial);
             return partial;
         }

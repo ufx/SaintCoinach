@@ -14,8 +14,8 @@ namespace SaintCoinach.Ex.Relational.Update {
             if (IsPrimitive(v1) && IsPrimitive(v2)) {
                 if (v1.GetType() != v2.GetType()) return false;
 
-                var d1 = ToDecimal(v1);
-                var d2 = ToDecimal(v2);
+                decimal d1 = ToDecimal(v1);
+                decimal d2 = ToDecimal(v2);
 
                 return d1 == d2;
             }
@@ -38,13 +38,13 @@ namespace SaintCoinach.Ex.Relational.Update {
             if (s1 == null || s2 == null) return false;
 
 
-            var maxDistance = Math.Ceiling(StringColumnComparer.RelativeLevenshteinDistance * (s1.Length + s2.Length) / 2.0);
-            var d = StringColumnComparer.ComputeLevenshtein(s1, s2);
+            double maxDistance = Math.Ceiling(StringColumnComparer.RelativeLevenshteinDistance * (s1.Length + s2.Length) / 2.0);
+            int d = StringColumnComparer.ComputeLevenshtein(s1, s2);
             return (d <= maxDistance);
         }
 
         public static bool IsMatch(IDictionary v1, IDictionary v2) {
-            foreach (var key in v1.Keys) {
+            foreach (object key in v1.Keys) {
                 if (!v2.Contains(key))
                     continue;
 

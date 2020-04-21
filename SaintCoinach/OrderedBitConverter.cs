@@ -38,7 +38,7 @@ namespace SaintCoinach {
         /// </param>
         /// <returns>The specified 16-bit signed integer as an array of bytes using the specified endianness.</returns>
         public static byte[] GetBytes(Int16 value, bool bigEndian) {
-            var ret = BitConverter.GetBytes(value);
+            byte[] ret = BitConverter.GetBytes(value);
             CheckEndian(ref ret, bigEndian);
             return ret;
         }
@@ -66,7 +66,7 @@ namespace SaintCoinach {
         /// </param>
         /// <returns>The specified 32-bit signed integer as an array of bytes using the specified endianness.</returns>
         public static byte[] GetBytes(Int32 value, bool bigEndian) {
-            var ret = BitConverter.GetBytes(value);
+            byte[] ret = BitConverter.GetBytes(value);
             CheckEndian(ref ret, bigEndian);
             return ret;
         }
@@ -94,7 +94,7 @@ namespace SaintCoinach {
         /// </param>
         /// <returns>The specified 64-bit signed integer as an array of bytes using the specified endianness.</returns>
         public static byte[] GetBytes(Int64 value, bool bigEndian) {
-            var ret = BitConverter.GetBytes(value);
+            byte[] ret = BitConverter.GetBytes(value);
             CheckEndian(ref ret, bigEndian);
             return ret;
         }
@@ -122,7 +122,7 @@ namespace SaintCoinach {
         /// </param>
         /// <returns>The specified single-precision floating point value as an array of bytes using the specified endianness.</returns>
         public static byte[] GetBytes(Single value, bool bigEndian) {
-            var ret = BitConverter.GetBytes(value);
+            byte[] ret = BitConverter.GetBytes(value);
             CheckEndian(ref ret, bigEndian);
             return ret;
         }
@@ -137,7 +137,7 @@ namespace SaintCoinach {
         /// </param>
         /// <returns>The specified double-precision floating point value as an array of bytes using the specified endianness.</returns>
         public static byte[] GetBytes(Double value, bool bigEndian) {
-            var ret = BitConverter.GetBytes(value);
+            byte[] ret = BitConverter.GetBytes(value);
             CheckEndian(ref ret, bigEndian);
             return ret;
         }
@@ -166,7 +166,7 @@ namespace SaintCoinach {
             if (offset < 0 || offset + 2 > buffer.Length)
                 throw new ArgumentOutOfRangeException("offset");
 
-            var tmp = new byte[2];
+            byte[] tmp = new byte[2];
             Array.Copy(buffer, offset, tmp, 0, 2);
             CheckEndian(ref tmp, bigEndian);
             return BitConverter.ToInt16(tmp, 0);
@@ -210,7 +210,7 @@ namespace SaintCoinach {
             if (offset < 0 || offset + 4 > buffer.Length)
                 throw new ArgumentOutOfRangeException("offset");
 
-            var tmp = new byte[4];
+            byte[] tmp = new byte[4];
             Array.Copy(buffer, offset, tmp, 0, 4);
             CheckEndian(ref tmp, bigEndian);
             return BitConverter.ToInt32(tmp, 0);
@@ -254,7 +254,7 @@ namespace SaintCoinach {
             if (offset < 0 || offset + 8 > buffer.Length)
                 throw new ArgumentOutOfRangeException("offset");
 
-            var tmp = new byte[8];
+            byte[] tmp = new byte[8];
             Array.Copy(buffer, offset, tmp, 0, 8);
             CheckEndian(ref tmp, bigEndian);
             return BitConverter.ToInt64(tmp, 0);
@@ -298,7 +298,7 @@ namespace SaintCoinach {
             if (offset < 0 || offset + 4 > buffer.Length)
                 throw new ArgumentOutOfRangeException("offset");
 
-            var tmp = new byte[4];
+            byte[] tmp = new byte[4];
             Array.Copy(buffer, offset, tmp, 0, 4);
             CheckEndian(ref tmp, bigEndian);
             return BitConverter.ToSingle(tmp, 0);
@@ -324,7 +324,7 @@ namespace SaintCoinach {
             if (offset < 0 || offset + 8 > buffer.Length)
                 throw new ArgumentOutOfRangeException("offset");
 
-            var tmp = new byte[8];
+            byte[] tmp = new byte[8];
             Array.Copy(buffer, offset, tmp, 0, 8);
             CheckEndian(ref tmp, bigEndian);
             return BitConverter.ToDouble(tmp, 0);

@@ -37,7 +37,7 @@ namespace SaintCoinach.Ex.Variant2 {
         #region Constructors
 
         public DataRow(IDataSheet sheet, int key, int offset) : base(sheet, key, offset + MetadataLength) {
-            var b = sheet.GetBuffer();
+            byte[] b = sheet.GetBuffer();
             if (b.Length < offset + MetadataLength) throw new IndexOutOfRangeException();
 
             Length = OrderedBitConverter.ToInt32(b, offset, true);
@@ -49,14 +49,14 @@ namespace SaintCoinach.Ex.Variant2 {
         protected virtual void Read() {
             _SubRows.Clear();
 
-            var h = Sheet.Header;
-            var b = Sheet.GetBuffer();
-            var o = Offset;
-            for(var i = 0; i < SubRowCount; ++i) {
-                var key = OrderedBitConverter.ToInt16(b, o, true);
+            Header h = Sheet.Header;
+            byte[] b = Sheet.GetBuffer();
+            int o = Offset;
+            for(int i = 0; i < SubRowCount; ++i) {
+                short key = OrderedBitConverter.ToInt16(b, o, true);
                 o += 2;
 
-                var r = new SubRow(this, key, o);
+                SubRow r = new SubRow(this, key, o);
                 _SubRows.Add(key, r);
 
                 o += h.FixedSizeDataLength;

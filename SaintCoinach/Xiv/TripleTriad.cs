@@ -49,9 +49,9 @@ namespace SaintCoinach.Xiv {
         private TripleTriadCard[] BuildFixedCards() {
             const int Count = 5;
 
-            var cards = new List<TripleTriadCard>();
-            for (var i = 0; i < Count; ++i) {
-                var card = As<TripleTriadCard>("TripleTriadCard{Fixed}", i);
+            List<TripleTriadCard> cards = new List<TripleTriadCard>();
+            for (int i = 0; i < Count; ++i) {
+                TripleTriadCard card = As<TripleTriadCard>("TripleTriadCard{Fixed}", i);
                 if (card.Key != 0)
                     cards.Add(card);
             }
@@ -61,9 +61,9 @@ namespace SaintCoinach.Xiv {
         private TripleTriadCard[] BuildVariableCards() {
             const int Count = 5;
 
-            var cards = new List<TripleTriadCard>();
-            for (var i = 0; i < Count; ++i) {
-                var card = As<TripleTriadCard>("TripleTriadCard{Variable}", i);
+            List<TripleTriadCard> cards = new List<TripleTriadCard>();
+            for (int i = 0; i < Count; ++i) {
+                TripleTriadCard card = As<TripleTriadCard>("TripleTriadCard{Variable}", i);
                 if (card.Key != 0)
                     cards.Add(card);
             }
@@ -73,9 +73,9 @@ namespace SaintCoinach.Xiv {
         private Item[] BuildRewardItems() {
             const int Count = 4;
 
-            var cards = new List<Item>();
-            for (var i = 0; i < Count; ++i) {
-                var card = As<Item>("Item{PossibleReward}", i);
+            List<Item> cards = new List<Item>();
+            for (int i = 0; i < Count; ++i) {
+                Item card = As<Item>("Item{PossibleReward}", i);
                 if (card.Key != 0)
                     cards.Add(card);
             }
@@ -86,9 +86,9 @@ namespace SaintCoinach.Xiv {
         private TripleTriadRule[] BuildRules() {
             const int Count = 2;
 
-            var rules = new List<TripleTriadRule>();
-            for (var i = 0; i < Count; ++i) {
-                var rule = As<TripleTriadRule>("TripleTriadRule", i);
+            List<TripleTriadRule> rules = new List<TripleTriadRule>();
+            for (int i = 0; i < Count; ++i) {
+                TripleTriadRule rule = As<TripleTriadRule>("TripleTriadRule", i);
                 if (rule.Key != 0)
                     rules.Add(rule);
             }
@@ -97,10 +97,10 @@ namespace SaintCoinach.Xiv {
         private PrerequisiteQuestsRequirement BuildQuestRequirement() {
             const int Count = 3;
 
-            var type = (PrerequisiteQuestsRequirementType)AsInt32("PreviousQuestJoin");
-            var quests = new List<Quest>();
-            for (var i = 0; i < Count; ++i) {
-                var q = As<Quest>("PreviousQuest", i);
+            PrerequisiteQuestsRequirementType type = (PrerequisiteQuestsRequirementType)AsInt32("PreviousQuestJoin");
+            List<Quest> quests = new List<Quest>();
+            for (int i = 0; i < Count; ++i) {
+                Quest q = As<Quest>("PreviousQuest", i);
                 if (q != null && q.Key != 0)
                     quests.Add(q);
             }

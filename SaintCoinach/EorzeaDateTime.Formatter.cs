@@ -102,7 +102,7 @@ namespace SaintCoinach {
                 { 'h', new Specifier {
                      MaximumCount = 2,
                      FormatFunction = (dt, c, p) => {
-                         var t = dt.Bell % 12;
+                         int t = dt.Bell % 12;
                          if(t == 0)
                              t = 12;
                          return t.ToString("D" + c.ToString(), p);
@@ -116,7 +116,7 @@ namespace SaintCoinach {
                 { 'p', new Specifier {
                      MaximumCount = 2,
                      FormatFunction = (dt, c, p) => {
-                         var dtInfo = System.Globalization.DateTimeFormatInfo.GetInstance(p);
+                         System.Globalization.DateTimeFormatInfo dtInfo = System.Globalization.DateTimeFormatInfo.GetInstance(p);
                          return dt.Bell < 12 ? dtInfo.AMDesignator : dtInfo.PMDesignator;
                      }
                 } },
@@ -145,17 +145,17 @@ namespace SaintCoinach {
                     throw new ArgumentException();
 
                 if (format.Length == 1) {
-                    var standardKey = format[0];
+                    char standardKey = format[0];
                     if (StandardFormats.ContainsKey(standardKey))
                         format = StandardFormats[standardKey];
                 }
 
-                var sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
 
                 char isInString = '\0';
                 char currentSpecifier = '\0';
-                var specifierCount = 0;
-                foreach (var c in format) {
+                int specifierCount = 0;
+                foreach (char c in format) {
                     if (isInString != '\0') {
                         if (c == isInString)
                             isInString = '\0';

@@ -26,8 +26,8 @@ namespace SaintCoinach.IO {
         public Index2(PackIdentifier packId, string path) {
             this.PackId = packId;
 
-            using (var file = IOFile.OpenRead(path)) {
-                using (var reader = new BinaryReader(file))
+            using (FileStream file = IOFile.OpenRead(path)) {
+                using (BinaryReader reader = new BinaryReader(file))
                     Build(reader);
             }
         }
@@ -35,7 +35,7 @@ namespace SaintCoinach.IO {
         public Index2(PackIdentifier packId, Stream stream) {
             this.PackId = packId;
 
-            using (var reader = new BinaryReader(stream, Encoding.Default, true))
+            using (BinaryReader reader = new BinaryReader(stream, Encoding.Default, true))
                 Build(reader);
         }
 
@@ -54,7 +54,7 @@ namespace SaintCoinach.IO {
 
             if (!reader.BaseStream.CanSeek)
                 throw new NotSupportedException("Stream must be able to seek.");
-            var fileMagic = reader.ReadUInt64();
+            ulong fileMagic = reader.ReadUInt64();
             Debug.Assert(fileMagic == SqPackMagic, "Input stream is not a SqPack file.");
 
             ReadHeader(reader);
@@ -65,7 +65,7 @@ namespace SaintCoinach.IO {
             const int HeaderOffsetOffset = 0x0C;
 
             reader.BaseStream.Position = HeaderOffsetOffset;
-            var headerOffset = reader.ReadInt32();
+            int headerOffset = reader.ReadInt32();
 
             reader.BaseStream.Position = headerOffset;
             Header = new Index2Header(reader);
@@ -74,8 +74,8 @@ namespace SaintCoinach.IO {
         private void ReadFiles(BinaryReader reader) {
             reader.BaseStream.Position = Header.FilesOffset;
 
-            var rem = Header.FileCount;
-            var files = new List<Index2File>();
+            int rem = Header.FileCount;
+            List<Index2File> files = new List<Index2File>();
             while (rem-- > 0)
                 files.Add(new Index2File(PackId, reader));
 

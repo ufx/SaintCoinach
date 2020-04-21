@@ -33,14 +33,14 @@ namespace SaintCoinach.Xiv {
         private CraftLeveItem[] BuildItems() {
             const int Count = 4;
 
-            var items = new List<CraftLeveItem>();
+            List<CraftLeveItem> items = new List<CraftLeveItem>();
 
-            for (var i = 0; i < Count; ++i) {
-                var count = AsInt32("ItemCount", i);
+            for (int i = 0; i < Count; ++i) {
+                int count = AsInt32("ItemCount", i);
                 if (count == 0)
                     continue;
 
-                var item = As<Item>("Item", i);
+                Item item = As<Item>("Item", i);
                 if (item.Key == 0)
                     continue;
 

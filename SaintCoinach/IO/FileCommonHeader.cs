@@ -37,7 +37,7 @@ namespace SaintCoinach.IO {
         #endregion
 
         public byte[] GetBuffer() {
-            var b = new byte[_Buffer.Length];
+            byte[] b = new byte[_Buffer.Length];
             Array.Copy(_Buffer, b, b.Length);
             return b;
         }
@@ -56,10 +56,10 @@ namespace SaintCoinach.IO {
             if (stream.Read(_Buffer, 0, 4) != 4)
                 throw new EndOfStreamException();
 
-            var length = BitConverter.ToInt32(_Buffer, 0);
+            int length = BitConverter.ToInt32(_Buffer, 0);
             Array.Resize(ref _Buffer, length);
 
-            var remaining = length - 4;
+            int remaining = length - 4;
             if (stream.Read(_Buffer, 4, remaining) != remaining)
                 throw new EndOfStreamException();
 

@@ -82,27 +82,27 @@ namespace SaintCoinach.IO {
         }
 
         public static PackIdentifier Get(string fullPath) {
-            if (!TryGet(fullPath, out var id))
+            if (!TryGet(fullPath, out PackIdentifier id))
                 throw new ArgumentException();
             return id;
         }
         public static bool TryGet(string fullPath, out PackIdentifier value) {
             value = default(PackIdentifier);
 
-            var typeSep = fullPath.IndexOf('/');
+            int typeSep = fullPath.IndexOf('/');
             if (typeSep <= 0)
                 return false;
-            var type = fullPath.Substring(0, typeSep);
+            string type = fullPath.Substring(0, typeSep);
             if (!TypeToKeyMap.ContainsKey(type))
                 return false;
 
-            var expSep = fullPath.IndexOf('/', typeSep + 1);
+            int expSep = fullPath.IndexOf('/', typeSep + 1);
 
             string expansion = null;
             byte number = 0;
             if (expSep > typeSep) {
                 expansion = fullPath.Substring(typeSep + 1, expSep - typeSep - 1);
-                var numberEnd = fullPath.IndexOf('_', expSep);
+                int numberEnd = fullPath.IndexOf('_', expSep);
                 if (numberEnd - expSep == 3) {
                     if (!byte.TryParse(
                         fullPath.Substring(expSep + 1, 2),

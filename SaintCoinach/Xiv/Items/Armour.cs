@@ -58,13 +58,13 @@ namespace SaintCoinach.Xiv.Items {
         /// </summary>
         /// <returns>The <see cref="ParameterCollection" /> containg the primary parameters of the current item.</returns>
         private ParameterCollection BuildPrimaryParameters() {
-            var param = new ParameterCollection();
+            ParameterCollection param = new ParameterCollection();
 
             // XXX: Here be magic numbers
             const int PhysicalDefenseKey = 21;
             const int MagicDefenseKey = 24;
 
-            var paramSheet = Sheet.Collection.GetSheet<BaseParam>();
+            IXivSheet<BaseParam> paramSheet = Sheet.Collection.GetSheet<BaseParam>();
             if (PhysicalDefense != 0)
                 param.AddParameterValue(paramSheet[PhysicalDefenseKey],
                     new ParameterValueFixed(ParameterType.Primary, PhysicalDefense, 0));

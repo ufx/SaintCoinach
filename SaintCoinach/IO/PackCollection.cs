@@ -37,11 +37,11 @@ namespace SaintCoinach.IO {
         #region Get
 
         public bool FileExists(string path) {
-            return TryGetPack(path, out var pack) && pack.FileExists(path);
+            return TryGetPack(path, out Pack pack) && pack.FileExists(path);
         }
 
         public File GetFile(string path) {
-            var pack = GetPack(path);
+            Pack pack = GetPack(path);
             return pack.GetFile(path);
         }
 
@@ -50,12 +50,12 @@ namespace SaintCoinach.IO {
         }
 
         public Pack GetPack(string path) {
-            var id = PackIdentifier.Get(path);
+            PackIdentifier id = PackIdentifier.Get(path);
             return GetPack(id);
         }
 
         public bool TryGetFile(string path, out File file) {
-            if (TryGetPack(path, out var pack))
+            if (TryGetPack(path, out Pack pack))
                 return pack.TryGetFile(path, out file);
 
             file = null;
@@ -65,7 +65,7 @@ namespace SaintCoinach.IO {
         public bool TryGetPack(string path, out Pack pack) {
             pack = null;
 
-            if (!PackIdentifier.TryGet(path, out var id))
+            if (!PackIdentifier.TryGet(path, out PackIdentifier id))
                 return false;
 
             pack =_Packs.GetOrAdd(id, i => new Pack(this, DataDirectory, id));

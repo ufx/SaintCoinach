@@ -45,8 +45,8 @@ namespace SaintCoinach.Xiv {
         /// </summary>
         /// <param name="other"><see cref="Parameter" />s from which to add the values.</param>
         public void AddRange(IEnumerable<Parameter> other) {
-            foreach (var p in other) {
-                foreach (var v in p)
+            foreach (Parameter p in other) {
+                foreach (ParameterValue v in p)
                     AddParameterValue(p.BaseParam, v);
             }
         }

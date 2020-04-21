@@ -25,7 +25,7 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
         public Type TargetType { get { return typeof(Color); } }
 
         public object Convert(IDataRow row, object rawValue) {
-            var argb = System.Convert.ToInt32(rawValue);
+            int argb = System.Convert.ToInt32(rawValue);
 
             if (!IncludesAlpha)
                 argb = (int)(((uint)argb) | 0xFF000000);

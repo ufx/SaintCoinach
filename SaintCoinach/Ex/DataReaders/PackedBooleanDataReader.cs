@@ -61,7 +61,7 @@ namespace SaintCoinach.Ex.DataReaders {
         /// <param name="row"><see cref="IDataRow" /> to read in.</param>
         /// <returns>Returns the value read from the given <c>row</c> and <c>column</c>.</returns>
         public override object Read(byte[] buffer, Column col, IDataRow row) {
-            var offset = GetFieldOffset(col, row);
+            int offset = GetFieldOffset(col, row);
             return (buffer[offset] & Mask) != 0;
         }
 

@@ -94,23 +94,23 @@ namespace SaintCoinach.Text {
 
         #region Decode
         public XivString Decode(byte[] buffer) {
-            using (var ms = new MemoryStream(buffer)) {
-                using (var r = new BinaryReader(ms, this.Encoding))
+            using (MemoryStream ms = new MemoryStream(buffer)) {
+                using (BinaryReader r = new BinaryReader(ms, this.Encoding))
                     return Decode(r, buffer.Length);
             }
         }
         public XivString Decode(BinaryReader input, int length) {
             if (length < 0)
                 throw new ArgumentOutOfRangeException("length");
-            var end = input.BaseStream.Position + length;
+            long end = input.BaseStream.Position + length;
             if (end > input.BaseStream.Length)
                 throw new ArgumentOutOfRangeException("length");
 
-            var parts = new List<INode>();
-            var pendingStatic = new List<byte>();
+            List<INode> parts = new List<INode>();
+            List<byte> pendingStatic = new List<byte>();
 
             while (input.BaseStream.Position < end) {
-                var v = input.ReadByte();
+                byte v = input.ReadByte();
                 if (v == TagStartMarker) {
                     AddStatic(pendingStatic, parts);
                     parts.Add(DecodeTag(input));
@@ -126,13 +126,13 @@ namespace SaintCoinach.Text {
         }
 
         private INode DecodeTag(BinaryReader input) {
-            var tag = (TagType)input.ReadByte();
-            var length = GetInteger(input);
-            var end = input.BaseStream.Position + length;
+            TagType tag = (TagType)input.ReadByte();
+            int length = GetInteger(input);
+            long end = input.BaseStream.Position + length;
             //System.Diagnostics.Trace.WriteLine(string.Format("{0} @ {1:X}h+{2:X}h", tag, input.BaseStream.Position, length));
             TagDecoder decoder = null;
             _TagDecoders.TryGetValue(tag, out decoder);
-            var result = (decoder ?? DefaultTagDecoder)(input, tag, length);
+            INode result = (decoder ?? DefaultTagDecoder)(input, tag, length);
             if (input.BaseStream.Position != end)
             {
                 // Triggered by two entries in LogMessage as of 3.15.
@@ -158,11 +158,11 @@ namespace SaintCoinach.Text {
             return new Nodes.DefaultElement(tag, input.ReadBytes(length));
         }
         protected INode DecodeExpression(BinaryReader input) {
-            var t = input.ReadByte();
+            byte t = input.ReadByte();
             return DecodeExpression(input, (DecodeExpressionType)t);
         }
         protected INode DecodeExpression(BinaryReader input, DecodeExpressionType exprType) {
-            var t = (byte)exprType;
+            byte t = (byte)exprType;
             if (t < 0xD0)
                 return new Nodes.StaticInteger(t - 1);
             if (t < 0xE0)
@@ -170,7 +170,7 @@ namespace SaintCoinach.Text {
 
             switch (exprType) {
                 case DecodeExpressionType.Decode: {
-                        var len = GetInteger(input);
+                    int len = GetInteger(input);
                         return Decode(input, len);
                     }
                 case DecodeExpressionType.Byte:
@@ -187,9 +187,9 @@ namespace SaintCoinach.Text {
                 case DecodeExpressionType.Int24_Lsh8:
                     return new Nodes.StaticInteger(GetInteger(input, IntegerType.Int24) << 8);
                 case DecodeExpressionType.Int24_SafeZero: {
-                        var v16 = input.ReadByte();
-                        var v8 = input.ReadByte();
-                        var v0 = input.ReadByte();
+                    byte v16 = input.ReadByte();
+                    byte v8 = input.ReadByte();
+                    byte v0 = input.ReadByte();
 
                         int v = 0;
                         if (v16 != byte.MaxValue)
@@ -209,8 +209,8 @@ namespace SaintCoinach.Text {
                 case DecodeExpressionType.LessThan:
                 case DecodeExpressionType.NotEqual:
                 case DecodeExpressionType.Equal: {
-                        var left = DecodeExpression(input);
-                        var right = DecodeExpression(input);
+                    INode left = DecodeExpression(input);
+                    INode right = DecodeExpression(input);
                         return new Nodes.Comparison(exprType, left, right);
                     }
                 case DecodeExpressionType.IntegerParameter:
@@ -228,8 +228,8 @@ namespace SaintCoinach.Text {
                     throw new ArgumentOutOfRangeException("argCount");*/
                 return new Nodes.EmptyElement(tag);
             }
-            var arguments = new INode[argCount];
-            for (var i = 0; i < argCount; ++i)
+            INode[] arguments = new INode[argCount];
+            for (int i = 0; i < argCount; ++i)
                 arguments[i] = DecodeExpression(input);
             INode content = null;
             if (hasContent)
@@ -238,16 +238,16 @@ namespace SaintCoinach.Text {
             return new Nodes.GenericElement(tag, content, arguments);
         }
         protected INode DecodeGenericElementWithVariableArguments(BinaryReader input, TagType tag, int length, int minCount, int maxCount) {
-            var end = input.BaseStream.Position + length;
-            var args = new List<INode>();
-            for (var i = 0; i < maxCount && input.BaseStream.Position < end; ++i)
+            long end = input.BaseStream.Position + length;
+            List<INode> args = new List<INode>();
+            for (int i = 0; i < maxCount && input.BaseStream.Position < end; ++i)
                 args.Add(DecodeExpression(input));
             return new Nodes.GenericElement(tag, null, args);
         }
         protected INode DecodeGenericSurroundingTag(BinaryReader input, TagType tag, int length) {
             if (length != 1)
                 throw new ArgumentOutOfRangeException("length");
-            var status = GetInteger(input);
+            int status = GetInteger(input);
             if (status == 0)
                 return new Nodes.CloseTag(tag);
             if (status == 1)
@@ -258,28 +258,28 @@ namespace SaintCoinach.Text {
 
         #region Specific
         protected INode DecodeZeroPaddedValue(BinaryReader input, TagType tag, int length) {
-            var val = DecodeExpression(input);
-            var arg = DecodeExpression(input);
+            INode val = DecodeExpression(input);
+            INode arg = DecodeExpression(input);
             return new GenericElement(tag, val, arg);
         }
         protected INode DecodeColor(BinaryReader input, TagType tag, int length) {
-            var t = input.ReadByte();
+            byte t = input.ReadByte();
             if (length == 1 && t == 0xEC)
                 return new Nodes.CloseTag(tag);
-            var color = DecodeExpression(input, (DecodeExpressionType)t);
+            INode color = DecodeExpression(input, (DecodeExpressionType)t);
             return new Nodes.OpenTag(tag, color);
         }
         protected INode DecodeFormat(BinaryReader input, TagType tag, int length) {
-            var end = input.BaseStream.Position + length;
+            long end = input.BaseStream.Position + length;
 
-            var arg1 = DecodeExpression(input);
-            var arg2 = new Nodes.StaticByteArray(input.ReadBytes((int)(end - input.BaseStream.Position)));
+            INode arg1 = DecodeExpression(input);
+            StaticByteArray arg2 = new Nodes.StaticByteArray(input.ReadBytes((int)(end - input.BaseStream.Position)));
             return new Nodes.GenericElement(tag, null, arg1, arg2);
         }
         protected INode DecodeIf(BinaryReader input, TagType tag, int length) {
-            var end = input.BaseStream.Position + length;
+            long end = input.BaseStream.Position + length;
 
-            var condition = DecodeExpression(input);
+            INode condition = DecodeExpression(input);
             /*var trueValue = DecodeExpression(input);
             INode falseValue = null;
             if (input.BaseStream.Position != end)
@@ -291,10 +291,10 @@ namespace SaintCoinach.Text {
             return new Nodes.IfElement(tag, condition, trueValue, falseValue);
         }
         protected INode DecodeIfEquals(BinaryReader input, TagType tag, int length) {
-            var end = input.BaseStream.Position + length;
+            long end = input.BaseStream.Position + length;
 
-            var left = DecodeExpression(input);
-            var right = DecodeExpression(input);
+            INode left = DecodeExpression(input);
+            INode right = DecodeExpression(input);
             /*
             var trueValue = DecodeExpression(input);
             INode falseValue = null;
@@ -307,9 +307,9 @@ namespace SaintCoinach.Text {
             return new Nodes.IfEqualsElement(tag, left, right, trueValue, falseValue);
         }
         protected void DecodeConditionalOutputs(BinaryReader input, int end, out INode trueValue, out INode falseValue) {
-            var exprs = new List<INode>();
+            List<INode> exprs = new List<INode>();
             while (input.BaseStream.Position != end) {
-                var expr = DecodeExpression(input);
+                INode expr = DecodeExpression(input);
                 exprs.Add(expr);
             }
 
@@ -326,11 +326,11 @@ namespace SaintCoinach.Text {
                 falseValue = null;
         }
         protected INode DecodeSwitch(BinaryReader input, TagType tag, int length) {
-            var end = input.BaseStream.Position + length;
-            var caseSwitch = DecodeExpression(input);
+            long end = input.BaseStream.Position + length;
+            INode caseSwitch = DecodeExpression(input);
 
-            var cases = new Dictionary<int, INode>();
-            var i = 1;
+            Dictionary<int, INode> cases = new Dictionary<int, INode>();
+            int i = 1;
             while (input.BaseStream.Position < end)
                 cases.Add(i++, DecodeExpression(input));
 
@@ -340,14 +340,14 @@ namespace SaintCoinach.Text {
 
         #region Shared
         protected static int GetInteger(BinaryReader input) {
-            var t = input.ReadByte();
-            var type = (IntegerType)t;
+            byte t = input.ReadByte();
+            IntegerType type = (IntegerType)t;
             return GetInteger(input, type);
         }
         protected static int GetInteger(BinaryReader input, IntegerType type) {
             const byte ByteLengthCutoff = 0xF0;
 
-            var t = (byte)type;
+            byte t = (byte)type;
             if (t < ByteLengthCutoff)
                 return t - 1;
 

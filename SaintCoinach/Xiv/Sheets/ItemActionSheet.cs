@@ -115,13 +115,13 @@ namespace SaintCoinach.Xiv.Sheets {
         #region Factory
 
         protected override ItemAction CreateRow(IRelationalRow sourceRow) {
-            var typeKey = Convert.ToInt32(sourceRow["Type"]);
+            int typeKey = Convert.ToInt32(sourceRow["Type"]);
 
-            if (!ItemActionTypes.TryGetValue(typeKey, out var type)) {
+            if (!ItemActionTypes.TryGetValue(typeKey, out Type type)) {
                 type = DefaultItemActionType;
                 Trace.WriteLine(string.Format("Unhandled item action type '{0}'.", typeKey));
             }
-            var args = new object[] {
+            object[] args = new object[] {
                 this, sourceRow
             };
             const BindingFlags ActivatorBindFlags =

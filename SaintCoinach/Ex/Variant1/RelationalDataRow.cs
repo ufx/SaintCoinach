@@ -16,7 +16,7 @@ namespace SaintCoinach.Ex.Variant1 {
         public new IRelationalDataSheet Sheet { get { return (IRelationalDataSheet)base.Sheet; } }
 
         public override string ToString() {
-            var defCol = Sheet.Header.DefaultColumn;
+            RelationalColumn defCol = Sheet.Header.DefaultColumn;
             return defCol == null
                        ? string.Format("{0}#{1}", Sheet.Header.Name, Key)
                        : string.Format("{0}", this[defCol.Index]);
@@ -34,15 +34,15 @@ namespace SaintCoinach.Ex.Variant1 {
 
         public object DefaultValue {
             get {
-                var defCol = Sheet.Header.DefaultColumn;
+                RelationalColumn defCol = Sheet.Header.DefaultColumn;
                 return defCol == null ? null : this[defCol.Index];
             }
         }
 
         public object this[string columnName] {
             get {
-                var valRef = _ValueReferences.GetOrAdd(columnName, c => new WeakReference<object>(GetColumnValue(c)));
-                if (valRef.TryGetTarget(out var val))
+                WeakReference<object> valRef = _ValueReferences.GetOrAdd(columnName, c => new WeakReference<object>(GetColumnValue(c)));
+                if (valRef.TryGetTarget(out object val))
                     return val;
 
                 val = GetColumnValue(columnName);
@@ -52,14 +52,14 @@ namespace SaintCoinach.Ex.Variant1 {
         }
 
         private object GetColumnValue(string columnName) {
-            var col = Sheet.Header.FindColumn(columnName);
+            RelationalColumn col = Sheet.Header.FindColumn(columnName);
             if (col == null)
                 throw new KeyNotFoundException();
             return this[col.Index];
         }
 
         object IRelationalRow.GetRaw(string columnName) {
-            var column = Sheet.Header.FindColumn(columnName);
+            RelationalColumn column = Sheet.Header.FindColumn(columnName);
             if (column == null)
                 throw new KeyNotFoundException();
             return column.ReadRaw(Sheet.GetBuffer(), this);

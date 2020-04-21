@@ -19,14 +19,14 @@ namespace SaintCoinach.Text.Nodes {
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }
         public void ToString(StringBuilder builder) {
             if (HasItems) {
                 builder.Append(StringTokens.ArgumentsOpen);
-                for (var i = 0; i < _Items.Length; ++i) {
+                for (int i = 0; i < _Items.Length; ++i) {
                     if (i > 0)
                         builder.Append(StringTokens.ArgumentsSeperator);
                     _Items[i].ToString(builder);

@@ -20,22 +20,22 @@ namespace SaintCoinach.Ex.Relational.ValueConverters {
             if (_tomestoneKeyByRewardIndex == null)
                 _tomestoneKeyByRewardIndex = BuildTomestoneRewardIndex(row.Sheet.Collection);
 
-            var key = System.Convert.ToInt32(rawValue);
-            if (_tomestoneKeyByRewardIndex.TryGetValue(key, out var item))
+            int key = System.Convert.ToInt32(rawValue);
+            if (_tomestoneKeyByRewardIndex.TryGetValue(key, out Item item))
                 return item;
 
-            var items = row.Sheet.Collection.GetSheet("Item");
+            ISheet items = row.Sheet.Collection.GetSheet("Item");
             return items.ContainsRow(key) ? items[key] : rawValue;
         }
 
         #endregion
 
         private Dictionary<int, Item> BuildTomestoneRewardIndex(ExCollection coll) {
-            var index = new Dictionary<int, Item>();
+            Dictionary<int, Item> index = new Dictionary<int, Item>();
 
-            var sheet = coll.GetSheet("TomestonesItem");
+            ISheet sheet = coll.GetSheet("TomestonesItem");
             foreach (XivRow row in sheet) {
-                var rewardIndex = (int)row.GetRaw(2); // For compatibility only.
+                int rewardIndex = (int)row.GetRaw(2); // For compatibility only.
                 if (rewardIndex > 0)
                     index[rewardIndex] = row.As<Item>();
             }

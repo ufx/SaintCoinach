@@ -17,7 +17,7 @@ namespace SaintCoinach.Libra {
         public static Int32[] ReadInt32Array(this JsonReader r) {
             if (!r.Read() || r.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-            var values = new List<Int32>();
+            List<int> values = new List<Int32>();
 
             while (r.Read() && r.TokenType != JsonToken.EndArray) {
                 if (r.TokenType != JsonToken.Integer && r.TokenType != JsonToken.String) throw new InvalidOperationException();
@@ -36,7 +36,7 @@ namespace SaintCoinach.Libra {
         public static Int64[] ReadInt64Array(this JsonReader r) {
             if (!r.Read() || r.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-            var values = new List<Int64>();
+            List<long> values = new List<Int64>();
 
             while (r.Read() && r.TokenType != JsonToken.EndArray) {
                 if (r.TokenType != JsonToken.Integer && r.TokenType != JsonToken.String) throw new InvalidOperationException();
@@ -55,7 +55,7 @@ namespace SaintCoinach.Libra {
         public static Single[] ReadSingleArray(this JsonReader r) {
             if (!r.Read() || r.TokenType != JsonToken.StartArray) throw new InvalidOperationException();
 
-            var values = new List<Single>();
+            List<float> values = new List<Single>();
 
             while (r.Read() && r.TokenType != JsonToken.EndArray) {
                 if (r.TokenType != JsonToken.Integer && r.TokenType != JsonToken.String && r.TokenType != JsonToken.Float) throw new InvalidOperationException();

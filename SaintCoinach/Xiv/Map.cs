@@ -85,7 +85,7 @@ namespace SaintCoinach.Xiv {
         /// </summary>
         public Image MediumImage {
             get {
-                if (_MediumImage != null && _MediumImage.TryGetTarget(out var image))
+                if (_MediumImage != null && _MediumImage.TryGetTarget(out Image image))
                     return image;
                 image = BuildImage("m");
                 if (_MediumImage == null)
@@ -101,7 +101,7 @@ namespace SaintCoinach.Xiv {
         /// </summary>
         public Image SmallImage {
             get {
-                if (_SmallImage != null && _SmallImage.TryGetTarget(out var image))
+                if (_SmallImage != null && _SmallImage.TryGetTarget(out Image image))
                     return image;
                 image = BuildImage("s");
                 if (_SmallImage == null)
@@ -130,7 +130,7 @@ namespace SaintCoinach.Xiv {
             if (TerritoryType == null || TerritoryType.Key == 0)
                 return null;
 
-            var t = new Graphics.Territory(this.TerritoryType);
+            Graphics.Territory t = new Graphics.Territory(this.TerritoryType);
             if (t.Terrain == null && t.LgbFiles.Length == 0)
                 return null;
             return t;
@@ -144,20 +144,20 @@ namespace SaintCoinach.Xiv {
             if (string.IsNullOrEmpty(Id))
                 return null;
 
-            var fileName = Id.ToString().Replace("/", "");
-            var pack = Sheet.Collection.PackCollection;
+            string fileName = Id.ToString().Replace("/", "");
+            IO.PackCollection pack = Sheet.Collection.PackCollection;
 
-            var filePath = string.Format(MapFileFormat, Id, fileName, string.Empty, size);
-            if (!pack.TryGetFile(filePath, out var file))
+            string filePath = string.Format(MapFileFormat, Id, fileName, string.Empty, size);
+            if (!pack.TryGetFile(filePath, out IO.File file))
                 return null;
 
-            var imageFile = new ImageFile(file.Pack, file.CommonHeader);
+            ImageFile imageFile = new ImageFile(file.Pack, file.CommonHeader);
 
-            var maskPath = string.Format(MapFileFormat, Id, fileName, "m", size);
-            if (pack.TryGetFile(maskPath, out var mask))
+            string maskPath = string.Format(MapFileFormat, Id, fileName, "m", size);
+            if (pack.TryGetFile(maskPath, out IO.File mask))
             {
                 // Multiply the mask against the file.
-                var maskFile = new ImageFile(mask.Pack, mask.CommonHeader);
+                ImageFile maskFile = new ImageFile(mask.Pack, mask.CommonHeader);
                 return MultiplyBlend(imageFile, maskFile);
             }
 
@@ -170,21 +170,21 @@ namespace SaintCoinach.Xiv {
             // Using 32bit color
             const int BytesPerPixel = 4;
 
-            var aArgb = Imaging.ImageConverter.GetA8R8G8B8(image);
-            var bArgb = Imaging.ImageConverter.GetA8R8G8B8(mask);
-            var result = new byte[aArgb.Length];
+            byte[] aArgb = Imaging.ImageConverter.GetA8R8G8B8(image);
+            byte[] bArgb = Imaging.ImageConverter.GetA8R8G8B8(mask);
+            byte[] result = new byte[aArgb.Length];
 
-            for (var i = 0; i < aArgb.Length; i += BytesPerPixel) {
+            for (int i = 0; i < aArgb.Length; i += BytesPerPixel) {
                 // There are other algorithms that can do this with any alpha,
                 // but I haven't the time to research them now.
-                var bAlpha = bArgb[i + 3];
+                byte bAlpha = bArgb[i + 3];
                 if (bAlpha == 0) {
                     // Mask pixel is transparent, do not blend.
                     result[i] = aArgb[i];
                     result[i + 1] = aArgb[i + 1];
                     result[i + 2] = aArgb[i + 2];
                 } else { 
-                    for (var j = 0; j < 3; ++j)     // Only blend RGB
+                    for (int j = 0; j < 3; ++j)     // Only blend RGB
                         result[i + j] = (byte)((aArgb[i + j] * bArgb[i + j]) / 255);
                 }
                 result[i + 3] = aArgb[i + 3];  // Preserve alpha
@@ -193,8 +193,8 @@ namespace SaintCoinach.Xiv {
             Image output;
             unsafe {
                 fixed (byte* p = result) {
-                    var ptr = (IntPtr)p;
-                    using (var tempImage = new Bitmap(image.Width, image.Height, image.Width * BytesPerPixel, PixelFormat.Format32bppArgb, ptr))
+                    IntPtr ptr = (IntPtr)p;
+                    using (Bitmap tempImage = new Bitmap(image.Width, image.Height, image.Width * BytesPerPixel, PixelFormat.Format32bppArgb, ptr))
                         output = new Bitmap(tempImage);
                 }
             }
@@ -211,8 +211,8 @@ namespace SaintCoinach.Xiv {
         /// <returns><c>value</c> converted and scaled to this map.</returns>
         public double ToMapCoordinate2d(int value, int offset)
         {
-            var c = SizeFactor / 100.0;
-            var offsetValue = value + offset;
+            double c = SizeFactor / 100.0;
+            int offsetValue = value + offset;
             return (41.0 / c) * (offsetValue / 2048.0) + 1;
         }
 
@@ -224,8 +224,8 @@ namespace SaintCoinach.Xiv {
         /// <returns><c>value</c> converted into 2D-space.</returns>
         public double ToMapCoordinate3d(double value, int offset)
         {
-            var c = SizeFactor / 100.0;
-            var offsetValue = (value + offset) * c;
+            double c = SizeFactor / 100.0;
+            double offsetValue = (value + offset) * c;
             return ((41.0 / c) * ((offsetValue + 1024.0) / 2048.0)) + 1;
         }
         #endregion

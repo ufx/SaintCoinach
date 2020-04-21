@@ -62,11 +62,11 @@ namespace SaintCoinach.Xiv {
         ///     <see cref="EquipSlot" />s.
         /// </remarks>
         private void Build() {
-            var possible = new List<EquipSlot>();
-            var blocked = new List<EquipSlot>();
+            List<EquipSlot> possible = new List<EquipSlot>();
+            List<EquipSlot> blocked = new List<EquipSlot>();
 
-            foreach (var slot in Sheet.Collection.EquipSlots) {
-                var val = Convert.ToInt32(this[slot.Key]);
+            foreach (EquipSlot slot in Sheet.Collection.EquipSlots) {
+                int val = Convert.ToInt32(this[slot.Key]);
 
                 if (val > 0)
                     possible.Add(slot);

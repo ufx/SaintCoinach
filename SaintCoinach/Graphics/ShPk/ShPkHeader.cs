@@ -46,32 +46,32 @@ namespace SaintCoinach.Graphics.ShPk {
             ScalarParameterCount = BitConverter.ToInt32(buffer, 0x28);
             ResourceParameterCount = BitConverter.ToInt32(buffer, 0x2C);
 
-            var offset = Size;
-            var shs = new List<ShaderHeader>();
-            for (var i = 0; i < VertexShaderCount; ++i) {
-                var sh = new ShaderHeader(ShaderType.Vertex, buffer, offset);
+            int offset = Size;
+            List<ShaderHeader> shs = new List<ShaderHeader>();
+            for (int i = 0; i < VertexShaderCount; ++i) {
+                ShaderHeader sh = new ShaderHeader(ShaderType.Vertex, buffer, offset);
                 offset += sh.Size;
                 shs.Add(sh);
             }
-            for (var i = 0; i < PixelShaderCount; ++i) {
-                var sh = new ShaderHeader(ShaderType.Pixel, buffer, offset);
+            for (int i = 0; i < PixelShaderCount; ++i) {
+                ShaderHeader sh = new ShaderHeader(ShaderType.Pixel, buffer, offset);
                 offset += sh.Size;
                 shs.Add(sh);
             }
             ShaderHeaders = new ReadOnlyCollection<ShaderHeader>(shs);
 
 
-            var c1 = BitConverter.ToInt32(buffer, 0x24);
+            int c1 = BitConverter.ToInt32(buffer, 0x24);
             offset += c1 * 0x08;
 
-            var para = new List<ParameterHeader>();
-            for (var i = 0; i < ScalarParameterCount; ++i) {
-                var p = new ParameterHeader(ParameterType.Scalar, buffer, offset);
+            List<ParameterHeader> para = new List<ParameterHeader>();
+            for (int i = 0; i < ScalarParameterCount; ++i) {
+                ParameterHeader p = new ParameterHeader(ParameterType.Scalar, buffer, offset);
                 offset += ParameterHeader.Size;
                 para.Add(p);
             }
-            for (var i = 0; i < ResourceParameterCount; ++i) {
-                var p = new ParameterHeader(ParameterType.Resource, buffer, offset);
+            for (int i = 0; i < ResourceParameterCount; ++i) {
+                ParameterHeader p = new ParameterHeader(ParameterType.Resource, buffer, offset);
                 offset += ParameterHeader.Size;
                 para.Add(p);
             }

@@ -9,7 +9,7 @@ namespace SaintCoinach.Graphics {
         public static Vertex Read(byte[] buffer, VertexFormat format, int[] offsets) {
             Vertex vertex = new Vertex();
 
-            foreach (var element in format.Elements) {
+            foreach (VertexFormatElement element in format.Elements) {
                 int elementOffset = offsets[element.SourcePart];
 
                 ReadElement(buffer, element, elementOffset, ref vertex);
@@ -18,7 +18,7 @@ namespace SaintCoinach.Graphics {
             return vertex;
         }
         static void ReadElement(byte[] buffer, VertexFormatElement element, int offset, ref Vertex vertex) {
-            var data = ReadData(buffer, element.DataType, offset + element.Offset);
+            object data = ReadData(buffer, element.DataType, offset + element.Offset);
 
             switch (element.Attribute) {
                 case VertexAttribute.BlendIndices:
@@ -53,7 +53,7 @@ namespace SaintCoinach.Graphics {
             if (value is Vector3)
                 return (Vector3)value;
             if (value is Vector4) {
-                var v4 = (Vector4)value;
+                Vector4 v4 = (Vector4)value;
                 return new Vector3 {
                     X = v4.X,
                     Y = v4.Y,
@@ -66,7 +66,7 @@ namespace SaintCoinach.Graphics {
             if (value is Vector4)
                 return (Vector4)value;
             if (value is Vector2) {
-                var v2 = (Vector2)value;
+                Vector2 v2 = (Vector2)value;
                 return new Vector4 {
                     X = v2.X,
                     Y = v2.Y,
@@ -75,7 +75,7 @@ namespace SaintCoinach.Graphics {
                 };
             }
             if (value is Vector3) {
-                var v3 = (Vector3)value;
+                Vector3 v3 = (Vector3)value;
                 return new Vector4 {
                     X = v3.X,
                     Y = v3.Y,

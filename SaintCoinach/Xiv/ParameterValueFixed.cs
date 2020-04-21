@@ -35,7 +35,7 @@ namespace SaintCoinach.Xiv {
         /// </summary>
         /// <returns>A string that represents the current bonus.</returns>
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             if (Amount > 0 && Type != ParameterType.Primary && Type != ParameterType.Base)
                 sb.Append('+');

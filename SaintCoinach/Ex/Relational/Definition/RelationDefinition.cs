@@ -33,7 +33,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         public void Compile() {
             _SheetMap = _SheetDefinitions.ToDictionary(_ => _.Name, _ => _);
 
-            foreach (var sheet in SheetDefinitions)
+            foreach (SheetDefinition sheet in SheetDefinitions)
                 sheet.Compile();
 
             _IsCompiled = true;
@@ -51,7 +51,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         }
 
         public SheetDefinition GetOrCreateSheet(string name) {
-            if (!TryGetSheet(name, out var def)) {
+            if (!TryGetSheet(name, out SheetDefinition def)) {
                 def = new SheetDefinition { Name = name };
                 _SheetDefinitions.Add(def);
                 _SheetDefinitionMap[name] = def;
@@ -78,7 +78,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
         }
 
         public static RelationDefinition FromJson(string json) {
-            var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(json);
+            JObject obj = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(json);
             return RelationDefinition.FromJson(obj);
         }
 

@@ -32,7 +32,7 @@ namespace SaintCoinach.Ex.Relational.Definition {
 
     public static class DataDefinitionSerializer {
         public static IDataDefinition FromJson(JToken obj) {
-            var type = (string)obj["type"];
+            string type = (string)obj["type"];
             if (type == null)
                 return SingleDataDefinition.FromJson(obj);
             else if (type == "group")

@@ -48,24 +48,24 @@ namespace SaintCoinach.Ex {
         #region Index
 
         private void BuildIndex() {
-            var exRoot = PackCollection.GetFile("exd/root.exl");
+            File exRoot = PackCollection.GetFile("exd/root.exl");
 
-            var available = new List<string>();
+            List<string> available = new List<string>();
 
-            using (var ms = new MemoryStream(exRoot.GetData())) {
-                using (var s = new StreamReader(ms, Encoding.ASCII)) {
+            using (MemoryStream ms = new MemoryStream(exRoot.GetData())) {
+                using (StreamReader s = new StreamReader(ms, Encoding.ASCII)) {
                     s.ReadLine(); // EXLT,2
 
                     while (!s.EndOfStream) {
-                        var line = s.ReadLine();
+                        string line = s.ReadLine();
                         if (string.IsNullOrWhiteSpace(line)) continue;
 
-                        var split = line.Split(',');
+                        string[] split = line.Split(',');
                         if (split.Length != 2)
                             continue;
 
-                        var name = split[0];
-                        var id = int.Parse(split[1]);
+                        string name = split[0];
+                        int id = int.Parse(split[1]);
 
                         available.Add(name);
                         if (id >= 0)
@@ -95,7 +95,7 @@ namespace SaintCoinach.Ex {
         }
 
         public ISheet GetSheet(int id) {
-            var name = _SheetIdentifiers[id];
+            string name = _SheetIdentifiers[id];
             return GetSheet(name);
         }
 
@@ -106,16 +106,16 @@ namespace SaintCoinach.Ex {
         public ISheet GetSheet(string name) {
             const string ExHPathFormat = "exd/{0}.exh";
 
-            if (_Sheets.TryGetValue(name, out var sheetRef) && sheetRef.TryGetTarget(out var sheet)) return sheet;
+            if (_Sheets.TryGetValue(name, out WeakReference<ISheet> sheetRef) && sheetRef.TryGetTarget(out ISheet sheet)) return sheet;
 
             //name = FixName(name);
             if (!_AvailableSheets.Contains(name))
                 throw new KeyNotFoundException($"Unknown sheet '{name}'");
 
-            var exhPath = string.Format(ExHPathFormat, name);
-            var exh = PackCollection.GetFile(exhPath);
+            string exhPath = string.Format(ExHPathFormat, name);
+            File exh = PackCollection.GetFile(exhPath);
 
-            var header = CreateHeader(name, exh);
+            Header header = CreateHeader(name, exh);
             sheet = CreateSheet(header);
 
             _Sheets.GetOrAdd(name, n => new WeakReference<ISheet>(sheet)).SetTarget(sheet);
@@ -123,7 +123,7 @@ namespace SaintCoinach.Ex {
         }
 
         public string FixName(string name) {
-            var res = _AvailableSheets.Where(_ => string.Equals(name, _, StringComparison.OrdinalIgnoreCase)).ToArray();
+            string[] res = _AvailableSheets.Where(_ => string.Equals(name, _, StringComparison.OrdinalIgnoreCase)).ToArray();
 
             return res.Any() ? res.First() : name;
         }

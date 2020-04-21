@@ -32,9 +32,9 @@ namespace SaintCoinach.Xiv.ItemActions {
         protected override IEnumerable<Parameter> GetParameters() {
             const int GpBaseParamKey = 10; // XXX: Magic number!
 
-            var parameters = new ParameterCollection();
+            ParameterCollection parameters = new ParameterCollection();
 
-            var bpSheet = Sheet.Collection.GetSheet<BaseParam>();
+            IXivSheet<BaseParam> bpSheet = Sheet.Collection.GetSheet<BaseParam>();
             parameters.AddParameterValue(bpSheet[GpBaseParamKey], new ParameterValueFixed(ParameterType.Base, Amount, 0));
             if (AmountHq != Amount)
                 parameters.AddParameterValue(bpSheet[GpBaseParamKey],

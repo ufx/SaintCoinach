@@ -1,23 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaintCoinach", "SaintCoinach\SaintCoinach.csproj", "{8A7D65EB-3DE3-4631-B286-CC73A3126002}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotSquish", "DotSquish\DotSquish.csproj", "{F9681545-4BEA-4FD3-9AB9-A67BD37AB36D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E64299C5-7894-4ADE-8010-28BF09EB49F1}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaintCoinach.Cmd", "SaintCoinach.Cmd\SaintCoinach.Cmd.csproj", "{957699E4-8310-4D1E-BA83-13B7A4932807}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaintCoinach", "SaintCoinach\SaintCoinach.csproj", "{C72F542F-D946-4A04-80C2-741B87808ABE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaintCoinach.Graphics.Viewer", "SaintCoinach.Graphics.Viewer\SaintCoinach.Graphics.Viewer.csproj", "{226BF71E-334F-4585-8FEC-4239704CF539}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Godbert", "Godbert\Godbert.csproj", "{6A5DA7FF-791E-4A43-BF65-B6942917F7D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotSquish", "DotSquish\DotSquish.csproj", "{CC4B702F-628C-4E1E-B0E3-C426AFD968F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,32 +19,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8A7D65EB-3DE3-4631-B286-CC73A3126002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A7D65EB-3DE3-4631-B286-CC73A3126002}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A7D65EB-3DE3-4631-B286-CC73A3126002}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A7D65EB-3DE3-4631-B286-CC73A3126002}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9681545-4BEA-4FD3-9AB9-A67BD37AB36D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9681545-4BEA-4FD3-9AB9-A67BD37AB36D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9681545-4BEA-4FD3-9AB9-A67BD37AB36D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9681545-4BEA-4FD3-9AB9-A67BD37AB36D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{957699E4-8310-4D1E-BA83-13B7A4932807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{957699E4-8310-4D1E-BA83-13B7A4932807}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{957699E4-8310-4D1E-BA83-13B7A4932807}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{957699E4-8310-4D1E-BA83-13B7A4932807}.Release|Any CPU.Build.0 = Release|Any CPU
-		{226BF71E-334F-4585-8FEC-4239704CF539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{226BF71E-334F-4585-8FEC-4239704CF539}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{226BF71E-334F-4585-8FEC-4239704CF539}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{226BF71E-334F-4585-8FEC-4239704CF539}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A5DA7FF-791E-4A43-BF65-B6942917F7D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A5DA7FF-791E-4A43-BF65-B6942917F7D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A5DA7FF-791E-4A43-BF65-B6942917F7D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A5DA7FF-791E-4A43-BF65-B6942917F7D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C72F542F-D946-4A04-80C2-741B87808ABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C72F542F-D946-4A04-80C2-741B87808ABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C72F542F-D946-4A04-80C2-741B87808ABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C72F542F-D946-4A04-80C2-741B87808ABE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC4B702F-628C-4E1E-B0E3-C426AFD968F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC4B702F-628C-4E1E-B0E3-C426AFD968F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC4B702F-628C-4E1E-B0E3-C426AFD968F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC4B702F-628C-4E1E-B0E3-C426AFD968F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45
 		SolutionGuid = {38B9D19B-5177-445E-8E3F-6C69A809DAB9}
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45
 	EndGlobalSection
 EndGlobal

@@ -21,7 +21,7 @@ namespace SaintCoinach.Xiv {
         }
 
         public static Quad Read(byte[] buffer, int offset, bool bigEndian) {
-            var data = OrderedBitConverter.ToInt64(buffer, offset, bigEndian);
+            long data = OrderedBitConverter.ToInt64(buffer, offset, bigEndian);
             return new Quad(data);
         }
 

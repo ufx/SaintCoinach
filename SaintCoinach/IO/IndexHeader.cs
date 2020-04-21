@@ -29,16 +29,16 @@ namespace SaintCoinach.IO {
             const int FileDataOffset = 0x08;
             const int DirectoryDataOffset = 0xE4;
 
-            var start = reader.BaseStream.Position;
+            long start = reader.BaseStream.Position;
 
             reader.BaseStream.Position = start + FileDataOffset;
             _FilesOffset = reader.ReadInt32();
-            var filesLength = reader.ReadInt32();
+            int filesLength = reader.ReadInt32();
             _FilesCount = filesLength / 0x10;
 
             reader.BaseStream.Position = start + DirectoryDataOffset;
             _DirectoriesOffset = reader.ReadInt32();
-            var dirLength = reader.ReadInt32();
+            int dirLength = reader.ReadInt32();
             _DirectoriesCount = dirLength / 0x10;
         }
 

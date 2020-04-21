@@ -33,10 +33,10 @@ namespace SaintCoinach.Xiv {
         private ClassJob[] BuildClassJobs() {
             const int ColumnOffset = 1;
 
-            var cjs = new List<ClassJob>();
-            var cjSheet = Sheet.Collection.GetSheet<ClassJob>();
-            foreach (var cj in cjSheet) {
-                var isValid = Convert.ToBoolean(this[ColumnOffset + cj.Key]);
+            List<ClassJob> cjs = new List<ClassJob>();
+            IXivSheet<ClassJob> cjSheet = Sheet.Collection.GetSheet<ClassJob>();
+            foreach (ClassJob cj in cjSheet) {
+                bool isValid = Convert.ToBoolean(this[ColumnOffset + cj.Key]);
                 if (isValid)
                     cjs.Add(cj);
             }

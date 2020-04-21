@@ -20,8 +20,8 @@ namespace SaintCoinach.Xiv {
             internal RewardItem(JsonReader reader, XivCollection collection) {
                 if (reader.TokenType != JsonToken.StartObject) throw new InvalidOperationException();
 
-                var allItems = collection.GetSheet<Item>();
-                var allQuests = collection.GetSheet<Quest>();
+                IXivSheet<Item> allItems = collection.GetSheet<Item>();
+                IXivSheet<Quest> allQuests = collection.GetSheet<Quest>();
                 while (reader.Read() && reader.TokenType != JsonToken.EndObject) {
                     if (reader.TokenType != JsonToken.PropertyName) throw new InvalidOperationException();
 
@@ -49,19 +49,19 @@ namespace SaintCoinach.Xiv {
             #region Read
             private bool ReadCondition(JsonReader reader) {
                 if (!reader.Read() || reader.TokenType != JsonToken.Integer) throw new InvalidOperationException();
-                var r = Convert.ToInt32(reader.Value);
+                int r = Convert.ToInt32(reader.Value);
                 return r != 0;
             }
             private void ReadItem(JsonReader reader, IXivSheet<Item> allItems) {
                 if (!reader.Read()) throw new InvalidOperationException();
 
-                var key = Convert.ToInt32(reader.Value);
+                int key = Convert.ToInt32(reader.Value);
                 this.Item = allItems[key];
             }
             private void ReadRequiredQuest(JsonReader reader, IXivSheet<Quest> allQuests) {
                 if (!reader.Read()) throw new InvalidOperationException();
 
-                var key = Convert.ToInt32(reader.Value);
+                int key = Convert.ToInt32(reader.Value);
                 this.RequiredQuest = allQuests[key];
             }
             #endregion

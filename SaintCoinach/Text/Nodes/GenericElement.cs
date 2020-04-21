@@ -15,7 +15,7 @@ namespace SaintCoinach.Text.Nodes {
         public INode Content { get { return _Content; } }
         NodeFlags INode.Flags {
             get {
-                var f = NodeFlags.IsExpression;
+                NodeFlags f = NodeFlags.IsExpression;
                 if (_Arguments.HasItems)
                     f |= NodeFlags.HasArguments;
                 if (Content != null)
@@ -32,7 +32,7 @@ namespace SaintCoinach.Text.Nodes {
         }
 
         public override string ToString() {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             ToString(sb);
             return sb.ToString();
         }

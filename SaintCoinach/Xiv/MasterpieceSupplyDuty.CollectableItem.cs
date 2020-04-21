@@ -36,7 +36,7 @@ namespace SaintCoinach.Xiv {
                 MaxClassJobLevel = duty.AsInt32("ClassJobLevel{Max}", index);
                 Stars = duty.AsInt32("Stars", index);
 
-                var bonusMultiplierRow = duty.As<IXivRow>("BonusMultiplier", index);
+                IXivRow bonusMultiplierRow = duty.As<IXivRow>("BonusMultiplier", index);
                 _xpMultiplier = ((double)(UInt16)bonusMultiplierRow["XpMultiplier[1]"]) / 1000;
                 _xpMultiplier2 = ((double)(UInt16)bonusMultiplierRow["XpMultiplier[0]"]) / 1000;
                 _currencyMultiplier = ((double)(UInt16)bonusMultiplierRow["CurrencyMultiplier[1]"]) / 1000;
@@ -50,9 +50,9 @@ namespace SaintCoinach.Xiv {
                 level = Math.Max(MaxClassJobLevel, level);
 
                 // Find the base XP.
-                var paramGrow = MasterpieceSupplyDuty.Sheet.Collection.GetSheet<ParamGrow>()[level];
-                var expPortion = ((double)1000 / ExpModifier);
-                var baseExp = (int)(paramGrow.ExpToNext / expPortion);
+                ParamGrow paramGrow = MasterpieceSupplyDuty.Sheet.Collection.GetSheet<ParamGrow>()[level];
+                double expPortion = ((double)1000 / ExpModifier);
+                int baseExp = (int)(paramGrow.ExpToNext / expPortion);
 
                 // Apply bonus multipliers.
                 return new int[] { baseExp, (int)(baseExp * _xpMultiplier), (int)(baseExp * _xpMultiplier2) };

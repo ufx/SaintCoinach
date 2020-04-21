@@ -28,10 +28,10 @@ namespace SaintCoinach.Xiv {
         private GatheringItem[] BuildItems() {
             const int Count = 100;
 
-            var items = new List<GatheringItem>();
+            List<GatheringItem> items = new List<GatheringItem>();
 
-            for (var i = 0; i < Count; ++i) {
-                var itm = As<GatheringItem>(i);
+            for (int i = 0; i < Count; ++i) {
+                GatheringItem itm = As<GatheringItem>(i);
                 if (itm.Key != 0)
                     items.Add(itm);
             }

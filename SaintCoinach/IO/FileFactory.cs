@@ -6,10 +6,10 @@ using SaintCoinach.Imaging;
 namespace SaintCoinach.IO {
     public static class FileFactory {
         public static File Get(Pack pack, IIndexFile file) {
-            var stream = pack.GetDataStream(file.DatFile);
+            System.IO.Stream stream = pack.GetDataStream(file.DatFile);
             stream.Position = file.Offset;
 
-            var header = new FileCommonHeader(file, stream);
+            FileCommonHeader header = new FileCommonHeader(file, stream);
 
             switch (header.FileType) {
                 case FileType.Empty:

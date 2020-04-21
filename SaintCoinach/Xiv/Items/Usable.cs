@@ -23,7 +23,7 @@ namespace SaintCoinach.Xiv.Items {
 
         public IEnumerable<Parameter> Parameters {
             get {
-                var actionAsParamObj = ItemAction as IParameterObject;
+                IParameterObject actionAsParamObj = ItemAction as IParameterObject;
                 return actionAsParamObj != null ? actionAsParamObj.Parameters : new Parameter[0];
             }
         }

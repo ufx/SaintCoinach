@@ -16,7 +16,7 @@ namespace SaintCoinach.Graphics.Unknowns {
             DataSize = BitConverter.ToInt32(buffer, offset);
             offset += 4;
             Bones = new ushort[DataSize / 2];
-            for (var i = 0; i < Bones.Length; ++i) {
+            for (int i = 0; i < Bones.Length; ++i) {
                 Bones[i] = BitConverter.ToUInt16(buffer, offset);
                 offset += 2;
             }

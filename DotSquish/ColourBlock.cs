@@ -8,12 +8,12 @@ namespace DotSquish {
     internal static class ColourBlock {
         private static int Unpack565(byte[] packed, int packedOffset, byte[] colour, int colourOffset) {
             // Build the packed value.
-            var value = (int)packed[packedOffset] | ((int)packed[packedOffset + 1] << 8);
+            int value = (int)packed[packedOffset] | ((int)packed[packedOffset + 1] << 8);
 
             // Get the components in the stored range.
-            var red = (byte)((value >> 11) & 0x1F);
-            var green = (byte)((value >> 5) & 0x3F);
-            var blue = (byte)(value & 0x1F);
+            byte red = (byte)((value >> 11) & 0x1F);
+            byte green = (byte)((value >> 5) & 0x3F);
+            byte blue = (byte)(value & 0x1F);
 
             // Scale up to 8 bits
             colour[colourOffset + 0] = (byte)((red << 3) | (red >> 2));
@@ -25,14 +25,14 @@ namespace DotSquish {
         }
         public static byte[] DecompressColour(byte[] block, int blockOffset, bool isDxt1) {
             // Unpack the endpoints
-            var codes = new byte[16];
-            var a = Unpack565(block, blockOffset + 0, codes, 0);
-            var b = Unpack565(block, blockOffset + 2, codes, 4);
+            byte[] codes = new byte[16];
+            int a = Unpack565(block, blockOffset + 0, codes, 0);
+            int b = Unpack565(block, blockOffset + 2, codes, 4);
 
             // Generate the midpoints.
             for (int i = 0; i < 3; ++i) {
-                var c = codes[i];
-                var d = codes[4 + i];
+                byte c = codes[i];
+                byte d = codes[4 + i];
 
                 if (isDxt1 && a <= b) {
                     codes[8 + i] = (byte)((c + d) / 2);
@@ -48,9 +48,9 @@ namespace DotSquish {
             codes[12 + 3] = (byte)((isDxt1 && a <= b) ? 0 : 255);
 
             // Unpack the indices
-            var indices = new byte[16];
+            byte[] indices = new byte[16];
             for (int i = 0; i < 4; i++) {
-                var packed = block[blockOffset + 4 + i];
+                byte packed = block[blockOffset + 4 + i];
 
                 indices[4 * i + 0] = (byte)(packed & 0x3);
                 indices[4 * i + 1] = (byte)((packed >> 2) & 0x3);
@@ -59,9 +59,9 @@ namespace DotSquish {
             }
 
             // Store the colours
-            var rgba = new byte[4 * 16];
+            byte[] rgba = new byte[4 * 16];
             for (int i = 0; i < 16; ++i) {
-                var offset = 4 * indices[i];
+                int offset = 4 * indices[i];
                 for (int j = 0; j < 4; ++j)
                     rgba[4 * i + j] = codes[offset + j];
             }

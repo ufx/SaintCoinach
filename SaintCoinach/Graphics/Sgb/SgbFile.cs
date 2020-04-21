@@ -58,13 +58,13 @@ namespace SaintCoinach.Graphics.Sgb {
         private void Build() {
             const int BaseOffset = 0x14;
 
-            var buffer = File.GetData();
+            byte[] buffer = File.GetData();
             
             this.Header = buffer.ToStructure<HeaderData>(0);
             if (Header.Magic1 != 0x31424753 || Header.Magic2 != 0x314E4353)     // LGB1 & SCN1
                 throw new System.IO.InvalidDataException();
 
-            var data = new List<ISgbData>();
+            List<ISgbData> data = new List<ISgbData>();
 
             try {
                 data.Add(new SgbGroup(this, buffer, BaseOffset + Header.SharedOffset));
