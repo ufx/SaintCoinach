@@ -3,14 +3,15 @@
   "defaultColumn": "Name",
   "definitions": [
     {
-      "name": "EurekaFate"
+      "name": "EurekaFate",
+      "index": null
     },
     {
-      "index": 1,
+      "index": 7,
       "name": "Rule"
     },
     {
-      "index": 2,
+      "index": 8,
       "name": "FateRuleEx",
       "converter": {
         "type": "link",
@@ -18,19 +19,19 @@
       }
     },
     {
-      "index": 3,
+      "index": 9,
       "name": "Location"
     },
     {
-      "index": 4,
+      "index": 10,
       "name": "ClassJobLevel"
     },
     {
-      "index": 5,
+      "index": 11,
       "name": "ClassJobLevel{Max}"
     },
     {
-      "index": 6,
+      "index": 12,
       "name": "EventItem",
       "converter": {
         "type": "link",
@@ -38,7 +39,7 @@
       }
     },
     {
-      "index": 7,
+      "index": 13,
       "type": "repeat",
       "count": 3,
       "definition": {
@@ -46,28 +47,28 @@
       }
     },
     {
-      "index": 10,
+      "index": 16,
       "name": "Icon{Objective}",
       "converter": {
         "type": "icon"
       }
     },
     {
-      "index": 11,
+      "index": 17,
       "name": "Icon{Map}",
       "converter": {
         "type": "icon"
       }
     },
     {
-      "index": 12,
+      "index": 18,
       "name": "IconInactive{Map}",
       "converter": {
         "type": "icon"
       }
     },
     {
-      "index": 13,
+      "index": 19,
       "name": "Music",
       "converter": {
         "type": "link",
@@ -75,11 +76,11 @@
       }
     },
     {
-      "index": 14,
+      "index": 20,
       "name": "LGBGuardNPCLocation"
     },
     {
-      "index": 15,
+      "index": 21,
       "name": "ScreenImage{Accept}",
       "converter": {
         "type": "link",
@@ -87,7 +88,7 @@
       }
     },
     {
-      "index": 16,
+      "index": 22,
       "name": "ScreenImage{Complete}",
       "converter": {
         "type": "link",
@@ -95,7 +96,7 @@
       }
     },
     {
-      "index": 17,
+      "index": 23,
       "name": "ScreenImage{Failed}",
       "converter": {
         "type": "link",
@@ -103,11 +104,11 @@
       }
     },
     {
-      "index": 20,
+      "index": 26,
       "name": "SpecialFate"
     },
     {
-      "index": 22,
+      "index": 28,
       "name": "GivenStatus",
       "converter": {
         "type": "link",
@@ -115,31 +116,31 @@
       }
     },
     {
-      "index": 24,
+      "index": 30,
       "name": "AdventEvent"
     },
     {
-      "index": 25,
+      "index": 31,
       "name": "MoonFaireEvent"
     },
     {
-      "index": 27,
+      "index": 33,
       "name": "FATEChain"
     },
     {
-      "index": 30,
+      "index": 36,
       "name": "Name"
     },
     {
-      "index": 31,
+      "index": 37,
       "name": "Description"
     },
     {
-      "index": 32,
+      "index": 38,
       "name": "Objective"
     },
     {
-      "index": 33,
+      "index": 39,
       "type": "repeat",
       "count": 3,
       "definition": {
@@ -147,7 +148,7 @@
       }
     },
     {
-      "index": 36,
+      "index": 42,
       "name": "ArrayIndex",
       "converter": {
         "type": "link",
@@ -155,7 +156,7 @@
       }
     },
     {
-      "index": 38,
+      "index": 44,
       "name": "ReqEventItem",
       "converter": {
         "type": "link",
@@ -163,7 +164,7 @@
       }
     },
     {
-      "index": 39,
+      "index": 45,
       "name": "TurnInEventItem",
       "converter": {
         "type": "link",
@@ -171,7 +172,7 @@
       }
     },
     {
-      "index": 40,
+      "index": 46,
       "type": "repeat",
       "count": 8,
       "definition": {

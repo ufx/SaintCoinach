@@ -9,7 +9,7 @@
       }
     },
     {
-      "index": 1,
+      "index": 3,
       "name": "Text[1]",
       "converter": {
         "type": "link",
@@ -17,14 +17,14 @@
       }
     },
     {
-      "index": 2,
+      "index": 4,
       "name": "Image[1]",
       "converter": {
         "type": "icon"
       }
     },
     {
-      "index": 3,
+      "index": 5,
       "name": "Text[2]",
       "converter": {
         "type": "link",
@@ -32,14 +32,14 @@
       }
     },
     {
-      "index": 4,
+      "index": 6,
       "name": "Image[2]",
       "converter": {
         "type": "icon"
       }
     },
     {
-      "index": 5,
+      "index": 7,
       "name": "Text[3]",
       "converter": {
         "type": "link",
@@ -47,14 +47,14 @@
       }
     },
     {
-      "index": 6,
+      "index": 8,
       "name": "Image[3]",
       "converter": {
         "type": "icon"
       }
     },
     {
-      "index": 7,
+      "index": 9,
       "name": "Text[4]",
       "converter": {
         "type": "link",
@@ -62,14 +62,14 @@
       }
     },
     {
-      "index": 8,
+      "index": 10,
       "name": "Image[4]",
       "converter": {
         "type": "icon"
       }
     },
     {
-      "index": 9,
+      "index": 11,
       "name": "Text[5]",
       "converter": {
         "type": "link",
@@ -77,14 +77,14 @@
       }
     },
     {
-      "index": 10,
+      "index": 12,
       "name": "Image[5]",
       "converter": {
         "type": "icon"
       }
     },
     {
-      "index": 11,
+      "index": 13,
       "name": "Text[6]",
       "converter": {
         "type": "link",
@@ -92,14 +92,14 @@
       }
     },
     {
-      "index": 12,
+      "index": 14,
       "name": "Image[6]",
       "converter": {
         "type": "icon"
       }
     },
     {
-      "index": 13,
+      "index": 15,
       "name": "Text[7]",
       "converter": {
         "type": "link",
@@ -107,14 +107,14 @@
       }
     },
     {
-      "index": 14,
+      "index": 16,
       "name": "Image[7]",
       "converter": {
         "type": "icon"
       }
     },
     {
-      "index": 15,
+      "index": 17,
       "name": "Text[8]",
       "converter": {
         "type": "link",
@@ -122,14 +122,14 @@
       }
     },
     {
-      "index": 16,
+      "index": 18,
       "name": "Image[8]",
       "converter": {
         "type": "icon"
       }
     },
     {
-      "index": 17,
+      "index": 19,
       "name": "Text[9]",
       "converter": {
         "type": "link",
@@ -137,7 +137,7 @@
       }
     },
     {
-      "index": 18,
+      "index": 20,
       "name": "Image[9]",
       "converter": {
         "type": "icon"
